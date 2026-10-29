@@ -204,7 +204,7 @@ func TestCategoryLifecycleAndSafety(t *testing.T) {
 		}
 	})
 	r := &categoryResource{client: c}
-	s := testState(t, categorySchema(), map[string]attr.Value{"name": types.StringValue("movies"), "save_path": types.StringValue("/data")})
+	s := testState(t, categorySchema(), map[string]attr.Value{"name": types.StringValue("datasets"), "save_path": types.StringValue("/data")})
 	create := resource.CreateResponse{State: tfsdk.State{Schema: s.Schema}}
 	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: s.Raw}}, &create)
 	if create.Diagnostics.HasError() {
@@ -215,19 +215,19 @@ func TestCategoryLifecycleAndSafety(t *testing.T) {
 	if !dup.Diagnostics.HasError() || !strings.Contains(fmt.Sprint(dup.Diagnostics), "import") {
 		t.Fatal("duplicate adopted")
 	}
-	changed := testState(t, s.Schema.(rschema.Schema), map[string]attr.Value{"id": types.StringValue("movies"), "name": types.StringValue("movies"), "save_path": types.StringValue("/changed")})
+	changed := testState(t, s.Schema.(rschema.Schema), map[string]attr.Value{"id": types.StringValue("datasets"), "name": types.StringValue("datasets"), "save_path": types.StringValue("/changed")})
 	update := resource.UpdateResponse{State: create.State}
 	r.Update(ctx, resource.UpdateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: changed.Raw}}, &update)
-	if update.Diagnostics.HasError() || cats["movies"].SavePath != "/changed" {
+	if update.Diagnostics.HasError() || cats["datasets"].SavePath != "/changed" {
 		t.Fatal(update.Diagnostics)
 	}
-	cats["movies/kids"] = client.Category{Name: "movies/kids"}
+	cats["datasets/samples"] = client.Category{Name: "datasets/samples"}
 	var blocked resource.DeleteResponse
 	r.Delete(ctx, resource.DeleteRequest{State: update.State}, &blocked)
 	if !blocked.Diagnostics.HasError() || deletes.Load() != 0 {
 		t.Fatal("deleted descendant")
 	}
-	delete(cats, "movies/kids")
+	delete(cats, "datasets/samples")
 	var del resource.DeleteResponse
 	r.Delete(ctx, resource.DeleteRequest{State: update.State}, &del)
 	if del.Diagnostics.HasError() || deletes.Load() != 1 {
@@ -238,9 +238,9 @@ func TestCategoryLifecycleAndSafety(t *testing.T) {
 	if read.Diagnostics.HasError() || !read.State.Raw.IsNull() {
 		t.Fatal("missing category retained")
 	}
-	cats["movies"] = client.Category{Name: "movies", SavePath: "/imported"}
+	cats["datasets"] = client.Category{Name: "datasets", SavePath: "/imported"}
 	imp := resource.ImportStateResponse{State: testState(t, s.Schema.(rschema.Schema), nil)}
-	r.ImportState(ctx, resource.ImportStateRequest{ID: "movies"}, &imp)
+	r.ImportState(ctx, resource.ImportStateRequest{ID: "datasets"}, &imp)
 	read = resource.ReadResponse{State: imp.State}
 	r.Read(ctx, resource.ReadRequest{State: imp.State}, &read)
 	if read.Diagnostics.HasError() || attrString(t, read.State, "save_path").ValueString() != "/imported" {
@@ -301,7 +301,7 @@ func TestNumericAndCategoryValidation(t *testing.T) {
 			t.Errorf("unsafe name accepted %q", name)
 		}
 	}
-	for _, name := range []string{"a", "a/b", "Film & TV"} {
+	for _, name := range []string{"a", "a/b", "Research & Data"} {
 		if !validCategoryName(name) {
 			t.Errorf("valid name rejected %q", name)
 		}

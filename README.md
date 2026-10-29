@@ -22,9 +22,9 @@ resource "qbittorrent_preferences" "application" {
   up_limit = 1048576 # bytes/s; multiples of 1024, 0 is unlimited
 }
 
-resource "qbittorrent_category" "movies" {
-  name      = "movies"
-  save_path = "/downloads/movies"
+resource "qbittorrent_category" "datasets" {
+  name      = "datasets"
+  save_path = "/downloads/datasets"
 }
 ```
 
@@ -62,7 +62,7 @@ replayed automatically. Rerun apply after an expired-session write failure.
 
 ```sh
 terraform import qbittorrent_preferences.application application
-terraform import qbittorrent_category.movies movies
+terraform import qbittorrent_category.datasets datasets
 ```
 
 See [generated provider/resource docs](docs/index.md), [development contract](docs/development.md),

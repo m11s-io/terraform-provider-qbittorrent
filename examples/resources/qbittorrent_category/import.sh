@@ -1,1 +1,1 @@
-terraform import qbittorrent_category.movies movies
+terraform import qbittorrent_category.datasets datasets
