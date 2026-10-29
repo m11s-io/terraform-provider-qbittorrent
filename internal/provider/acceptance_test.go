@@ -97,6 +97,46 @@ func TestAccPreferences(t *testing.T) {
 		})
 	}
 }
+func TestAccSpeedPreferences(t *testing.T) {
+	setupAccEnv(t, false)
+	config := accProvider() + `
+resource "qbittorrent_preferences" "speed" {
+  dl_limit = 2097152
+  up_limit = 30720
+  alt_dl_limit = 10240
+  alt_up_limit = 10240
+  scheduler_enabled = false
+  schedule_from_hour = 8
+  schedule_from_min = 0
+  schedule_to_hour = 20
+  schedule_to_min = 0
+  scheduler_days = 1
+  limit_utp_rate = true
+  limit_tcp_overhead = false
+  limit_lan_peers = true
+}
+data "qbittorrent_preferences" "speed" {
+  depends_on = [qbittorrent_preferences.speed]
+}
+`
+	updated := strings.Replace(config, "scheduler_enabled = false", "scheduler_enabled = true", 1)
+	updated = strings.Replace(updated, "scheduler_days = 1", "scheduler_days = 9", 1)
+	resource.Test(t, resource.TestCase{ProtoV6ProviderFactories: factories, Steps: []resource.TestStep{
+		{Config: config, Check: resource.ComposeTestCheckFunc(
+			resource.TestCheckResourceAttr("qbittorrent_preferences.speed", "schedule_from_min", "0"),
+			resource.TestCheckResourceAttr("data.qbittorrent_preferences.speed", "scheduler_days", "1"),
+			resource.TestCheckResourceAttr("data.qbittorrent_preferences.speed", "limit_tcp_overhead", "false"),
+			resource.TestCheckResourceAttr("data.qbittorrent_preferences.speed", "limit_lan_peers", "true"),
+		)},
+		{Config: config, PlanOnly: true},
+		{Config: updated, Check: resource.ComposeTestCheckFunc(
+			resource.TestCheckResourceAttr("qbittorrent_preferences.speed", "scheduler_enabled", "true"),
+			resource.TestCheckResourceAttr("data.qbittorrent_preferences.speed", "scheduler_days", "9"),
+		)},
+		{Config: updated, PlanOnly: true},
+	}})
+}
+
 func TestAccCategory(t *testing.T) {
 	setupAccEnv(t, false)
 	c := accClient(t)

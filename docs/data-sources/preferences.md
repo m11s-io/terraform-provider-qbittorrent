@@ -31,10 +31,19 @@ output "current_save_path" {
 - `dht` (Boolean) Enable DHT.
 - `dl_limit` (Number) Global download limit in bytes/s; 0 means unlimited.
 - `id` (String) Singleton ID: application.
+- `limit_lan_peers` (Boolean) Apply rate limits to peers on the LAN.
+- `limit_tcp_overhead` (Boolean) Apply rate limits to transport overhead.
+- `limit_utp_rate` (Boolean) Apply rate limits to the uTP protocol.
 - `listen_port` (Number) Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field.
 - `lsd` (Boolean) Enable local service discovery.
 - `pex` (Boolean) Enable peer exchange.
 - `save_path` (String) Default save path on the server. Use a normalized absolute path.
+- `schedule_from_hour` (Number) Schedule start hour, 0..23. Configure together with schedule_from_min.
+- `schedule_from_min` (Number) Schedule start minute, 0..59. Configure together with schedule_from_hour.
+- `schedule_to_hour` (Number) Schedule end hour, 0..23. Configure together with schedule_to_min.
+- `schedule_to_min` (Number) Schedule end minute, 0..59. Configure together with schedule_to_hour.
+- `scheduler_days` (Number) Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+- `scheduler_enabled` (Boolean) Schedule the use of alternative rate limits using the server's local time.
 - `temp_path` (String) Incomplete-download path on the server. Use a normalized absolute path.
 - `temp_path_enabled` (Boolean) Enable the incomplete-download path.
 - `up_limit` (Number) Global upload limit in bytes/s; 0 means unlimited.

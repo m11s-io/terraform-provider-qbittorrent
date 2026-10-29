@@ -31,6 +31,15 @@ var preferenceFields = []struct{ name, kind, description string }{
 	{"up_limit", "rate", "Global upload limit in bytes/s; 0 means unlimited."},
 	{"alt_dl_limit", "rate", "Alternate download limit in bytes/s; 0 means unlimited."},
 	{"alt_up_limit", "rate", "Alternate upload limit in bytes/s; 0 means unlimited."},
+	{"scheduler_enabled", "bool", "Schedule the use of alternative rate limits using the server's local time."},
+	{"schedule_from_hour", "hour", "Schedule start hour, 0..23. Configure together with schedule_from_min."},
+	{"schedule_from_min", "minute", "Schedule start minute, 0..59. Configure together with schedule_from_hour."},
+	{"schedule_to_hour", "hour", "Schedule end hour, 0..23. Configure together with schedule_to_min."},
+	{"schedule_to_min", "minute", "Schedule end minute, 0..59. Configure together with schedule_to_hour."},
+	{"scheduler_days", "days", "Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday."},
+	{"limit_utp_rate", "bool", "Apply rate limits to the uTP protocol."},
+	{"limit_tcp_overhead", "bool", "Apply rate limits to transport overhead."},
+	{"limit_lan_peers", "bool", "Apply rate limits to peers on the LAN."},
 	{"dht", "bool", "Enable DHT."}, {"pex", "bool", "Enable peer exchange."}, {"lsd", "bool", "Enable local service discovery."},
 	{"listen_port", "port", "Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field."},
 	{"upnp", "bool", "Enable UPnP/NAT-PMP port forwarding."},
@@ -47,6 +56,9 @@ func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest
 			attrs[f.name] = schema.StringAttribute{Optional: true, MarkdownDescription: f.description}
 		case "bool":
 			attrs[f.name] = schema.BoolAttribute{Optional: true, MarkdownDescription: f.description}
+		case "hour", "minute", "days":
+			max := map[string]int64{"hour": 23, "minute": 59, "days": 9}[f.kind]
+			attrs[f.name] = schema.Int64Attribute{Optional: true, MarkdownDescription: f.description, Validators: []validator.Int64{rangeValidator{max: max}}}
 		default:
 			description := f.description
 			if f.kind == "rate" {
@@ -56,6 +68,27 @@ func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest
 		}
 	}
 	resp.Schema = schema.Schema{MarkdownDescription: "Singleton partial ownership of application preferences. Configure only settings to manage. Removing an attribute relinquishes management without resetting it. Import ID: application; import reads the server without claiming unconfigured settings. Destroy removes state only. Use one instance per server; overlapping ownership is unsupported. Read-after-write reports normalized/rejected fields: use server-normalized paths.", Attributes: attrs}
+}
+func (r *preferencesResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var obj types.Object
+	resp.Diagnostics.Append(req.Config.Get(ctx, &obj)...)
+	if resp.Diagnostics.HasError() || obj.IsNull() || obj.IsUnknown() {
+		return
+	}
+	validateSchedulePairs(obj.Attributes(), &resp.Diagnostics)
+}
+
+// qBittorrent ignores an hour or minute update unless both keys are present.
+func validateSchedulePairs(values map[string]attr.Value, d *diag.Diagnostics) {
+	for _, prefix := range []string{"schedule_from_", "schedule_to_"} {
+		h, m := values[prefix+"hour"], values[prefix+"min"]
+		if h == nil || m == nil || h.IsUnknown() || m.IsUnknown() {
+			continue
+		}
+		if h.IsNull() != m.IsNull() {
+			d.AddAttributeError(path.Root(prefix+"hour"), "Incomplete schedule time", "Configure both "+prefix+"hour and "+prefix+"min, or leave both unset.")
+		}
+	}
 }
 func (r *preferencesResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
@@ -78,6 +111,10 @@ func (r *preferencesResource) Update(ctx context.Context, req resource.UpdateReq
 func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, state *tfsdk.State, d *diag.Diagnostics) {
 	var obj types.Object
 	d.Append(planned.Get(ctx, &obj)...)
+	if d.HasError() {
+		return
+	}
+	validateSchedulePairs(obj.Attributes(), d)
 	if d.HasError() {
 		return
 	}

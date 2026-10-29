@@ -77,6 +77,11 @@ The HTTP operations and API models are generated from the provider's
 editing it; `make generate-check` verifies the checked-in output. See the
 [generation workflow](docs/development.md#generated-openapi-client).
 
+The preferences resource and data source cover every control in the WebUI Speed
+tab: normal/alternative limits, the schedule and day selection, and rate limits
+for uTP, transport overhead and LAN peers. See the
+[preferences example](examples/resources/qbittorrent_preferences/resource.tf).
+
 ## Releases
 
 Release workflows produce platform ZIP archives and signed checksums. Registry

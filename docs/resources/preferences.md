@@ -20,11 +20,25 @@ resource "qbittorrent_preferences" "application" {
   auto_tmm_enabled  = false
   dl_limit          = 0
   up_limit          = 1048576
-  dht               = false
-  pex               = false
-  lsd               = false
-  listen_port       = 6881
-  upnp              = false
+  alt_dl_limit      = 10240
+  alt_up_limit      = 10240
+
+  # Times use the server's local time; configure each hour/minute pair together.
+  scheduler_enabled  = false
+  schedule_from_hour = 8
+  schedule_from_min  = 0
+  schedule_to_hour   = 20
+  schedule_to_min    = 0
+  scheduler_days     = 1 # Weekdays; 0 every day, 2 weekends, 3..9 Monday..Sunday.
+  limit_utp_rate     = true
+  limit_tcp_overhead = false
+  limit_lan_peers    = true
+
+  dht         = false
+  pex         = false
+  lsd         = false
+  listen_port = 6881
+  upnp        = false
 }
 ```
 
@@ -38,10 +52,19 @@ resource "qbittorrent_preferences" "application" {
 - `auto_tmm_enabled` (Boolean) Enable automatic torrent management by default. Changes may relocate files.
 - `dht` (Boolean) Enable DHT.
 - `dl_limit` (Number) Global download limit in bytes/s; 0 means unlimited. Rate limits must be multiples of 1024, at most 2147482624.
+- `limit_lan_peers` (Boolean) Apply rate limits to peers on the LAN.
+- `limit_tcp_overhead` (Boolean) Apply rate limits to transport overhead.
+- `limit_utp_rate` (Boolean) Apply rate limits to the uTP protocol.
 - `listen_port` (Number) Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field.
 - `lsd` (Boolean) Enable local service discovery.
 - `pex` (Boolean) Enable peer exchange.
 - `save_path` (String) Default save path on the server. Use a normalized absolute path.
+- `schedule_from_hour` (Number) Schedule start hour, 0..23. Configure together with schedule_from_min.
+- `schedule_from_min` (Number) Schedule start minute, 0..59. Configure together with schedule_from_hour.
+- `schedule_to_hour` (Number) Schedule end hour, 0..23. Configure together with schedule_to_min.
+- `schedule_to_min` (Number) Schedule end minute, 0..59. Configure together with schedule_to_hour.
+- `scheduler_days` (Number) Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+- `scheduler_enabled` (Boolean) Schedule the use of alternative rate limits using the server's local time.
 - `temp_path` (String) Incomplete-download path on the server. Use a normalized absolute path.
 - `temp_path_enabled` (Boolean) Enable the incomplete-download path.
 - `up_limit` (Number) Global upload limit in bytes/s; 0 means unlimited. Rate limits must be multiples of 1024, at most 2147482624.

@@ -81,3 +81,15 @@ Verified on **2026-10-29** on the migration branch:
 
 This specification covers the provider subset; it is not a claim of full OpenAPI
 3.2 generator feature support or complete qBittorrent API coverage.
+
+## Speed settings coverage
+
+All Speed-tab controls are mapped in the preferences resource and data source:
+normal/alternate rates, schedule enablement, start/end hour and minute, day
+selection, and uTP/overhead/LAN flags. Reviewed against `release-5.3.0`.
+Unit/race tests and vet passed, including range validation, paired time keys,
+false/zero values and partial writes. Disposable acceptance passed with both
+OpenTofu 1.13.2 and Terraform 1.15.9, including schedule activation, day changes,
+data-source reads and no-op plans. Generated-client and documentation
+reproducibility checks passed. Independent review found no blocking or minor
+issues. No live application settings were changed and no release was published.

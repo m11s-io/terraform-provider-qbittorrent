@@ -245,6 +245,57 @@ components:
           $ref: '#/components/schemas/AltDownloadLimit'
         alt_up_limit:
           $ref: '#/components/schemas/AltUploadLimit'
+        scheduler_enabled:
+          type: boolean
+          x-go-name: SchedulerEnabled
+          description: Schedule alternative rate limits using the server local time.
+        schedule_from_hour:
+          type: integer
+          x-go-name: ScheduleFromHour
+          description: Start hour; must be supplied together with schedule_from_min.
+          format: int64
+          minimum: 0
+          maximum: 23
+        schedule_from_min:
+          type: integer
+          x-go-name: ScheduleFromMin
+          description: Start minute; must be supplied together with schedule_from_hour.
+          format: int64
+          minimum: 0
+          maximum: 59
+        schedule_to_hour:
+          type: integer
+          x-go-name: ScheduleToHour
+          description: End hour; must be supplied together with schedule_to_min.
+          format: int64
+          minimum: 0
+          maximum: 23
+        schedule_to_min:
+          type: integer
+          x-go-name: ScheduleToMin
+          description: End minute; must be supplied together with schedule_to_hour.
+          format: int64
+          minimum: 0
+          maximum: 59
+        scheduler_days:
+          type: integer
+          x-go-name: SchedulerDays
+          description: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+          format: int64
+          minimum: 0
+          maximum: 9
+        limit_utp_rate:
+          type: boolean
+          x-go-name: LimitUTPRate
+          description: Apply rate limits to the uTP protocol.
+        limit_tcp_overhead:
+          type: boolean
+          x-go-name: LimitTCPOverhead
+          description: Apply rate limits to transport overhead.
+        limit_lan_peers:
+          type: boolean
+          x-go-name: LimitLANPeers
+          description: Apply rate limits to peers on the LAN.
         dht:
           type: boolean
           x-go-name: DHT

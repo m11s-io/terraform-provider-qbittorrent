@@ -43,13 +43,40 @@ type Preferences struct {
 	DHT            *bool           `json:"dht,omitempty"`
 
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
-	DownloadLimit   *DownloadLimit `json:"dl_limit,omitempty"`
-	ListenPort      *int64         `json:"listen_port,omitempty"`
-	LSD             *bool          `json:"lsd,omitempty"`
-	PeX             *bool          `json:"pex,omitempty"`
-	SavePath        *string        `json:"save_path,omitempty"`
-	TempPath        *string        `json:"temp_path,omitempty"`
-	TempPathEnabled *bool          `json:"temp_path_enabled,omitempty"`
+	DownloadLimit *DownloadLimit `json:"dl_limit,omitempty"`
+
+	// LimitLANPeers Apply rate limits to peers on the LAN.
+	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
+
+	// LimitTCPOverhead Apply rate limits to transport overhead.
+	LimitTCPOverhead *bool `json:"limit_tcp_overhead,omitempty"`
+
+	// LimitUTPRate Apply rate limits to the uTP protocol.
+	LimitUTPRate *bool   `json:"limit_utp_rate,omitempty"`
+	ListenPort   *int64  `json:"listen_port,omitempty"`
+	LSD          *bool   `json:"lsd,omitempty"`
+	PeX          *bool   `json:"pex,omitempty"`
+	SavePath     *string `json:"save_path,omitempty"`
+
+	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
+	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
+
+	// ScheduleFromMin Start minute; must be supplied together with schedule_from_hour.
+	ScheduleFromMin *int64 `json:"schedule_from_min,omitempty"`
+
+	// ScheduleToHour End hour; must be supplied together with schedule_to_min.
+	ScheduleToHour *int64 `json:"schedule_to_hour,omitempty"`
+
+	// ScheduleToMin End minute; must be supplied together with schedule_to_hour.
+	ScheduleToMin *int64 `json:"schedule_to_min,omitempty"`
+
+	// SchedulerDays 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
+
+	// SchedulerEnabled Schedule alternative rate limits using the server local time.
+	SchedulerEnabled *bool   `json:"scheduler_enabled,omitempty"`
+	TempPath         *string `json:"temp_path,omitempty"`
+	TempPathEnabled  *bool   `json:"temp_path_enabled,omitempty"`
 
 	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	UploadLimit *UploadLimit `json:"up_limit,omitempty"`

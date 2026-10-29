@@ -80,6 +80,18 @@ fields until configured. Destroy only removes state.
 | `dl_limit`, `up_limit`, `alt_dl_limit`, `alt_up_limit` | bytes/s, 0 unlimited; server quantizes to multiples of 1024; provider requires 0 or positive multiples of 1024, max 2147482624 |
 | `dht`, `pex`, `lsd`, `upnp` | bool |
 | `listen_port` | TCP/UDP port, 1..65535; random-port preference can override it |
+| `scheduler_enabled` | bool; schedule alternative rate limits using the server's local time |
+| `schedule_from_hour`, `schedule_to_hour` | integer, 0..23; configure each hour together with its corresponding minute |
+| `schedule_from_min`, `schedule_to_min` | integer, 0..59; configure each minute together with its corresponding hour |
+| `scheduler_days` | integer: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday |
+| `limit_utp_rate`, `limit_tcp_overhead`, `limit_lan_peers` | bool; apply rate limits to uTP, transport overhead, and LAN peers respectively |
+
+All controls in the WebUI Speed settings tab are mapped by the preferences
+resource and data source. Configuring schedule times does not enable the
+scheduler unless `scheduler_enabled = true`. Missing hour/minute pairs are
+rejected before writing because upstream silently ignores unpaired time keys.
+The three rate-limit flags use the Web API's positive meaning, including
+`limit_lan_peers` (upstream internally stores its inverse).
 
 Paths use server filesystem semantics. Use normalized absolute server paths.
 Read-after-write detects normalization/rejection and reports the affected key
