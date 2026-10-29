@@ -1,0 +1,4 @@
+# Ubuntu 26.04 is supported by GitHub but absent from actionlint v1.7.12's catalog.
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04
