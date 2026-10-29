@@ -218,7 +218,7 @@ func TestConfigValidation(t *testing.T) {
 func TestCategoriesContract(t *testing.T) {
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "/categories") {
-			fmt.Fprint(w, `{"movies":{"name":"movies","savePath":"/data"}}`)
+			fmt.Fprint(w, `{"datasets":{"name":"datasets","savePath":"/data"}}`)
 			return
 		}
 		if r.Method != "POST" {
@@ -226,32 +226,32 @@ func TestCategoriesContract(t *testing.T) {
 		}
 		r.ParseForm()
 		if strings.HasSuffix(r.URL.Path, "removeCategories") {
-			if r.Form.Get("categories") != "movies" {
+			if r.Form.Get("categories") != "datasets" {
 				t.Error("wrong delete")
 			}
 			return
 		}
-		if r.Form.Get("category") != "movies" || r.Form.Get("savePath") != "/data" {
+		if r.Form.Get("category") != "datasets" || r.Form.Get("savePath") != "/data" {
 			t.Errorf("wrong category body %v", r.Form)
 		}
 	}, false)
 	ctx := context.Background()
-	if err := c.CreateCategory(ctx, Category{Name: "movies", SavePath: "/data"}); err != nil {
+	if err := c.CreateCategory(ctx, Category{Name: "datasets", SavePath: "/data"}); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.EditCategory(ctx, Category{Name: "movies", SavePath: "/data"}); err != nil {
+	if err := c.EditCategory(ctx, Category{Name: "datasets", SavePath: "/data"}); err != nil {
 		t.Fatal(err)
 	}
 	cats, err := c.Categories(ctx)
-	if err != nil || cats["movies"].SavePath != "/data" {
+	if err != nil || cats["datasets"].SavePath != "/data" {
 		t.Fatalf("%v %v", cats, err)
 	}
-	if err := c.DeleteCategory(ctx, "movies"); err != nil {
+	if err := c.DeleteCategory(ctx, "datasets"); err != nil {
 		t.Fatal(err)
 	}
 	for _, code := range []int{404, 409} {
 		c = newTestClient(t, func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(code) }, false)
-		err := c.CreateCategory(ctx, Category{Name: "movies"})
+		err := c.CreateCategory(ctx, Category{Name: "datasets"})
 		var api *HTTPError
 		if !errors.As(err, &api) || api.StatusCode != code {
 			t.Fatalf("lost status: %v", err)

@@ -13,15 +13,15 @@ Manage one download category. Import by name. Rename replaces the category. Dest
 ## Example Usage
 
 ```terraform
-resource "qbittorrent_category" "movies" {
-  name      = "movies"
-  save_path = "/downloads/movies"
+resource "qbittorrent_category" "datasets" {
+  name      = "datasets"
+  save_path = "/downloads/datasets"
 }
 
 # Referencing the parent orders creation and leaf-first deletion.
-resource "qbittorrent_category" "kids" {
-  name      = "${qbittorrent_category.movies.name}/kids"
-  save_path = "" # /downloads/movies/kids, beneath the parent's effective path
+resource "qbittorrent_category" "samples" {
+  name      = "${qbittorrent_category.datasets.name}/samples"
+  save_path = "" # /downloads/datasets/samples, beneath the parent's effective path
 }
 ```
 
@@ -44,5 +44,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import qbittorrent_category.movies movies
+terraform import qbittorrent_category.datasets datasets
 ```
