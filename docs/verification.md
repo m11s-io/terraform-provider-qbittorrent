@@ -1,7 +1,6 @@
-# Implementation and verification evidence
+# Verification
 
-Implementation date: 2026-10-29. Local checkout remains on `main`, as explicitly
-requested. This is source/release readiness evidence, not Registry publication.
+The checks below validate the qBittorrent 5.3.0 compatibility baseline.
 
 ## Baseline and toolchain
 
@@ -45,36 +44,12 @@ malformed responses, errors without secret leakage, cancellation, timeout,
 redirect refusal, duplicate categories, partial updates, false/zero/null behavior,
 normalization errors, and rejected-write state preservation.
 
-## Independent review and decisions
+## CI
 
-One independent read-only whole-change review found two important issues:
-failed preferences writes returned planned state, and nested category creation
-could silently create unmanaged ancestors. Regression tests reproduced both;
-fixes passed the full unit/race and real acceptance suites. The review's category
-path-description finding was treated as important because incorrect path
-expectations affect torrent placement; schema/docs now describe exact resolution.
-No review findings remain deferred. No second review was substituted for tests.
+The [baseline validation run](https://github.com/m11s-io/terraform-provider-qbittorrent/actions/runs/40873858731)
+passed unit/race tests, vet, documentation reproducibility, workflow lint,
+cross-platform snapshots, and Terraform/OpenTofu acceptance on Linux/amd64.
+Local acceptance also passed on macOS/arm64.
 
-Implementation decisions:
-
-- Work directly on local `main` per user instruction; no worktree created.
-- URL is schema-optional but required after environment resolution, enabling
-  QBITTORRENT_URL-only configuration. Missing/invalid URLs fail Configure.
-- Only reads replay after bounded reauthentication. Expired-session writes need
-  a rerun of apply, avoiding duplicate mutation side effects.
-- Optional per-category incomplete paths are deferred from v1; global incomplete
-  path preferences are available.
-- Rate limits must be 0 or representable multiples of 1024, preventing upstream
-  truncation/clamping and repeated drift.
-- Nested category ancestors must already exist; descendant categories prevent
-  deletion. These guards require explicit parent references/leaf-first ordering
-  and are not transactional against concurrent external hierarchy mutations.
-
-## Limits and remaining publication steps
-
-Acceptance was executed locally on macOS/arm64. The CI matrix is configured for
-Linux; a green local run does not assert that hosted CI has already run. Registry
-credentials/public-key enrollment and the first authorized version tag remain
-human/account steps, detailed in development.md. Snapshot signatures were skipped;
-the release workflow follows the existing infrastructure-owned GPG convention.
-No live qBittorrent deployment, actual download, tracker or Vault secret was used.
+Snapshot checks skip signing and publication. Release signing and registry
+registration are described in [development documentation](development.md).

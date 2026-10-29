@@ -69,10 +69,8 @@ See [generated provider/resource docs](docs/index.md), [development contract](do
 and [disposable acceptance tests](tests/acceptance/README.md). Build with Go 1.27.3:
 `make test race vet build docs`.
 
-## Release status
+## Releases
 
-Source and release scaffolding do not imply Registry publication. Registry signup,
-GPG public-key enrollment, and the first release require an authorized human
-account/action. infra/github owns this repository's LICENSE and signing secrets.
-Do not regenerate LICENSE through provider automation. No release is published
-by development/acceptance workflows.
+Release workflows produce platform ZIP archives and signed checksums. Registry
+publication requires a registered signing key and a versioned GitHub release.
+Development and acceptance workflows do not publish releases.

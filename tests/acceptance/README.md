@@ -13,8 +13,8 @@ Credentials are masked under GitHub Actions and are not printed locally. Do not
 use shell tracing or enable HTTP body logging. Tests receive only temporary
 credentials through environment variables and require the runner's container name.
 DHT, PeX, LSD and port forwarding start disabled. The only torrent fixture is
-stopped and has no tracker; no live server, production Vault secret or real
-download is used.
+stopped and has no tracker. Tests run entirely against the disposable server
+with generated credentials and local fixture data.
 
 Plugin Framework acceptance tests cover API-key and session preferences lifecycles,
 partial ownership, drift, import, no-op plans, category rename/replacement and

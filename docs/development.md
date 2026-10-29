@@ -5,8 +5,7 @@ peeled commit `9213075dd5f7b352208361c6a84c1c115efc898e` (annotated tag
 `05fcaa8f505f0657d5cd7b7c377282b63855e8ae`). Web API version: **2.16.2**.
 The provider rejects other application/API versions rather than silently guessing.
 
-Contract inspected in an independent detached worktree, without changing the
-reference checkout. Sources (all at the commit above):
+Upstream API sources (all at the commit above):
 
 - `src/webui/api/appcontroller.cpp`: `versionAction`, `webapiVersionAction`,
   `preferencesAction`, `setPreferencesAction`.
@@ -98,29 +97,22 @@ Removing a category may still move files according to the server's TMM settings.
 
 ## Dependencies and checks
 
-Go 1.27.3 (latest stable verified from go.dev/dl/?mode=json); Plugin Framework v1.19.0 and plugin-testing v1.16.0 selected
-from the module proxy's current stable releases. Documentation generator is pinned
-in GNUmakefile. LICENSE is owned by infra/github and must not be regenerated.
+The Go version and dependencies are pinned in go.mod. The documentation generator
+is pinned in GNUmakefile. See [verification results](verification.md) for tested
+versions and commands.
 
-Acceptance tests use a disposable digest-pinned 5.3.0 server, temporary credentials,
-no live cluster, no trackers and no production credentials. See tests/acceptance.
-No release or registry publication is authorized by this plan.
+Acceptance tests use a disposable digest-pinned 5.3.0 server and temporary
+credentials. See [acceptance test instructions](../tests/acceptance/README.md).
 
-## Publication checklist
+## Publishing releases
 
-1. Review acceptance and snapshot evidence in this repository; no tag is created
-   by development workflows.
-2. With an authorized Registry account for `m11s-io`, enroll the **public** signing
-   key corresponding to infra/github's shared `GPG_PRIVATE_KEY`. Confirm namespace
-   permissions and GitHub OAuth access to this repository.
-3. Authorize the first semantic-version tag/release separately. The release
-   workflow signs SHA256SUMS (which covers platform zips and protocol-6 manifest).
-   No private key is checked into this repository; the infrastructure-owned empty
-   `GPG_PASSPHRASE` convention is retained.
-4. Publish/select the provider repository in the Registry and verify its release
-   webhook and first version ingestion. OpenTofu registry enrollment is a separate
-   registry process if automatic discovery is unavailable.
-5. Only after publication, plan infra/arr integration as a separate change.
+1. Run the unit, race, acceptance, documentation and snapshot checks.
+2. Configure the release workflow's `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` secrets.
+   Register the corresponding public signing key with the provider registry.
+3. Push a semantic-version tag to run the release workflow. It publishes platform
+   ZIPs, the protocol-6 manifest, and signed SHA256SUMS covering both.
+4. Register the provider repository with the registry and verify release webhook
+   delivery and version ingestion.
 
 References: [HashiCorp publishing requirements](https://developer.hashicorp.com/terraform/registry/providers/publishing),
 [GoReleaser checksum extra files](https://goreleaser.com/customization/package/checksum/).
