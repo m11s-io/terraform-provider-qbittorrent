@@ -1,0 +1,1 @@
+terraform import qbittorrent_preferences.application application
