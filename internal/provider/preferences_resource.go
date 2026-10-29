@@ -1,0 +1,193 @@
+package provider
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/m11s-io/terraform-provider-qbittorrent/internal/client"
+)
+
+type preferencesResource struct{ client *client.Client }
+
+// The field table defines only public nonsecret attributes. All optional values
+// remain nullable: null relinquishes ownership, false/zero are managed values.
+var preferenceFields = []struct{ name, kind, description string }{
+	{"save_path", "string", "Default save path on the server. Use a normalized absolute path."},
+	{"temp_path", "string", "Incomplete-download path on the server. Use a normalized absolute path."},
+	{"temp_path_enabled", "bool", "Enable the incomplete-download path."},
+	{"auto_tmm_enabled", "bool", "Enable automatic torrent management by default. Changes may relocate files."},
+	{"dl_limit", "rate", "Global download limit in bytes/s; 0 means unlimited."},
+	{"up_limit", "rate", "Global upload limit in bytes/s; 0 means unlimited."},
+	{"alt_dl_limit", "rate", "Alternate download limit in bytes/s; 0 means unlimited."},
+	{"alt_up_limit", "rate", "Alternate upload limit in bytes/s; 0 means unlimited."},
+	{"dht", "bool", "Enable DHT."}, {"pex", "bool", "Enable peer exchange."}, {"lsd", "bool", "Enable local service discovery."},
+	{"listen_port", "port", "Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field."},
+	{"upnp", "bool", "Enable UPnP/NAT-PMP port forwarding."},
+}
+
+func (r *preferencesResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_preferences"
+}
+func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+	attrs := map[string]schema.Attribute{"id": schema.StringAttribute{Computed: true, MarkdownDescription: "Singleton ID: application.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}}}
+	for _, f := range preferenceFields {
+		switch f.kind {
+		case "string":
+			attrs[f.name] = schema.StringAttribute{Optional: true, MarkdownDescription: f.description}
+		case "bool":
+			attrs[f.name] = schema.BoolAttribute{Optional: true, MarkdownDescription: f.description}
+		default:
+			description := f.description
+			if f.kind == "rate" {
+				description += " Rate limits must be multiples of 1024, at most 2147482624."
+			}
+			attrs[f.name] = schema.Int64Attribute{Optional: true, MarkdownDescription: description, Validators: []validator.Int64{numberValidator{port: f.kind == "port"}}}
+		}
+	}
+	resp.Schema = schema.Schema{MarkdownDescription: "Singleton partial ownership of application preferences. Configure only settings to manage. Removing an attribute relinquishes management without resetting it. Import ID: application; import reads the server without claiming unconfigured settings. Destroy removes state only. Use one instance per server; overlapping ownership is unsupported. Read-after-write reports normalized/rejected fields: use server-normalized paths.", Attributes: attrs}
+}
+func (r *preferencesResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+	var ok bool
+	r.client, ok = req.ProviderData.(*client.Client)
+	if !ok {
+		resp.Diagnostics.AddError("Unexpected provider data", "Expected qBittorrent client.")
+	}
+}
+func (r *preferencesResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	planned := tfsdk.State{Schema: req.Plan.Schema, Raw: req.Plan.Raw}
+	r.apply(ctx, planned, &resp.State, &resp.Diagnostics)
+}
+func (r *preferencesResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	planned := tfsdk.State{Schema: req.Plan.Schema, Raw: req.Plan.Raw}
+	r.apply(ctx, planned, &resp.State, &resp.Diagnostics)
+}
+func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, state *tfsdk.State, d *diag.Diagnostics) {
+	var obj types.Object
+	d.Append(planned.Get(ctx, &obj)...)
+	if d.HasError() {
+		return
+	}
+	patch := map[string]any{}
+	for k, v := range obj.Attributes() {
+		if k == "id" || v.IsNull() {
+			continue
+		}
+		if v.IsUnknown() {
+			d.AddAttributeError(path.Root(k), "Unknown preference", "Managed preferences must be known at apply.")
+			continue
+		}
+		switch v := v.(type) {
+		case types.String:
+			patch[k] = v.ValueString()
+		case types.Bool:
+			patch[k] = v.ValueBool()
+		case types.Int64:
+			patch[k] = v.ValueInt64()
+		}
+	}
+	if d.HasError() {
+		return
+	}
+	if len(patch) > 0 {
+		b, err := json.Marshal(patch)
+		if err != nil {
+			d.AddError("Cannot encode preferences", err.Error())
+			return
+		}
+		var p client.Preferences
+		if err = json.Unmarshal(b, &p); err != nil {
+			d.AddError("Cannot encode preferences", "Preference types do not match the client contract.")
+			return
+		}
+		if err = r.client.SetPreferences(ctx, p); err != nil {
+			d.AddError("Cannot update preferences", err.Error())
+			return
+		}
+	}
+	// Preserve the framework-provided null/prior response state on rejected writes.
+	*state = planned
+	d.Append(state.SetAttribute(ctx, path.Root("id"), "application")...)
+	r.refresh(ctx, state, d, true)
+}
+func (r *preferencesResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	resp.State = req.State
+	r.refresh(ctx, &resp.State, &resp.Diagnostics, false)
+}
+func (r *preferencesResource) refresh(ctx context.Context, state *tfsdk.State, d *diag.Diagnostics, compare bool) {
+	p, err := r.client.Preferences(ctx)
+	if err != nil {
+		d.AddError("Cannot read preferences", err.Error())
+		return
+	}
+	var obj types.Object
+	d.Append(state.Get(ctx, &obj)...)
+	if d.HasError() {
+		return
+	}
+	values := obj.Attributes()
+	b, _ := json.Marshal(p)
+	var remote map[string]json.RawMessage
+	json.Unmarshal(b, &remote)
+	for k, v := range values {
+		if k == "id" || v.IsNull() {
+			continue
+		}
+		raw, ok := remote[k]
+		if !ok {
+			d.AddError("Unsupported preference response", fmt.Sprintf("Server omitted managed preference %s.", k))
+			continue
+		}
+		actual, err := preferenceValue(v, raw)
+		if err != nil {
+			d.AddError("Invalid preference response", fmt.Sprintf("Server returned invalid preference %s.", k))
+			continue
+		}
+		values[k] = actual
+		if compare && !v.Equal(actual) {
+			d.AddAttributeError(path.Root(k), "Preference rejected or normalized", "The server returned a different value for this field. Use the server-normalized path/value; check conflicting server settings.")
+		}
+	}
+	value, ds := types.ObjectValue(obj.AttributeTypes(ctx), values)
+	d.Append(ds...)
+	d.Append(state.Set(ctx, value)...)
+}
+func preferenceValue(kind attr.Value, b []byte) (attr.Value, error) {
+	switch kind.(type) {
+	case types.String:
+		var v string
+		err := json.Unmarshal(b, &v)
+		return types.StringValue(v), err
+	case types.Bool:
+		var v bool
+		err := json.Unmarshal(b, &v)
+		return types.BoolValue(v), err
+	case types.Int64:
+		var v int64
+		err := json.Unmarshal(b, &v)
+		return types.Int64Value(v), err
+	}
+	return nil, fmt.Errorf("unsupported preference type")
+}
+func (r *preferencesResource) Delete(context.Context, resource.DeleteRequest, *resource.DeleteResponse) {
+}
+func (r *preferencesResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	if req.ID != "application" {
+		resp.Diagnostics.AddError("Invalid import ID", "Use application to import preferences.")
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+}

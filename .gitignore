@@ -1,0 +1,8 @@
+/dist/
+/bin/
+.terraform/
+*.tfstate*
+.terraform.lock.hcl
+.superpowers/
+__pycache__/
+*.pyc
