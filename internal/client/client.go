@@ -12,6 +12,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/m11s-io/terraform-provider-qbittorrent/internal/client/openapi"
 )
 
 type Config struct {
@@ -21,6 +23,7 @@ type Config struct {
 type Client struct {
 	base     *url.URL
 	http     *http.Client
+	api      *openapi.Client
 	cfg      Config
 	mu       sync.Mutex
 	loggedIn bool
@@ -55,30 +58,30 @@ func New(cfg Config) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Client{base: u, cfg: cfg, http: &http.Client{Timeout: cfg.Timeout, Jar: jar, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, nil
+	c := &Client{base: u, cfg: cfg, http: &http.Client{Timeout: cfg.Timeout, Jar: jar, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
+	c.api, err = openapi.NewClient(u.String()+"api/v2/", openapi.WithHTTPClient(c.http), openapi.WithRequestEditorFn(c.prepareRequest))
+	if err != nil {
+		return nil, errors.New("cannot construct qBittorrent API client")
+	}
+	return c, nil
 }
 
-// request never follows redirects or includes response bodies in diagnostics.
-func (c *Client) request(ctx context.Context, method, endpoint string, form url.Values) ([]byte, error) {
-	u := *c.base
-	u.Path += "api/v2/" + endpoint
-	var body io.Reader
-	if form != nil {
-		body = strings.NewReader(form.Encode())
-	}
-	req, err := http.NewRequestWithContext(ctx, method, u.String(), body)
-	if err != nil {
-		return nil, errors.New("cannot construct qBittorrent request")
-	}
-	if form != nil {
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	}
+// Generated operations own URL paths, HTTP methods and form serialization.
+// The adapter retains authentication policy and bounded, sanitized responses.
+type operation func(context.Context) (*http.Response, error)
+
+func (c *Client) prepareRequest(_ context.Context, req *http.Request) error {
 	req.Header.Set("Origin", c.base.Scheme+"://"+c.base.Host)
 	req.Header.Set("Referer", c.base.String())
 	if c.cfg.APIKey != "" {
 		req.Header.Set("Authorization", "Bearer "+c.cfg.APIKey)
 	}
-	resp, err := c.http.Do(req)
+	return nil
+}
+
+// request never follows redirects or includes response bodies in diagnostics.
+func (c *Client) request(ctx context.Context, endpoint string, call operation) ([]byte, error) {
+	resp, err := call(ctx)
 	if err != nil {
 		if ctx.Err() != nil {
 			return nil, ctx.Err()
@@ -102,9 +105,9 @@ func (c *Client) request(ctx context.Context, method, endpoint string, form url.
 	}
 	return b, nil
 }
-func (c *Client) do(ctx context.Context, method, endpoint string, form url.Values) ([]byte, error) {
+func (c *Client) do(ctx context.Context, endpoint string, readOnly bool, call operation) ([]byte, error) {
 	if c.cfg.APIKey != "" {
-		return c.request(ctx, method, endpoint, form)
+		return c.request(ctx, endpoint, call)
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -113,15 +116,15 @@ func (c *Client) do(ctx context.Context, method, endpoint string, form url.Value
 			return nil, err
 		}
 	}
-	b, err := c.request(ctx, method, endpoint, form)
+	b, err := c.request(ctx, endpoint, call)
 	var api *HTTPError
 	if errors.As(err, &api) && api.StatusCode == 403 {
 		c.loggedIn = false
-		if method == http.MethodGet {
+		if readOnly {
 			if err = c.login(ctx); err != nil {
 				return nil, err
 			}
-			b, err = c.request(ctx, method, endpoint, form)
+			b, err = c.request(ctx, endpoint, call)
 			if errors.As(err, &api) && api.StatusCode == 403 {
 				c.loggedIn = false
 			}

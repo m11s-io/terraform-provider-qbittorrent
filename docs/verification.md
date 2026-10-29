@@ -54,3 +54,30 @@ Local acceptance also passed on macOS/arm64.
 
 Snapshot checks skip signing and publication. Release signing and registry
 registration are described in [development documentation](development.md).
+
+## OpenAPI client migration
+
+Verified on **2026-10-29** on the migration branch:
+
+- OpenAPI **3.2.1** document validated against the official
+  [3.2 schema-base dated 2026-08-30](https://spec.openapis.org/oas/3.2/schema-base/2026-08-30),
+  including its referenced JSON Schema dialect, using `jsonschema==4.25.1` and
+  `PyYAML==6.0.3`. `oapi-codegen` v2.8.1 consumes the document directly.
+- `go test -race ./...`, `go vet ./...`, and `make build` passed after migrating
+  all nine HTTP operations. New contract coverage exercises form escaping,
+  empty category save paths, all allowlisted preferences, false/zero values,
+  unknown secret fields, and the exact 4 MiB response boundary.
+- Disposable acceptance and example init/validate/plan checks passed with
+  **OpenTofu 1.13.2** and **Terraform 1.15.9**, against the same digest-pinned
+  qBittorrent **5.3.0 / Web API 2.16.2** image above. Both session and Bearer
+  lifecycles were exercised; live Arr services were not used.
+- Schema-generated Terraform documentation has no changes. The handwritten
+  development documentation adds the regeneration workflow.
+- `make generate-check` passed; a deliberate staged artifact change was rejected,
+  then restored and clean regeneration verified. `make docs-check`, workflow
+  `actionlint` v1.7.12, formatting and `git diff --check` passed.
+- Independent read-only review found no runtime blockers. Its one schema wording
+  correction (configured category paths rather than effective paths) was applied.
+
+This specification covers the provider subset; it is not a claim of full OpenAPI
+3.2 generator feature support or complete qBittorrent API coverage.

@@ -1,0 +1,285 @@
+openapi: 3.2.1
+info:
+  title: qBittorrent provider API subset
+  version: 2.16.2
+  description: |
+    Provider-specific subset of qBittorrent 5.3.0 (Web API 2.16.2), reviewed
+    against release-5.3.0 commit 9213075dd5f7b352208361c6a84c1c115efc898e.
+    This is not an official or complete upstream specification. Only nonsecret
+    preferences managed by the provider are modeled; unknown response keys must
+    be ignored. Reads use GET and mutations use form-encoded POST requests.
+    The caller supplies Origin/Referer, authentication, bounded response reads
+    and safe error handling. Cookie names have an instance-specific suffix.
+  x-upstream-source: https://github.com/qbittorrent/qBittorrent/tree/9213075dd5f7b352208361c6a84c1c115efc898e/src/webui/api
+servers:
+  - url: /api/v2
+security:
+  - bearerAuth: []
+  - sessionCookie: []
+paths:
+  /auth/login:
+    post:
+      operationId: login
+      summary: Start a cookie session
+      description: Credentials are form values. Successful login has an empty body, not legacy Ok. text.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Session established; Set-Cookie contains the session ID.
+        '204':
+          description: Session established; Set-Cookie contains the session ID.
+        default:
+          $ref: '#/components/responses/APIError'
+  /app/version:
+    get:
+      operationId: getVersion
+      summary: Read the application version
+      responses:
+        '200':
+          description: Application version, including the v prefix.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: v5.3.0
+        default:
+          $ref: '#/components/responses/APIError'
+  /app/webapiVersion:
+    get:
+      operationId: getWebAPIVersion
+      summary: Read the Web API version
+      responses:
+        '200':
+          description: Web API version.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 2.16.2
+        default:
+          $ref: '#/components/responses/APIError'
+  /app/preferences:
+    get:
+      operationId: getPreferences
+      summary: Read the supported nonsecret preferences
+      description: The server returns additional keys, including secrets; these are deliberately not modeled.
+      responses:
+        '200':
+          description: Application preferences (modeled subset).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preferences'
+        default:
+          $ref: '#/components/responses/APIError'
+  /app/setPreferences:
+    post:
+      operationId: setPreferences
+      summary: Patch explicitly supplied preferences
+      description: Missing JSON keys remain unchanged; false and zero are explicit updates.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [json]
+              properties:
+                json:
+                  type: string
+                  description: A JSON-encoded Preferences object, carried as a form string.
+                  x-preferences-schema: '#/components/schemas/Preferences'
+      responses:
+        '200':
+          description: Preferences updated.
+        '204':
+          description: Preferences updated.
+        default:
+          $ref: '#/components/responses/APIError'
+  /torrents/categories:
+    get:
+      operationId: getCategories
+      summary: Read categories keyed by name
+      responses:
+        '200':
+          description: Categories, including configured save paths.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Category'
+        default:
+          $ref: '#/components/responses/APIError'
+  /torrents/createCategory:
+    post:
+      operationId: createCategory
+      summary: Create a category
+      description: Invalid or duplicate names return 409. Empty names return 400. Nested names can create ancestors.
+      requestBody:
+        $ref: '#/components/requestBodies/CategoryForm'
+      responses:
+        '200':
+          description: Category created.
+        '204':
+          description: Category created.
+        default:
+          $ref: '#/components/responses/APIError'
+  /torrents/editCategory:
+    post:
+      operationId: editCategory
+      summary: Edit a category
+      description: Missing categories return 404. Omitted savePath is unchanged; an empty string is an explicit path update.
+      requestBody:
+        $ref: '#/components/requestBodies/CategoryForm'
+      responses:
+        '200':
+          description: Category updated.
+        '204':
+          description: Category updated.
+        default:
+          $ref: '#/components/responses/APIError'
+  /torrents/removeCategories:
+    post:
+      operationId: removeCategories
+      summary: Remove named categories and their descendants
+      description: Missing categories are a successful no-op. Torrents are reassigned; automatic torrent management can relocate content.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [categories]
+              properties:
+                categories:
+                  type: string
+                  description: Newline-separated category names.
+      responses:
+        '200':
+          description: Categories removed.
+        '204':
+          description: Categories removed.
+        default:
+          $ref: '#/components/responses/APIError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: QBT_SID_<instance>
+      description: Placeholder cookie name; use a cookie jar to retain the actual server-issued name and attributes.
+  responses:
+    APIError:
+      description: |
+        Error status (400 parameters, 401 login/Host/CSRF, 403 session/ban,
+        404 missing, 405 method, 409 conflict, 415 data, or server failure).
+        Localized response bodies must not be exposed in diagnostics.
+      content:
+        text/plain:
+          schema:
+            type: string
+  requestBodies:
+    CategoryForm:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required: [category]
+            properties:
+              category:
+                type: string
+              savePath:
+                type: string
+                description: Empty paths use inherited category defaults; relative paths resolve under the global save path.
+  schemas:
+    Category:
+      type: object
+      required: [name, savePath]
+      properties:
+        name:
+          type: string
+        savePath:
+          type: string
+    Preferences:
+      type: object
+      description: |
+        Allowlisted fields only. Unknown server fields (including credentials)
+        are ignored, never captured in an additional-properties map. Every
+        property is optional; absence must stay distinct from false or zero.
+      properties:
+        save_path:
+          type: string
+          x-go-name: SavePath
+        temp_path:
+          type: string
+          x-go-name: TempPath
+        temp_path_enabled:
+          type: boolean
+          x-go-name: TempPathEnabled
+        auto_tmm_enabled:
+          type: boolean
+          x-go-name: AutoTMMEnabled
+        dl_limit:
+          $ref: '#/components/schemas/DownloadLimit'
+        up_limit:
+          $ref: '#/components/schemas/UploadLimit'
+        alt_dl_limit:
+          $ref: '#/components/schemas/AltDownloadLimit'
+        alt_up_limit:
+          $ref: '#/components/schemas/AltUploadLimit'
+        dht:
+          type: boolean
+          x-go-name: DHT
+        pex:
+          type: boolean
+          x-go-name: PeX
+        lsd:
+          type: boolean
+          x-go-name: LSD
+        listen_port:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 65535
+          x-go-name: ListenPort
+        upnp:
+          type: boolean
+          x-go-name: UPnP
+    DownloadLimit:
+      type: integer
+      format: int64
+      description: Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+      x-go-name: DownloadLimit
+    UploadLimit:
+      type: integer
+      format: int64
+      description: Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+      x-go-name: UploadLimit
+    AltDownloadLimit:
+      type: integer
+      format: int64
+      description: Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+      x-go-name: AltDownloadLimit
+    AltUploadLimit:
+      type: integer
+      format: int64
+      description: Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+      x-go-name: AltUploadLimit

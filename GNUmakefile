@@ -1,4 +1,4 @@
-.PHONY: fmt vet test race build docs docs-check acceptance release-check
+.PHONY: fmt vet test race build generate generate-check docs docs-check acceptance release-check
 fmt:
 	gofmt -w main.go internal
 vet:
@@ -9,6 +9,10 @@ race:
 	go test -race ./...
 build:
 	go build -trimpath -o bin/terraform-provider-qbittorrent .
+generate:
+	go generate ./internal/client/openapi
+generate-check: generate
+	git diff --exit-code -- internal/client/openapi/client.gen.go
 docs:
 	go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.25.0 generate --provider-name qbittorrent
 docs-check:

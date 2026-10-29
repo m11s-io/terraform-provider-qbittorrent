@@ -1,0 +1,6 @@
+package: openapi
+allow-remote-refs-from: []
+generate:
+  models: true
+  client: true
+output: client.gen.go

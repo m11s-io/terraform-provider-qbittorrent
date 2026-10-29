@@ -258,3 +258,24 @@ func TestCategoriesContract(t *testing.T) {
 		}
 	}
 }
+
+func TestResponseSizeLimit(t *testing.T) {
+	const limit = 4 * 1024 * 1024
+	const prefix, suffix = `{"dht":true,"padding":"`, `"}`
+	for _, size := range []int{limit, limit + 1} {
+		t.Run(fmt.Sprint(size), func(t *testing.T) {
+			body := prefix + strings.Repeat("x", size-len(prefix)-len(suffix)) + suffix
+			c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+				fmt.Fprint(w, body)
+			}, false)
+			p, err := c.Preferences(context.Background())
+			if size == limit {
+				if err != nil || p.DHT == nil || !*p.DHT {
+					t.Fatalf("valid response at limit rejected: %v", err)
+				}
+			} else if err == nil || strings.Contains(err.Error(), "padding") {
+				t.Fatalf("oversized response was accepted or leaked its body: %v", err)
+			}
+		})
+	}
+}

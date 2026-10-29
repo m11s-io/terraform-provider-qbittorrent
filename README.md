@@ -72,6 +72,11 @@ See [generated provider/resource docs](docs/index.md), [development contract](do
 and [disposable acceptance tests](tests/acceptance/README.md). Build with Go 1.27.3:
 `make test race vet build docs`.
 
+The HTTP operations and API models are generated from the provider's
+[OpenAPI 3.2.1 specification](api/qbittorrent.yaml). Run `make generate` after
+editing it; `make generate-check` verifies the checked-in output. See the
+[generation workflow](docs/development.md#generated-openapi-client).
+
 ## Releases
 
 Release workflows produce platform ZIP archives and signed checksums. Registry
