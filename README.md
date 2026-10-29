@@ -6,6 +6,8 @@ are rejected. This provider does not bootstrap credentials or manage torrents.
 
 Available on the [Terraform Registry](https://registry.terraform.io/providers/m11s-io/qbittorrent/latest).
 
+Available on the [Terraform Registry](https://registry.terraform.io/providers/m11s-io/qbittorrent/latest).
+
 ```hcl
 terraform {
   required_providers {
