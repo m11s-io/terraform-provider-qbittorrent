@@ -1,6 +1,7 @@
 """Validate and plan the shipped examples against the disposable server."""
 import os
 import secrets
+import shutil
 from pathlib import Path
 import subprocess
 
@@ -15,6 +16,10 @@ def verify_examples(cli, environment, root, scratch):
     package = mirror / (host + '/m11s-io/qbittorrent/0.1.0') / (goos + '_' + goarch)
     package.mkdir(parents=True)
     subprocess.run(['go', 'build', '-o', str(package / 'terraform-provider-qbittorrent_v0.1.0'), '.'], cwd=root, check=True)
+    alternate_host = 'registry.terraform.io' if host == 'registry.opentofu.org' else 'registry.opentofu.org'
+    alternate = mirror / (alternate_host + '/m11s-io/qbittorrent/0.1.0') / (goos + '_' + goarch)
+    alternate.mkdir(parents=True)
+    shutil.copy2(package / 'terraform-provider-qbittorrent_v0.1.0', alternate)
     config = Path(scratch) / 'cli.tfrc'
     config.write_text('provider_installation { filesystem_mirror { path = "' + str(mirror) + '" } }\n')
     example_files = [
@@ -48,12 +53,22 @@ def verify_examples(cli, environment, root, scratch):
     provider = (root / 'examples/provider/provider.tf').read_text().replace(
         'https://qbittorrent.example.com', environment['QBT_ACC_URL'])
     for number, example in enumerate(additions):
-        groups.append((f"example-{number}", provider + "\n" + example.read_text()))
+        contents = example.read_text()
+        groups.append((f"example-{number}", contents if 'provider "qbittorrent"' in contents else provider + "\n" + contents))
     for name, contents in groups:
         directory = work / name
         directory.mkdir()
         (directory / 'main.tf').write_text(contents)
+        example_env = env.copy()
+        if 'variable "provider_url"' in contents:
+            example_env.update(QBITTORRENT_API_KEY='',
+                               TF_VAR_provider_url=environment['QBT_ACC_URL'],
+                               TF_VAR_provider_username=environment['QBT_ACC_USERNAME'],
+                               TF_VAR_provider_password=environment['QBT_ACC_PASSWORD'],
+                               TF_VAR_target_webui_url='http://127.0.0.1:18081',
+                               TF_VAR_target_webui_username='fixture-operator',
+                               TF_VAR_target_webui_password=secrets.token_urlsafe(24))
         print('Checking example:', name, flush=True)
         for args in [('init', '-backend=false', '-input=false', '-no-color'),
                      ('validate', '-no-color'), ('plan', '-input=false', '-lock=false', '-no-color')]:
-            subprocess.run([cli, *args], cwd=directory, env=env, check=True)
+            subprocess.run([cli, *args], cwd=directory, env=example_env, check=True)
