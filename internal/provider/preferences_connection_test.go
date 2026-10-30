@@ -2,10 +2,19 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strings"
+	"sync/atomic"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -109,6 +118,85 @@ func TestConnectionStringFieldsPreserveRawTextAndConfiguredDisabledValues(t *tes
 	wire, value, include = preferencePatchEntry(connectionPreferenceFields, "banned_ips", "")
 	if !include || wire != "banned_IPs" || value != "" {
 		t.Errorf("explicit empty banned IP list was suppressed: %q %#v %v", wire, value, include)
+	}
+}
+
+func TestConnectionApplyPreservesBannedIPWireTextAndReportsNormalization(t *testing.T) {
+	const rawBannedIPs = "198.51.100.2\n\n192.0.2.8\n198.51.100.2\n"
+	const normalizedBannedIPs = "192.0.2.8\n198.51.100.2"
+	var writes atomic.Int32
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case strings.HasSuffix(r.URL.Path, "/app/setPreferences"):
+			if r.Method != http.MethodPost || r.Header.Get("Content-Type") != "application/x-www-form-urlencoded" {
+				t.Errorf("unexpected preference write transport: %s %q", r.Method, r.Header.Get("Content-Type"))
+			}
+			if err := r.ParseForm(); err != nil {
+				t.Errorf("parse preference form: %v", err)
+				return
+			}
+			var patch map[string]any
+			if err := json.Unmarshal([]byte(r.Form.Get("json")), &patch); err != nil {
+				t.Errorf("decode JSON preference patch: %v", err)
+				return
+			}
+			wantKeys := []string{"banned_IPs", "proxy_type", "proxy_ip", "proxy_port", "proxy_auth_enabled", "proxy_username", "proxy_bittorrent"}
+			if len(patch) != len(wantKeys) {
+				t.Errorf("patch keys = %v, want exactly %v", patch, wantKeys)
+			}
+			for _, key := range wantKeys {
+				if _, ok := patch[key]; !ok {
+					t.Errorf("patch is missing managed wire key %q: %v", key, patch)
+				}
+			}
+			wantValues := map[string]any{
+				"banned_IPs": rawBannedIPs, "proxy_type": "None", "proxy_ip": "proxy.example",
+				"proxy_port": float64(9050), "proxy_auth_enabled": false,
+				"proxy_username": "alice", "proxy_bittorrent": false,
+			}
+			for key, want := range wantValues {
+				if patch[key] != want {
+					t.Errorf("patch[%q] = %#v, want %#v", key, patch[key], want)
+				}
+			}
+			writes.Add(1)
+		case strings.HasSuffix(r.URL.Path, "/app/preferences"):
+			fmt.Fprint(w, `{"banned_IPs":"192.0.2.8\n198.51.100.2","proxy_type":"None","proxy_ip":"proxy.example","proxy_port":9050,"proxy_auth_enabled":false,"proxy_username":"alice","proxy_bittorrent":false}`)
+		default:
+			t.Errorf("unexpected request: %s", r.URL.Path)
+		}
+	})
+	attrs := map[string]attr.Value{
+		"banned_ips":         types.StringValue(rawBannedIPs),
+		"proxy_type":         types.StringValue("None"),
+		"proxy_ip":           types.StringValue("proxy.example"),
+		"proxy_port":         types.Int64Value(9050),
+		"proxy_auth_enabled": types.BoolValue(false),
+		"proxy_username":     types.StringValue("alice"),
+		"proxy_bittorrent":   types.BoolValue(false),
+	}
+	plan := testState(t, prefsSchema(), attrs)
+	r := &preferencesResource{client: c}
+	out := resource.CreateResponse{State: tfsdk.State{Schema: plan.Schema}}
+	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: plan.Schema, Raw: plan.Raw}}, &out)
+	if writes.Load() != 1 {
+		t.Fatalf("got %d preference writes, want exactly one", writes.Load())
+	}
+	if !out.Diagnostics.HasError() {
+		t.Fatal("expected native banned-IP normalization to be reported")
+	}
+	foundNormalization := false
+	for _, d := range out.Diagnostics.Errors() {
+		withPath, ok := d.(diag.DiagnosticWithPath)
+		if ok && withPath.Path().String() == "banned_ips" && d.Summary() == "Preference rejected or normalized" {
+			foundNormalization = true
+		}
+	}
+	if !foundNormalization {
+		t.Fatalf("missing banned_ips normalization diagnostic: %v", out.Diagnostics)
+	}
+	if got := attrString(t, out.State, "banned_ips").ValueString(); got != normalizedBannedIPs {
+		t.Fatalf("readback banned_ips = %q, want native normalized value %q", got, normalizedBannedIPs)
 	}
 }
 

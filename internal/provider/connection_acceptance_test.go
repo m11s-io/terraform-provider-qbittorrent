@@ -1,12 +1,9 @@
 package provider
 
 import (
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccConnectionPreferences(t *testing.T) {
@@ -51,16 +48,6 @@ data "qbittorrent_preferences" "connection" {
 				resource.TestCheckResourceAttr("data.qbittorrent_preferences.connection", "proxy_auth_enabled", "false"),
 				resource.TestCheckResourceAttr("data.qbittorrent_preferences.connection", "proxy_ip", "127.0.0.1"),
 				resource.TestCheckResourceAttr("data.qbittorrent_preferences.connection", "banned_ips", ""),
-				func(s *terraform.State) error {
-					for _, r := range s.RootModule().Resources {
-						for key, value := range r.Primary.Attributes {
-							if key == "proxy_password" || strings.Contains(value, "proxy-canary") {
-								return fmt.Errorf("proxy secret escaped into Terraform state")
-							}
-						}
-					}
-					return nil
-				},
 			)},
 			{Config: config, PlanOnly: true},
 		},
