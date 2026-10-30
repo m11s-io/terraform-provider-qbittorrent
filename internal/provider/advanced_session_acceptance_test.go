@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -9,7 +10,6 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/m11s-io/terraform-provider-qbittorrent/internal/client"
 	"github.com/m11s-io/terraform-provider-qbittorrent/internal/client/openapi"
 )
@@ -52,27 +52,55 @@ func TestAccAdvancedSessionRestartPersistence(t *testing.T) {
 	if container == "" {
 		t.Fatal("use tests/acceptance/run.py to create an isolated disposable server")
 	}
+	t.Cleanup(func() {
+		cleanupCtx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+		defer cancel()
+		err := restoreAdvancedBackend(
+			cleanupCtx,
+			originalBackend,
+			func(ctx context.Context) (string, error) {
+				preferences, err := c.Preferences(ctx)
+				if err != nil {
+					return "", err
+				}
+				if preferences.ResumeDataStorageType == nil {
+					return "", errors.New("server omitted resume-data storage backend")
+				}
+				return string(*preferences.ResumeDataStorageType), nil
+			},
+			func(ctx context.Context, value string) error {
+				backend := openapi.PreferencesPatchResumeDataStorageType(value)
+				return c.SetPreferencesPatch(ctx, client.PreferencesPatch{ResumeDataStorageType: &backend})
+			},
+			func(ctx context.Context) error { return restartDisposableContainer(ctx, container) },
+		)
+		if err != nil {
+			t.Errorf("restore original resume-data backend after acceptance test: %v", err)
+		}
+	})
 	config := accProvider() + `resource "qbittorrent_preferences" "advanced" {
   resume_data_storage_type = "SQLite"
 }`
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: factories,
-		CheckDestroy: func(*terraform.State) error {
-			backend := openapi.PreferencesPatchResumeDataStorageType(originalBackend)
-			if err := c.SetPreferencesPatch(context.Background(), client.PreferencesPatch{ResumeDataStorageType: &backend}); err != nil {
-				return fmt.Errorf("restore original resume-data storage backend: %w", err)
-			}
-			if originalBackend != "SQLite" {
-				if err := restartDisposableQBT(c, container, originalBackend); err != nil {
-					return fmt.Errorf("restart disposable server after restoring original resume-data backend: %w", err)
-				}
-			}
-			return nil
-		},
 		Steps: []resource.TestStep{
 			{Config: config, Check: resource.TestCheckResourceAttr("qbittorrent_preferences.advanced", "resume_data_storage_type", "SQLite")},
 			{Config: config, PreConfig: func() {
-				if err := restartDisposableQBT(c, container, "SQLite"); err != nil {
+				restartCtx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+				defer cancel()
+				if err := restartDisposableContainer(restartCtx, container); err != nil {
+					t.Fatal(err)
+				}
+				if _, err := waitForAdvancedBackend(restartCtx, func(ctx context.Context) (string, error) {
+					preferences, err := c.Preferences(ctx)
+					if err != nil {
+						return "", err
+					}
+					if preferences.ResumeDataStorageType == nil {
+						return "", errors.New("server omitted resume-data storage backend")
+					}
+					return string(*preferences.ResumeDataStorageType), nil
+				}, "SQLite"); err != nil {
 					t.Fatal(err)
 				}
 			}, PlanOnly: true},
@@ -80,19 +108,57 @@ func TestAccAdvancedSessionRestartPersistence(t *testing.T) {
 	})
 }
 
-func restartDisposableQBT(c *client.Client, container, expectedBackend string) error {
-	if err := exec.Command("docker", "restart", container).Run(); err != nil {
+func restoreAdvancedBackend(parent context.Context, original string, read func(context.Context) (string, error), write func(context.Context, string) error, restart func(context.Context) error) error {
+	ctx, cancel := context.WithTimeout(parent, 90*time.Second)
+	defer cancel()
+	if err := restart(ctx); err != nil {
+		return fmt.Errorf("restart disposable qBittorrent container for cleanup: %w", err)
+	}
+	backend, err := waitForAdvancedBackend(ctx, read, "")
+	if err != nil {
+		return fmt.Errorf("read backend after disposable recovery restart: %w", err)
+	}
+	if backend != original {
+		if err := write(ctx, original); err != nil {
+			return fmt.Errorf("restore original resume-data backend: %w", err)
+		}
+		if err := restart(ctx); err != nil {
+			return fmt.Errorf("restart disposable qBittorrent container after backend restoration: %w", err)
+		}
+		backend, err = waitForAdvancedBackend(ctx, read, original)
+		if err != nil {
+			return fmt.Errorf("verify restored resume-data backend: %w", err)
+		}
+	}
+	if backend != original {
+		return fmt.Errorf("resume-data backend readback %q; want original %q", backend, original)
+	}
+	return nil
+}
+
+func waitForAdvancedBackend(ctx context.Context, read func(context.Context) (string, error), expected string) (string, error) {
+	var lastErr error
+	for {
+		backend, err := read(ctx)
+		if err == nil && (expected == "" || backend == expected) {
+			return backend, nil
+		}
+		if err != nil {
+			lastErr = err
+		} else {
+			lastErr = fmt.Errorf("resume-data backend is %q; waiting for %q", backend, expected)
+		}
+		select {
+		case <-ctx.Done():
+			return "", fmt.Errorf("qBittorrent did not return expected resume-data backend before timeout: %w (last result: %v)", ctx.Err(), lastErr)
+		case <-time.After(500 * time.Millisecond):
+		}
+	}
+}
+
+func restartDisposableContainer(ctx context.Context, container string) error {
+	if err := exec.CommandContext(ctx, "docker", "restart", container).Run(); err != nil {
 		return fmt.Errorf("restart disposable qBittorrent container: %w", err)
 	}
-	deadline := time.Now().Add(45 * time.Second)
-	for time.Now().Before(deadline) {
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		preferences, err := c.Preferences(ctx)
-		cancel()
-		if err == nil && preferences.ResumeDataStorageType != nil && string(*preferences.ResumeDataStorageType) == expectedBackend {
-			return nil
-		}
-		time.Sleep(500 * time.Millisecond)
-	}
-	return fmt.Errorf("qBittorrent did not return resume-data backend %q after disposable restart", expectedBackend)
+	return nil
 }
