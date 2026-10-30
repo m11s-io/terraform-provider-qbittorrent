@@ -130,15 +130,17 @@ func (r *webuiAuthResource) apply(ctx context.Context, patch map[string]any, cfg
 	}
 	username := cfg.Attributes()["username"].(types.String).ValueString()
 	password := cfg.Attributes()["password_wo"].(types.String).ValueString()
-	if candidate, err := r.client.MaintenanceCandidate("", username, password); err == nil {
-		if current, readErr := candidate.Preferences(ctx); readErr == nil && current.WebUIUsername != nil && *current.WebUIUsername == username {
-			return true // Adopt a previously applied transition without resending it.
-		}
-	}
 	writeErr := r.client.SetWebUIMaintenancePatch(ctx, patch, true) // one mutation attempt only
 	candidate, err := r.client.MaintenanceCandidate("", username, password)
 	if err == nil {
-		err = candidate.VerifyWebUIEndpoint(ctx, map[string]any{})
+		var current client.Preferences
+		current, err = candidate.Preferences(ctx)
+		if err == nil && current.WebUIUsername == nil {
+			err = fmt.Errorf("qBittorrent did not return the WebUI username")
+		}
+		if err == nil && *current.WebUIUsername != username {
+			err = fmt.Errorf("qBittorrent did not apply the target WebUI username")
+		}
 	}
 	if err != nil {
 		outcome := "The authentication mutation outcome is uncertain."
@@ -157,7 +159,7 @@ func (r *webuiAuthResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 	if p.WebUIUsername == nil {
-		resp.Diagnostics.AddWarning("WebUI username unavailable", "The server did not return its nonsecret WebUI username; auth state was retained and no write was sent.")
+		resp.Diagnostics.AddError("WebUI username unavailable", "The server did not return its established nonsecret WebUI username; auth state was retained and no write was sent.")
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("username"), types.StringValue(*p.WebUIUsername))...)

@@ -78,6 +78,10 @@ func TestAccWebUIEndpointLostResponseRecovery(t *testing.T) {
 	var authPasswordWrites atomic.Int32
 	var oldPort atomic.Int32
 	var targetPreferencesReads atomic.Int32
+	var failedAuthLogins atomic.Int32
+	var authIPBanned atomic.Bool // Model web_ui_max_auth_fail_count=1.
+	var dropAuthResponse atomic.Bool
+	var targetAuthPreferencesReads atomic.Int32
 	var currentUsername, currentPassword atomic.Value
 	currentUsername.Store("admin")
 	currentPassword.Store("fixture-current")
@@ -89,8 +93,14 @@ func TestAccWebUIEndpointLostResponseRecovery(t *testing.T) {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			switch {
 			case strings.HasSuffix(r.URL.Path, "/api/v2/auth/login"):
+				if authIPBanned.Load() {
+					http.Error(w, "IP banned after failed login", http.StatusForbidden)
+					return
+				}
 				_ = r.ParseForm()
 				if r.Form.Get("username") != currentUsername.Load().(string) || r.Form.Get("password") != currentPassword.Load().(string) {
+					failedAuthLogins.Add(1)
+					authIPBanned.Store(true)
 					http.Error(w, "Forbidden", http.StatusForbidden)
 					return
 				}
@@ -106,6 +116,10 @@ func TestAccWebUIEndpointLostResponseRecovery(t *testing.T) {
 					http.Error(w, "Forbidden", http.StatusForbidden)
 					return
 				}
+				if target && targetAuthPreferencesReads.Add(1) > 1 && dropAuthResponse.CompareAndSwap(true, false) {
+					http.Error(w, "auth target is not ready", http.StatusServiceUnavailable)
+					return
+				}
 				if target && targetPreferencesReads.Add(1) == 1 {
 					http.Error(w, "target is not ready", http.StatusServiceUnavailable)
 					return
@@ -116,6 +130,10 @@ func TestAccWebUIEndpointLostResponseRecovery(t *testing.T) {
 				}
 				_, _ = fmt.Fprintf(w, `{"web_ui_address":"127.0.0.1","web_ui_port":%d,"use_https":false,"web_ui_https_cert_path":"/tmp/cert","web_ui_https_key_path":"/tmp/key","web_ui_username":%q}`, p, currentUsername.Load().(string))
 			case strings.HasSuffix(r.URL.Path, "/api/v2/app/setPreferences"):
+				if authIPBanned.Load() {
+					http.Error(w, "IP banned after failed login", http.StatusForbidden)
+					return
+				}
 				cookie, err := r.Cookie("SID")
 				if err != nil || cookie.Value != currentPassword.Load().(string) {
 					http.Error(w, "Forbidden", http.StatusForbidden)
@@ -130,7 +148,7 @@ func TestAccWebUIEndpointLostResponseRecovery(t *testing.T) {
 					}
 					if username, ok := patch["web_ui_username"].(string); ok {
 						currentUsername.Store(username)
-						authWrites.Add(1)
+						mutationNumber := authWrites.Add(1)
 						writes.Add(1)
 						if password, ok := patch["web_ui_password"].(string); ok {
 							currentPassword.Store(password)
@@ -138,6 +156,17 @@ func TestAccWebUIEndpointLostResponseRecovery(t *testing.T) {
 						}
 						_ = os.Setenv("QBITTORRENT_USERNAME", username)
 						_ = os.Setenv("QBITTORRENT_PASSWORD", currentPassword.Load().(string))
+						if mutationNumber == 1 {
+							dropAuthResponse.Store(true)
+							if h, ok := w.(http.Hijacker); ok {
+								conn, buf, e := h.Hijack()
+								if e == nil {
+									_ = buf.Flush()
+									_ = conn.Close()
+								}
+							}
+							return
+						}
 						_, _ = io.WriteString(w, "Ok.")
 						return
 					}
@@ -249,6 +278,9 @@ resource "qbittorrent_webui_auth" "admin" {
 		if endpointWrites.Load() != 1 || authWrites.Load() != 2 || authPasswordWrites.Load() != 1 {
 			return fmt.Errorf("destroy changed maintenance configuration: endpoint=%d auth=%d password=%d", endpointWrites.Load(), authWrites.Load(), authPasswordWrites.Load())
 		}
+		if failedAuthLogins.Load() != 0 || authIPBanned.Load() {
+			return fmt.Errorf("candidate credential preflight caused native threshold-1 IP ban: failed logins=%d banned=%v", failedAuthLogins.Load(), authIPBanned.Load())
+		}
 		return nil
 	}, Steps: []resourceTesting.TestStep{
 		{Config: oldConfig, Check: resourceTesting.ComposeAggregateTestCheckFunc(resourceTesting.TestCheckResourceAttr("qbittorrent_webui_endpoint.listener", "id", "application"), func(*terraform.State) error {
@@ -281,6 +313,15 @@ resource "qbittorrent_webui_auth" "admin" {
 			}
 			return checkNoCredentialCanaryInState(map[string]string{"webui": canary})(state)
 		}), ConfigPlanChecks: resourceTesting.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{noCredentialCanaryPlanCheck{canaries: []string{canary}}}}},
+		{Config: authConfig, ConfigVariables: authVars, PreConfig: func() {
+			_ = os.Setenv("QBITTORRENT_USERNAME", "operator")
+			_ = os.Setenv("QBITTORRENT_PASSWORD", canary)
+		}, Check: func(state *terraform.State) error {
+			if authWrites.Load() != 1 || authPasswordWrites.Load() != 1 {
+				return fmt.Errorf("uncertain auth recovery replayed the mutation: auth=%d password=%d", authWrites.Load(), authPasswordWrites.Load())
+			}
+			return checkNoSecret(state)
+		}},
 		{Config: authConfig, ConfigVariables: authVars, PlanOnly: true, Check: func(state *terraform.State) error {
 			if authWrites.Load() != 1 {
 				return fmt.Errorf("auth no-op plan replayed write, count=%d", authWrites.Load())

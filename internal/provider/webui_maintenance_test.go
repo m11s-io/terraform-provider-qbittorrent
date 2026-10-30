@@ -144,7 +144,7 @@ func TestEndpointCreatePersistsUncertainPlanAfterLostResponse(t *testing.T) {
 			return
 		}
 		if strings.HasSuffix(r.URL.Path, "/app/preferences") {
-			_, _ = fmt.Fprintf(w, `{"web_ui_port":%d}`, port.Load())
+			_, _ = fmt.Fprintf(w, `{"web_ui_address":"127.0.0.1","web_ui_port":%d,"use_https":false,"web_ui_https_cert_path":"/tmp/cert","web_ui_https_key_path":"/tmp/key","web_ui_username":"admin"}`, port.Load())
 			return
 		}
 		http.NotFound(w, r)
@@ -269,17 +269,25 @@ func TestEndpointPartialRejectedWriteRefreshesBeforeExplicitRepair(t *testing.T)
 func TestAuthCreateUsesSessionCandidateAndKeepsPasswordOutOfState(t *testing.T) {
 	username, password := "admin", "oldpass1"
 	var writes atomic.Int32
+	var failedLogins atomic.Int32
+	var banned atomic.Bool // Native max-auth-failure threshold is one.
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case strings.HasSuffix(r.URL.Path, "/api/v2/auth/login"):
 			_ = r.ParseForm()
-			if r.Form.Get("username") != username || r.Form.Get("password") != password {
+			if banned.Load() || r.Form.Get("username") != username || r.Form.Get("password") != password {
+				failedLogins.Add(1)
+				banned.Store(true)
 				http.Error(w, "Forbidden", http.StatusForbidden)
 				return
 			}
 			http.SetCookie(w, &http.Cookie{Name: "SID", Value: password, Path: "/"})
 			_, _ = io.WriteString(w, "Ok.")
 		case strings.HasSuffix(r.URL.Path, "/api/v2/app/setPreferences"):
+			if banned.Load() {
+				http.Error(w, "IP banned after failed login", http.StatusForbidden)
+				return
+			}
 			_ = r.ParseForm()
 			var patch map[string]any
 			if json.Unmarshal([]byte(r.Form.Get("json")), &patch) != nil {
@@ -299,7 +307,7 @@ func TestAuthCreateUsesSessionCandidateAndKeepsPasswordOutOfState(t *testing.T) 
 				http.Error(w, "Forbidden", http.StatusForbidden)
 				return
 			}
-			_, _ = io.WriteString(w, `{}`)
+			_, _ = fmt.Fprintf(w, `{"web_ui_username":%q}`, username)
 		default:
 			http.NotFound(w, r)
 		}
@@ -319,6 +327,9 @@ func TestAuthCreateUsesSessionCandidateAndKeepsPasswordOutOfState(t *testing.T) 
 	}
 	if writes.Load() != 1 {
 		t.Fatalf("auth mutation count = %d, want exactly one", writes.Load())
+	}
+	if failedLogins.Load() != 0 || banned.Load() {
+		t.Fatalf("candidate credentials were tested before rotation: failed logins=%d banned=%v", failedLogins.Load(), banned.Load())
 	}
 	var stored types.String
 	if d := resp.State.GetAttribute(context.Background(), path.Root("password_wo"), &stored); d.HasError() {
@@ -349,5 +360,48 @@ func TestAuthCreateRejectsBearerSelfTransitionWithoutMutation(t *testing.T) {
 	}
 	if !resp.State.Raw.IsNull() {
 		t.Fatal("state was persisted even though the mutation was rejected before send")
+	}
+}
+
+func TestAuthReadMissingUsernameIsStrict(t *testing.T) {
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/app/preferences") {
+			_, _ = io.WriteString(w, `{}`)
+			return
+		}
+		http.NotFound(w, r)
+	})
+	s := authSchema()
+	state := testState(t, s, map[string]attr.Value{"id": types.StringValue("application"), "username": types.StringValue("admin")})
+	resp := &resource.ReadResponse{}
+	(&webuiAuthResource{client: c}).Read(context.Background(), resource.ReadRequest{State: state}, resp)
+	if !resp.Diagnostics.HasError() {
+		t.Fatal("missing established username must be an error")
+	}
+}
+
+func TestEndpointMissingConfiguredReadFieldDoesNotWrite(t *testing.T) {
+	var writes atomic.Int32
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/app/preferences") {
+			_, _ = io.WriteString(w, `{}`)
+			return
+		}
+		if strings.HasSuffix(r.URL.Path, "/app/setPreferences") {
+			writes.Add(1)
+			return
+		}
+		http.NotFound(w, r)
+	})
+	s := endpointSchema()
+	cfg := testState(t, s, map[string]attr.Value{"web_ui_port": types.Int64Value(18081), "post_update_url": types.StringValue("http://127.0.0.1:18081")})
+	plan := testState(t, s, map[string]attr.Value{"id": types.StringValue("application"), "web_ui_port": types.Int64Value(18081), "post_update_url": types.StringValue("http://127.0.0.1:18081")})
+	resp := &resource.CreateResponse{}
+	(&webuiEndpointResource{client: c}).Create(context.Background(), resource.CreateRequest{Config: tfsdk.Config{Schema: s, Raw: cfg.Raw}, Plan: tfsdk.Plan{Schema: s, Raw: plan.Raw}}, resp)
+	if !resp.Diagnostics.HasError() {
+		t.Fatal("missing configured port read must be an error")
+	}
+	if writes.Load() != 0 {
+		t.Fatalf("missing field triggered %d writes", writes.Load())
 	}
 }

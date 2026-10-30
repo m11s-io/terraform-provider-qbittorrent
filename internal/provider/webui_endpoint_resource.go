@@ -136,6 +136,12 @@ func (r *webuiEndpointResource) apply(ctx context.Context, patch map[string]any,
 		d.AddError("Cannot inspect WebUI endpoint", "The current WebUI preferences could not be read, so no listener update was sent.")
 		return
 	}
+	for key := range patch {
+		if !webUIPreferenceHasField(current, key) {
+			d.AddAttributeError(path.Root(key), "Unsupported WebUI endpoint field", "The server did not return this established WebUI preference; no listener update was sent.")
+			return
+		}
+	}
 	setEndpointState(ctx, state, current, d)
 	setConfiguredEndpointFields(ctx, state, cfg, d)
 	remaining := make(map[string]any, len(patch))
@@ -204,6 +210,23 @@ func webUIPreferenceMatches(p client.Preferences, key string, wanted any) bool {
 		return false
 	}
 }
+
+func webUIPreferenceHasField(p client.Preferences, key string) bool {
+	switch key {
+	case "web_ui_address":
+		return p.WebUIAddress != nil
+	case "web_ui_port":
+		return p.WebUIPort != nil
+	case "use_https":
+		return p.UseHttps != nil
+	case "web_ui_https_cert_path":
+		return p.WebUIHttpsCertPath != nil
+	case "web_ui_https_key_path":
+		return p.WebUIHttpsKeyPath != nil
+	default:
+		return false
+	}
+}
 func isNullValue(v any) bool {
 	switch x := v.(type) {
 	case types.String:
@@ -246,6 +269,12 @@ func (r *webuiEndpointResource) Read(ctx context.Context, req resource.ReadReque
 	if err != nil {
 		resp.Diagnostics.AddWarning("WebUI endpoint refresh unavailable", "The configured provider endpoint cannot reach qBittorrent. State was retained; set the provider URL to the resource's post_update_url and refresh again. No listener write was sent.")
 		return
+	}
+	for _, key := range []string{"web_ui_address", "web_ui_port", "use_https", "web_ui_https_cert_path", "web_ui_https_key_path"} {
+		if !webUIPreferenceHasField(p, key) {
+			resp.Diagnostics.AddError("WebUI endpoint field unavailable", "The server omitted an established WebUI endpoint preference; state was retained and no listener write was sent.")
+			return
+		}
 	}
 	setEndpointState(ctx, &resp.State, p, &resp.Diagnostics)
 }
