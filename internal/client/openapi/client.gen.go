@@ -462,6 +462,186 @@ func (e PreferencesPatchTorrentStopCondition) Valid() bool {
 	}
 }
 
+// Defines values for RSSRuleContentLayout.
+const (
+	RSSRuleContentLayoutNoSubfolder RSSRuleContentLayout = "NoSubfolder"
+	RSSRuleContentLayoutOriginal    RSSRuleContentLayout = "Original"
+	RSSRuleContentLayoutSubfolder   RSSRuleContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRuleContentLayout enum.
+func (e RSSRuleContentLayout) Valid() bool {
+	switch e {
+	case RSSRuleContentLayoutNoSubfolder:
+		return true
+	case RSSRuleContentLayoutOriginal:
+		return true
+	case RSSRuleContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRuleTorrentParamsContentLayout.
+const (
+	RSSRuleTorrentParamsContentLayoutNoSubfolder RSSRuleTorrentParamsContentLayout = "NoSubfolder"
+	RSSRuleTorrentParamsContentLayoutOriginal    RSSRuleTorrentParamsContentLayout = "Original"
+	RSSRuleTorrentParamsContentLayoutSubfolder   RSSRuleTorrentParamsContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRuleTorrentParamsContentLayout enum.
+func (e RSSRuleTorrentParamsContentLayout) Valid() bool {
+	switch e {
+	case RSSRuleTorrentParamsContentLayoutNoSubfolder:
+		return true
+	case RSSRuleTorrentParamsContentLayoutOriginal:
+		return true
+	case RSSRuleTorrentParamsContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRuleTorrentParamsOperatingMode.
+const (
+	RSSRuleTorrentParamsOperatingModeAutoManaged RSSRuleTorrentParamsOperatingMode = "AutoManaged"
+	RSSRuleTorrentParamsOperatingModeForced      RSSRuleTorrentParamsOperatingMode = "Forced"
+)
+
+// Valid indicates whether the value is a known member of the RSSRuleTorrentParamsOperatingMode enum.
+func (e RSSRuleTorrentParamsOperatingMode) Valid() bool {
+	switch e {
+	case RSSRuleTorrentParamsOperatingModeAutoManaged:
+		return true
+	case RSSRuleTorrentParamsOperatingModeForced:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRulesContentLayout.
+const (
+	RSSRulesContentLayoutNoSubfolder RSSRulesContentLayout = "NoSubfolder"
+	RSSRulesContentLayoutOriginal    RSSRulesContentLayout = "Original"
+	RSSRulesContentLayoutSubfolder   RSSRulesContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRulesContentLayout enum.
+func (e RSSRulesContentLayout) Valid() bool {
+	switch e {
+	case RSSRulesContentLayoutNoSubfolder:
+		return true
+	case RSSRulesContentLayoutOriginal:
+		return true
+	case RSSRulesContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRulesTorrentParamsContentLayout.
+const (
+	RSSRulesTorrentParamsContentLayoutNoSubfolder RSSRulesTorrentParamsContentLayout = "NoSubfolder"
+	RSSRulesTorrentParamsContentLayoutOriginal    RSSRulesTorrentParamsContentLayout = "Original"
+	RSSRulesTorrentParamsContentLayoutSubfolder   RSSRulesTorrentParamsContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRulesTorrentParamsContentLayout enum.
+func (e RSSRulesTorrentParamsContentLayout) Valid() bool {
+	switch e {
+	case RSSRulesTorrentParamsContentLayoutNoSubfolder:
+		return true
+	case RSSRulesTorrentParamsContentLayoutOriginal:
+		return true
+	case RSSRulesTorrentParamsContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRulesTorrentParamsOperatingMode.
+const (
+	RSSRulesTorrentParamsOperatingModeAutoManaged RSSRulesTorrentParamsOperatingMode = "AutoManaged"
+	RSSRulesTorrentParamsOperatingModeForced      RSSRulesTorrentParamsOperatingMode = "Forced"
+)
+
+// Valid indicates whether the value is a known member of the RSSRulesTorrentParamsOperatingMode enum.
+func (e RSSRulesTorrentParamsOperatingMode) Valid() bool {
+	switch e {
+	case RSSRulesTorrentParamsOperatingModeAutoManaged:
+		return true
+	case RSSRulesTorrentParamsOperatingModeForced:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRSSRules200JSONResponseBodyContentLayout.
+const (
+	GetRSSRules200JSONResponseBodyContentLayoutNoSubfolder GetRSSRules200JSONResponseBodyContentLayout = "NoSubfolder"
+	GetRSSRules200JSONResponseBodyContentLayoutOriginal    GetRSSRules200JSONResponseBodyContentLayout = "Original"
+	GetRSSRules200JSONResponseBodyContentLayoutSubfolder   GetRSSRules200JSONResponseBodyContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the GetRSSRules200JSONResponseBodyContentLayout enum.
+func (e GetRSSRules200JSONResponseBodyContentLayout) Valid() bool {
+	switch e {
+	case GetRSSRules200JSONResponseBodyContentLayoutNoSubfolder:
+		return true
+	case GetRSSRules200JSONResponseBodyContentLayoutOriginal:
+		return true
+	case GetRSSRules200JSONResponseBodyContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRSSRules200JSONResponseBodyTorrentParamsContentLayout.
+const (
+	GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutNoSubfolder GetRSSRules200JSONResponseBodyTorrentParamsContentLayout = "NoSubfolder"
+	GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutOriginal    GetRSSRules200JSONResponseBodyTorrentParamsContentLayout = "Original"
+	GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutSubfolder   GetRSSRules200JSONResponseBodyTorrentParamsContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the GetRSSRules200JSONResponseBodyTorrentParamsContentLayout enum.
+func (e GetRSSRules200JSONResponseBodyTorrentParamsContentLayout) Valid() bool {
+	switch e {
+	case GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutNoSubfolder:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutOriginal:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode.
+const (
+	GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeAutoManaged GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode = "AutoManaged"
+	GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeForced      GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode = "Forced"
+)
+
+// Valid indicates whether the value is a known member of the GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode enum.
+func (e GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode) Valid() bool {
+	switch e {
+	case GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeAutoManaged:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeForced:
+		return true
+	default:
+		return false
+	}
+}
+
 // AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 type AltDownloadLimit = int64
 
@@ -1091,6 +1271,7 @@ type Preferences struct {
 
 	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
 	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
+	UseHttps                     *bool `json:"use_https,omitempty"`
 
 	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
 	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
@@ -1100,13 +1281,17 @@ type Preferences struct {
 
 	// ValidateHttpsTrackerCertificate Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
 	ValidateHttpsTrackerCertificate    *bool   `json:"validate_https_tracker_certificate,omitempty"`
+	WebUIAddress                       *string `json:"web_ui_address,omitempty"`
 	WebUIBanDuration                   *int32  `json:"web_ui_ban_duration,omitempty"`
 	WebUIClickjackingProtectionEnabled *bool   `json:"web_ui_clickjacking_protection_enabled,omitempty"`
 	WebUICSRFProtectionEnabled         *bool   `json:"web_ui_csrf_protection_enabled,omitempty"`
 	WebUICustomHTTPHeaders             *string `json:"web_ui_custom_http_headers,omitempty"`
 	WebUIDomainList                    *string `json:"web_ui_domain_list,omitempty"`
 	WebUIHostHeaderValidationEnabled   *bool   `json:"web_ui_host_header_validation_enabled,omitempty"`
+	WebUIHttpsCertPath                 *string `json:"web_ui_https_cert_path,omitempty"`
+	WebUIHttpsKeyPath                  *string `json:"web_ui_https_key_path,omitempty"`
 	WebUIMaxAuthFailCount              *int32  `json:"web_ui_max_auth_fail_count,omitempty"`
+	WebUIPort                          *int32  `json:"web_ui_port,omitempty"`
 	WebUIReverseProxiesList            *string `json:"web_ui_reverse_proxies_list,omitempty"`
 	WebUIReverseProxyEnabled           *bool   `json:"web_ui_reverse_proxy_enabled,omitempty"`
 	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
@@ -1114,6 +1299,7 @@ type Preferences struct {
 	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
 	WebUIUPnP                          *bool   `json:"web_ui_upnp,omitempty"`
 	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
+	WebUIUsername                      *string `json:"web_ui_username,omitempty"`
 
 	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
 	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
@@ -1663,6 +1849,7 @@ type PreferencesPatch struct {
 
 	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
 	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
+	UseHttps                     *bool `json:"use_https,omitempty"`
 
 	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
 	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
@@ -1672,13 +1859,18 @@ type PreferencesPatch struct {
 
 	// ValidateHttpsTrackerCertificate Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
 	ValidateHttpsTrackerCertificate    *bool   `json:"validate_https_tracker_certificate,omitempty"`
+	WebUIAddress                       *string `json:"web_ui_address,omitempty"`
 	WebUIBanDuration                   *int32  `json:"web_ui_ban_duration,omitempty"`
 	WebUIClickjackingProtectionEnabled *bool   `json:"web_ui_clickjacking_protection_enabled,omitempty"`
 	WebUICSRFProtectionEnabled         *bool   `json:"web_ui_csrf_protection_enabled,omitempty"`
 	WebUICustomHTTPHeaders             *string `json:"web_ui_custom_http_headers,omitempty"`
 	WebUIDomainList                    *string `json:"web_ui_domain_list,omitempty"`
 	WebUIHostHeaderValidationEnabled   *bool   `json:"web_ui_host_header_validation_enabled,omitempty"`
+	WebUIHttpsCertPath                 *string `json:"web_ui_https_cert_path,omitempty"`
+	WebUIHttpsKeyPath                  *string `json:"web_ui_https_key_path,omitempty"`
 	WebUIMaxAuthFailCount              *int32  `json:"web_ui_max_auth_fail_count,omitempty"`
+	WebUIPassword                      *string `json:"web_ui_password,omitempty"`
+	WebUIPort                          *int32  `json:"web_ui_port,omitempty"`
 	WebUIReverseProxiesList            *string `json:"web_ui_reverse_proxies_list,omitempty"`
 	WebUIReverseProxyEnabled           *bool   `json:"web_ui_reverse_proxy_enabled,omitempty"`
 	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
@@ -1686,6 +1878,7 @@ type PreferencesPatch struct {
 	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
 	WebUIUPnP                          *bool   `json:"web_ui_upnp,omitempty"`
 	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
+	WebUIUsername                      *string `json:"web_ui_username,omitempty"`
 
 	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
 	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
@@ -1730,10 +1923,114 @@ type PreferencesPatchTorrentContentRemoveOption string
 type PreferencesPatchTorrentStopCondition string
 
 // RSSRule defines model for RSSRule.
-type RSSRule = map[string]interface{}
+type RSSRule struct {
+	AddPaused        *bool                 `json:"addPaused"`
+	AffectedFeeds    []string              `json:"affectedFeeds"`
+	AssignedCategory string                `json:"assignedCategory"`
+	ContentLayout    *RSSRuleContentLayout `json:"contentLayout"`
+	Enabled          bool                  `json:"enabled"`
+	EpisodeFilter    string                `json:"episodeFilter"`
+	IgnoreDays       int32                 `json:"ignoreDays"`
+
+	// LastMatch Runtime history; preserve when replacing a rule.
+	LastMatch      string `json:"lastMatch"`
+	MustContain    string `json:"mustContain"`
+	MustNotContain string `json:"mustNotContain"`
+
+	// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+	PreviouslyMatchedEpisodes []string `json:"previouslyMatchedEpisodes"`
+	Priority                  int32    `json:"priority"`
+	SavePath                  string   `json:"savePath"`
+	SmartFilter               bool     `json:"smartFilter"`
+
+	// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+	TorrentParams struct {
+		AutoTMM                  *bool                              `json:"autoTMM,omitempty"`
+		Category                 *string                            `json:"category,omitempty"`
+		ContentLayout            *RSSRuleTorrentParamsContentLayout `json:"contentLayout,omitempty"`
+		DownloadLimit            *int64                             `json:"downloadLimit,omitempty"`
+		DownloadPath             *string                            `json:"downloadPath,omitempty"`
+		InactiveSeedingTimeLimit *int32                             `json:"inactiveSeedingTimeLimit,omitempty"`
+		OperatingMode            *RSSRuleTorrentParamsOperatingMode `json:"operatingMode,omitempty"`
+		QueueTop                 *bool                              `json:"queueTop,omitempty"`
+		RatioLimit               *float64                           `json:"ratioLimit,omitempty"`
+		SavePath                 *string                            `json:"savePath,omitempty"`
+		SeedMode                 *bool                              `json:"seedMode,omitempty"`
+		SeedingTimeLimit         *int32                             `json:"seedingTimeLimit,omitempty"`
+		ShareLimitAction         *string                            `json:"shareLimitAction,omitempty"`
+		ShareLimitsMode          *string                            `json:"shareLimitsMode,omitempty"`
+		StopCondition            *string                            `json:"stopCondition,omitempty"`
+		Stopped                  *bool                              `json:"stopped,omitempty"`
+		Tags                     *[]string                          `json:"tags,omitempty"`
+		UploadLimit              *int64                             `json:"uploadLimit,omitempty"`
+		UseDownloadPath          *bool                              `json:"useDownloadPath,omitempty"`
+	} `json:"torrentParams"`
+	UseRegex bool `json:"useRegex"`
+}
+
+// RSSRuleContentLayout defines model for RSSRule.ContentLayout.
+type RSSRuleContentLayout string
+
+// RSSRuleTorrentParamsContentLayout defines model for RSSRule.TorrentParams.ContentLayout.
+type RSSRuleTorrentParamsContentLayout string
+
+// RSSRuleTorrentParamsOperatingMode defines model for RSSRule.TorrentParams.OperatingMode.
+type RSSRuleTorrentParamsOperatingMode string
 
 // RSSRules defines model for RSSRules.
-type RSSRules map[string]map[string]interface{}
+type RSSRules map[string]struct {
+	AddPaused        *bool                  `json:"addPaused"`
+	AffectedFeeds    []string               `json:"affectedFeeds"`
+	AssignedCategory string                 `json:"assignedCategory"`
+	ContentLayout    *RSSRulesContentLayout `json:"contentLayout"`
+	Enabled          bool                   `json:"enabled"`
+	EpisodeFilter    string                 `json:"episodeFilter"`
+	IgnoreDays       int32                  `json:"ignoreDays"`
+
+	// LastMatch Runtime history; preserve when replacing a rule.
+	LastMatch      string `json:"lastMatch"`
+	MustContain    string `json:"mustContain"`
+	MustNotContain string `json:"mustNotContain"`
+
+	// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+	PreviouslyMatchedEpisodes []string `json:"previouslyMatchedEpisodes"`
+	Priority                  int32    `json:"priority"`
+	SavePath                  string   `json:"savePath"`
+	SmartFilter               bool     `json:"smartFilter"`
+
+	// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+	TorrentParams struct {
+		AutoTMM                  *bool                               `json:"autoTMM,omitempty"`
+		Category                 *string                             `json:"category,omitempty"`
+		ContentLayout            *RSSRulesTorrentParamsContentLayout `json:"contentLayout,omitempty"`
+		DownloadLimit            *int64                              `json:"downloadLimit,omitempty"`
+		DownloadPath             *string                             `json:"downloadPath,omitempty"`
+		InactiveSeedingTimeLimit *int32                              `json:"inactiveSeedingTimeLimit,omitempty"`
+		OperatingMode            *RSSRulesTorrentParamsOperatingMode `json:"operatingMode,omitempty"`
+		QueueTop                 *bool                               `json:"queueTop,omitempty"`
+		RatioLimit               *float64                            `json:"ratioLimit,omitempty"`
+		SavePath                 *string                             `json:"savePath,omitempty"`
+		SeedMode                 *bool                               `json:"seedMode,omitempty"`
+		SeedingTimeLimit         *int32                              `json:"seedingTimeLimit,omitempty"`
+		ShareLimitAction         *string                             `json:"shareLimitAction,omitempty"`
+		ShareLimitsMode          *string                             `json:"shareLimitsMode,omitempty"`
+		StopCondition            *string                             `json:"stopCondition,omitempty"`
+		Stopped                  *bool                               `json:"stopped,omitempty"`
+		Tags                     *[]string                           `json:"tags,omitempty"`
+		UploadLimit              *int64                              `json:"uploadLimit,omitempty"`
+		UseDownloadPath          *bool                               `json:"useDownloadPath,omitempty"`
+	} `json:"torrentParams"`
+	UseRegex bool `json:"useRegex"`
+}
+
+// RSSRulesContentLayout defines model for RSSRules.ContentLayout.
+type RSSRulesContentLayout string
+
+// RSSRulesTorrentParamsContentLayout defines model for RSSRules.TorrentParams.ContentLayout.
+type RSSRulesTorrentParamsContentLayout string
+
+// RSSRulesTorrentParamsOperatingMode defines model for RSSRules.TorrentParams.OperatingMode.
+type RSSRulesTorrentParamsOperatingMode string
 
 // RemoveRSSRuleForm defines model for RemoveRSSRuleForm.
 type RemoveRSSRuleForm struct {
@@ -1742,6 +2039,7 @@ type RemoveRSSRuleForm struct {
 
 // SetRSSRuleForm defines model for SetRSSRuleForm.
 type SetRSSRuleForm struct {
+	// RuleDef JSON-encoded RSS rule definition.
 	RuleDef  string `json:"ruleDef"`
 	RuleName string `json:"ruleName"`
 }
@@ -1793,8 +2091,18 @@ type RemoveRSSRuleFormdataBody struct {
 	RuleName string `form:"ruleName" json:"ruleName"`
 }
 
+// GetRSSRules200JSONResponseBodyContentLayout defines parameters for GetRSSRules.
+type GetRSSRules200JSONResponseBodyContentLayout string
+
+// GetRSSRules200JSONResponseBodyTorrentParamsContentLayout defines parameters for GetRSSRules.
+type GetRSSRules200JSONResponseBodyTorrentParamsContentLayout string
+
+// GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode defines parameters for GetRSSRules.
+type GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode string
+
 // SetRSSRuleFormdataBody defines parameters for SetRSSRule.
 type SetRSSRuleFormdataBody struct {
+	// RuleDef JSON-encoded RSS rule definition.
 	RuleDef  string `form:"ruleDef" json:"ruleDef"`
 	RuleName string `form:"ruleName" json:"ruleName"`
 }
@@ -3636,11 +3944,97 @@ type GetRSSRulesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *map[string]map[string]interface{}
+	JSON200 *map[string]struct {
+		AddPaused        *bool                                        `json:"addPaused"`
+		AffectedFeeds    []string                                     `json:"affectedFeeds"`
+		AssignedCategory string                                       `json:"assignedCategory"`
+		ContentLayout    *GetRSSRules200JSONResponseBodyContentLayout `json:"contentLayout"`
+		Enabled          bool                                         `json:"enabled"`
+		EpisodeFilter    string                                       `json:"episodeFilter"`
+		IgnoreDays       int32                                        `json:"ignoreDays"`
+
+		// LastMatch Runtime history; preserve when replacing a rule.
+		LastMatch      string `json:"lastMatch"`
+		MustContain    string `json:"mustContain"`
+		MustNotContain string `json:"mustNotContain"`
+
+		// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+		PreviouslyMatchedEpisodes []string `json:"previouslyMatchedEpisodes"`
+		Priority                  int32    `json:"priority"`
+		SavePath                  string   `json:"savePath"`
+		SmartFilter               bool     `json:"smartFilter"`
+
+		// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+		TorrentParams struct {
+			AutoTMM                  *bool                                                     `json:"autoTMM,omitempty"`
+			Category                 *string                                                   `json:"category,omitempty"`
+			ContentLayout            *GetRSSRules200JSONResponseBodyTorrentParamsContentLayout `json:"contentLayout,omitempty"`
+			DownloadLimit            *int64                                                    `json:"downloadLimit,omitempty"`
+			DownloadPath             *string                                                   `json:"downloadPath,omitempty"`
+			InactiveSeedingTimeLimit *int32                                                    `json:"inactiveSeedingTimeLimit,omitempty"`
+			OperatingMode            *GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode `json:"operatingMode,omitempty"`
+			QueueTop                 *bool                                                     `json:"queueTop,omitempty"`
+			RatioLimit               *float64                                                  `json:"ratioLimit,omitempty"`
+			SavePath                 *string                                                   `json:"savePath,omitempty"`
+			SeedMode                 *bool                                                     `json:"seedMode,omitempty"`
+			SeedingTimeLimit         *int32                                                    `json:"seedingTimeLimit,omitempty"`
+			ShareLimitAction         *string                                                   `json:"shareLimitAction,omitempty"`
+			ShareLimitsMode          *string                                                   `json:"shareLimitsMode,omitempty"`
+			StopCondition            *string                                                   `json:"stopCondition,omitempty"`
+			Stopped                  *bool                                                     `json:"stopped,omitempty"`
+			Tags                     *[]string                                                 `json:"tags,omitempty"`
+			UploadLimit              *int64                                                    `json:"uploadLimit,omitempty"`
+			UseDownloadPath          *bool                                                     `json:"useDownloadPath,omitempty"`
+		} `json:"torrentParams"`
+		UseRegex bool `json:"useRegex"`
+	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetRSSRulesResponse) GetJSON200() *map[string]map[string]interface{} {
+func (r GetRSSRulesResponse) GetJSON200() *map[string]struct {
+	AddPaused        *bool                                        `json:"addPaused"`
+	AffectedFeeds    []string                                     `json:"affectedFeeds"`
+	AssignedCategory string                                       `json:"assignedCategory"`
+	ContentLayout    *GetRSSRules200JSONResponseBodyContentLayout `json:"contentLayout"`
+	Enabled          bool                                         `json:"enabled"`
+	EpisodeFilter    string                                       `json:"episodeFilter"`
+	IgnoreDays       int32                                        `json:"ignoreDays"`
+
+	// LastMatch Runtime history; preserve when replacing a rule.
+	LastMatch      string `json:"lastMatch"`
+	MustContain    string `json:"mustContain"`
+	MustNotContain string `json:"mustNotContain"`
+
+	// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+	PreviouslyMatchedEpisodes []string `json:"previouslyMatchedEpisodes"`
+	Priority                  int32    `json:"priority"`
+	SavePath                  string   `json:"savePath"`
+	SmartFilter               bool     `json:"smartFilter"`
+
+	// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+	TorrentParams struct {
+		AutoTMM                  *bool                                                     `json:"autoTMM,omitempty"`
+		Category                 *string                                                   `json:"category,omitempty"`
+		ContentLayout            *GetRSSRules200JSONResponseBodyTorrentParamsContentLayout `json:"contentLayout,omitempty"`
+		DownloadLimit            *int64                                                    `json:"downloadLimit,omitempty"`
+		DownloadPath             *string                                                   `json:"downloadPath,omitempty"`
+		InactiveSeedingTimeLimit *int32                                                    `json:"inactiveSeedingTimeLimit,omitempty"`
+		OperatingMode            *GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode `json:"operatingMode,omitempty"`
+		QueueTop                 *bool                                                     `json:"queueTop,omitempty"`
+		RatioLimit               *float64                                                  `json:"ratioLimit,omitempty"`
+		SavePath                 *string                                                   `json:"savePath,omitempty"`
+		SeedMode                 *bool                                                     `json:"seedMode,omitempty"`
+		SeedingTimeLimit         *int32                                                    `json:"seedingTimeLimit,omitempty"`
+		ShareLimitAction         *string                                                   `json:"shareLimitAction,omitempty"`
+		ShareLimitsMode          *string                                                   `json:"shareLimitsMode,omitempty"`
+		StopCondition            *string                                                   `json:"stopCondition,omitempty"`
+		Stopped                  *bool                                                     `json:"stopped,omitempty"`
+		Tags                     *[]string                                                 `json:"tags,omitempty"`
+		UploadLimit              *int64                                                    `json:"uploadLimit,omitempty"`
+		UseDownloadPath          *bool                                                     `json:"useDownloadPath,omitempty"`
+	} `json:"torrentParams"`
+	UseRegex bool `json:"useRegex"`
+} {
 	return r.JSON200
 }
 
@@ -4334,7 +4728,50 @@ func ParseGetRSSRulesResponse(rsp *http.Response) (*GetRSSRulesResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]map[string]interface{}
+		var dest map[string]struct {
+			AddPaused        *bool                                        `json:"addPaused"`
+			AffectedFeeds    []string                                     `json:"affectedFeeds"`
+			AssignedCategory string                                       `json:"assignedCategory"`
+			ContentLayout    *GetRSSRules200JSONResponseBodyContentLayout `json:"contentLayout"`
+			Enabled          bool                                         `json:"enabled"`
+			EpisodeFilter    string                                       `json:"episodeFilter"`
+			IgnoreDays       int32                                        `json:"ignoreDays"`
+
+			// LastMatch Runtime history; preserve when replacing a rule.
+			LastMatch      string `json:"lastMatch"`
+			MustContain    string `json:"mustContain"`
+			MustNotContain string `json:"mustNotContain"`
+
+			// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+			PreviouslyMatchedEpisodes []string `json:"previouslyMatchedEpisodes"`
+			Priority                  int32    `json:"priority"`
+			SavePath                  string   `json:"savePath"`
+			SmartFilter               bool     `json:"smartFilter"`
+
+			// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+			TorrentParams struct {
+				AutoTMM                  *bool                                                     `json:"autoTMM,omitempty"`
+				Category                 *string                                                   `json:"category,omitempty"`
+				ContentLayout            *GetRSSRules200JSONResponseBodyTorrentParamsContentLayout `json:"contentLayout,omitempty"`
+				DownloadLimit            *int64                                                    `json:"downloadLimit,omitempty"`
+				DownloadPath             *string                                                   `json:"downloadPath,omitempty"`
+				InactiveSeedingTimeLimit *int32                                                    `json:"inactiveSeedingTimeLimit,omitempty"`
+				OperatingMode            *GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode `json:"operatingMode,omitempty"`
+				QueueTop                 *bool                                                     `json:"queueTop,omitempty"`
+				RatioLimit               *float64                                                  `json:"ratioLimit,omitempty"`
+				SavePath                 *string                                                   `json:"savePath,omitempty"`
+				SeedMode                 *bool                                                     `json:"seedMode,omitempty"`
+				SeedingTimeLimit         *int32                                                    `json:"seedingTimeLimit,omitempty"`
+				ShareLimitAction         *string                                                   `json:"shareLimitAction,omitempty"`
+				ShareLimitsMode          *string                                                   `json:"shareLimitsMode,omitempty"`
+				StopCondition            *string                                                   `json:"stopCondition,omitempty"`
+				Stopped                  *bool                                                     `json:"stopped,omitempty"`
+				Tags                     *[]string                                                 `json:"tags,omitempty"`
+				UploadLimit              *int64                                                    `json:"uploadLimit,omitempty"`
+				UseDownloadPath          *bool                                                     `json:"useDownloadPath,omitempty"`
+			} `json:"torrentParams"`
+			UseRegex bool `json:"useRegex"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
