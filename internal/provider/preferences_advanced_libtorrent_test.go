@@ -29,7 +29,7 @@ func TestAdvancedLibtorrentLiteralWireUnitsAndRoundTrip(t *testing.T) {
 		"upnp_lease_duration":          int64(0),   // permanent lease sentinel.
 		"outgoing_ports_min":           int64(0), "outgoing_ports_max": int64(0),
 		"announce_port": int64(0), "stop_tracker_timeout": int64(0),
-		"announce_ip": "", "dht_bootstrap_nodes": "", "webtorrent_stun_server": "",
+		"announce_ip": "", "dht_bootstrap_nodes": "dht.libtorrent.org:25401, dht.transmissionbt.com:6881, router.bt.ouinet.work:6881", "webtorrent_stun_server": "",
 		"i2p_inbound_length_variance":        int64(-7), // permitted UI range includes negative values.
 		"validate_https_tracker_certificate": true,
 		"ssrf_mitigation":                    true,
@@ -96,6 +96,41 @@ func TestAdvancedLibtorrentLiteralWireUnitsAndRoundTrip(t *testing.T) {
 	}
 }
 
+func TestAdvancedLibtorrentEmptyDHTBootstrapNodesReportsCanonicalDefault(t *testing.T) {
+	const canonical = "dht.libtorrent.org:25401, dht.transmissionbt.com:6881, router.bt.ouinet.work:6881"
+	writes := 0
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "setPreferences") {
+			writes++
+			_ = r.ParseForm()
+			var patch map[string]any
+			if err := json.Unmarshal([]byte(r.Form.Get("json")), &patch); err != nil {
+				t.Fatal(err)
+			}
+			if len(patch) != 1 || patch["dht_bootstrap_nodes"] != "" {
+				t.Fatalf("empty reset was not sent explicitly: %v", patch)
+			}
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"dht_bootstrap_nodes": canonical})
+	})
+	r := &preferencesResource{client: c}
+	s := testState(t, prefsSchema(), map[string]attr.Value{"dht_bootstrap_nodes": types.StringValue("")})
+	var out resource.CreateResponse
+	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: s.Raw}}, &out)
+	if writes != 1 || !out.Diagnostics.HasError() || !strings.Contains(fmt.Sprint(out.Diagnostics), "Preference rejected or normalized") {
+		t.Fatalf("writes=%d diagnostics=%v; want canonical-default normalization diagnostic", writes, out.Diagnostics)
+	}
+	var state types.Object
+	if ds := out.State.Get(ctx, &state); ds.HasError() {
+		t.Fatal(ds)
+	}
+	actual := state.Attributes()["dht_bootstrap_nodes"].(types.String)
+	if actual.IsNull() || actual.ValueString() != canonical {
+		t.Fatalf("state did not report native canonical default: %q", actual.ValueString())
+	}
+}
+
 func TestAdvancedLibtorrentFieldsHaveCompleteMetadataAndEnums(t *testing.T) {
 	want := []string{
 		"bdecode_depth_limit", "bdecode_token_limit", "async_io_threads", "hashing_threads", "file_pool_size", "checking_memory_use",
@@ -157,6 +192,26 @@ func TestAdvancedLibtorrentCapabilityMetadataMarksConditionalRows(t *testing.T) 
 	}
 }
 
+func TestAdvancedLibtorrentRuntimeCompilePredicatesAreExplicit(t *testing.T) {
+	for name, predicate := range map[string]string{
+		"hashing_threads":            "QBT_USES_LIBTORRENT2",
+		"disk_cache":                 "without QBT_USES_LIBTORRENT2",
+		"disk_cache_ttl":             "without QBT_USES_LIBTORRENT2",
+		"enable_coalesce_read_write": "without QBT_USES_LIBTORRENT2",
+		"enable_multi_connections_from_same_peer_id": "LIBTORRENT_VERSION_NUM >= 20013",
+		"webtorrent_stun_server":                     "LIBTORRENT_VERSION_NUM >= 20100",
+		"i2p_inbound_quantity":                       "QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P",
+		"i2p_inbound_length_variance":                "LIBTORRENT_VERSION_NUM >= 20012",
+		"disk_io_type":                               "LIBTORRENT_VERSION_NUM >= 20100",
+		"disk_io_write_mode":                         "QBT_USES_LIBTORRENT2",
+	} {
+		f, ok := findPreferenceField(advancedLibtorrentPreferenceFields, name)
+		if !ok || !strings.Contains(f.description, predicate) {
+			t.Errorf("%s description %q does not record runtime predicate %q", name, f.description, predicate)
+		}
+	}
+}
+
 func TestAdvancedLibtorrentNativeEnumValidators(t *testing.T) {
 	valid := map[string][]int64{
 		"disk_io_type":             {0, 1, 2, 3},
@@ -182,6 +237,40 @@ func TestAdvancedLibtorrentNativeEnumValidators(t *testing.T) {
 				t.Errorf("%s=%d has errors=%v, accepted=%v", name, value, out.Diagnostics.HasError(), allowed[value])
 			}
 		}
+	}
+}
+
+func TestAdvancedLibtorrentNativeClampBoundaries(t *testing.T) {
+	for _, tc := range []struct {
+		name           string
+		valid, invalid []int64
+	}{
+		{name: "checking_memory_use", valid: []int64{1, 2147483647}, invalid: []int64{0}},
+		{name: "disk_cache", valid: []int64{-2147483648, -1, 0, 33554431}, invalid: []int64{33554432}},
+		{name: "async_io_threads", valid: []int64{1, 1024}, invalid: []int64{0, 1025}},
+		{name: "hashing_threads", valid: []int64{1, 1024}, invalid: []int64{0, 1025}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			f, ok := findPreferenceField(advancedLibtorrentPreferenceFields, tc.name)
+			if !ok {
+				t.Fatalf("missing descriptor %s", tc.name)
+			}
+			isValid := func(value int64) bool {
+				var out validator.Int64Response
+				(preferenceIntValidator{field: f}).ValidateInt64(ctx, validator.Int64Request{Path: path.Root(tc.name), ConfigValue: types.Int64Value(value)}, &out)
+				return !out.Diagnostics.HasError()
+			}
+			for _, value := range tc.valid {
+				if !isValid(value) {
+					t.Errorf("%s=%d rejected, want accepted", tc.name, value)
+				}
+			}
+			for _, value := range tc.invalid {
+				if isValid(value) {
+					t.Errorf("%s=%d accepted, want rejected", tc.name, value)
+				}
+			}
+		})
 	}
 }
 

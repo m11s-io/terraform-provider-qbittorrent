@@ -13,12 +13,12 @@ Read:
       x-ui-tab: Advanced
     async_io_threads:
       type: integer
-      description: "Asynchronous I/O thread count; sent as a signed 32-bit integer."
+      description: "Asynchronous I/O thread count; the native getter clamps to 1..1024."
       x-go-name: AsyncIOThreads
       x-ui-tab: Advanced
     hashing_threads:
       type: integer
-      description: "Hashing thread count; exposed conditionally by the server build."
+      description: "Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2."
       x-go-name: HashingThreads
       x-ui-tab: Advanced
     file_pool_size:
@@ -28,17 +28,17 @@ Read:
       x-ui-tab: Advanced
     checking_memory_use:
       type: integer
-      description: "Memory limit while checking torrents in MiB; sent as a signed 32-bit integer."
+      description: "Memory limit while checking torrents in MiB; native setter clamps the minimum to 1."
       x-go-name: CheckingMemoryUse
       x-ui-tab: Advanced
     disk_cache:
       type: integer
-      description: "Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value."
+      description: "Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2."
       x-go-name: DiskCache
       x-ui-tab: Advanced
     disk_cache_ttl:
       type: integer
-      description: "Disk cache expiry in seconds; sent as a signed 32-bit integer."
+      description: "Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2."
       x-go-name: DiskCacheTTL
       x-ui-tab: Advanced
     disk_queue_size:
@@ -49,7 +49,7 @@ Read:
       x-ui-tab: Advanced
     disk_io_type:
       type: integer
-      description: "Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence."
+      description: "Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset."
       x-go-name: DiskIOType
       x-ui-tab: Advanced
     disk_io_read_mode:
@@ -59,12 +59,12 @@ Read:
       x-ui-tab: Advanced
     disk_io_write_mode:
       type: integer
-      description: "OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence."
+      description: "OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset."
       x-go-name: DiskIOWriteMode
       x-ui-tab: Advanced
     enable_coalesce_read_write:
       type: boolean
-      description: "Enable coalescing disk reads and writes; availability depends on the linked libtorrent build."
+      description: "Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2."
       x-go-name: EnableCoalesceReadWrite
       x-ui-tab: Advanced
     enable_piece_extent_affinity:
@@ -159,7 +159,7 @@ Read:
       x-ui-tab: Advanced
     enable_multi_connections_from_same_peer_id:
       type: boolean
-      description: "Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build."
+      description: "Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013."
       x-go-name: EnableMultiConnectionsFromSamePeerId
       x-ui-tab: Advanced
     validate_https_tracker_certificate:
@@ -244,42 +244,42 @@ Read:
       x-ui-tab: Advanced
     dht_bootstrap_nodes:
       type: string
-      description: "DHT bootstrap node list; empty resets to libtorrent defaults."
+      description: "DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list."
       x-go-name: DHTBootstrapNodes
       x-ui-tab: Advanced
     webtorrent_stun_server:
       type: string
-      description: "WebTorrent NAT traversal STUN server; exposed conditionally by the server build."
+      description: "WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100."
       x-go-name: WebtorrentStunServer
       x-ui-tab: Advanced
     i2p_inbound_quantity:
       type: integer
-      description: "I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      description: "I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2PInboundQuantity
       x-ui-tab: Advanced
     i2p_outbound_quantity:
       type: integer
-      description: "I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      description: "I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2POutboundQuantity
       x-ui-tab: Advanced
     i2p_inbound_length:
       type: integer
-      description: "I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      description: "I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2PInboundLength
       x-ui-tab: Advanced
     i2p_outbound_length:
       type: integer
-      description: "I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      description: "I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2POutboundLength
       x-ui-tab: Advanced
     i2p_inbound_length_variance:
       type: integer
-      description: "I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      description: "I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012."
       x-go-name: I2PInboundLengthVariance
       x-ui-tab: Advanced
     i2p_outbound_length_variance:
       type: integer
-      description: "I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      description: "I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012."
       x-go-name: I2POutboundLengthVariance
       x-ui-tab: Advanced
 Patch:
@@ -297,12 +297,12 @@ Patch:
       x-ui-tab: Advanced
     async_io_threads:
       type: integer
-      description: "Asynchronous I/O thread count; sent as a signed 32-bit integer."
+      description: "Asynchronous I/O thread count; the native getter clamps to 1..1024."
       x-go-name: AsyncIOThreads
       x-ui-tab: Advanced
     hashing_threads:
       type: integer
-      description: "Hashing thread count; exposed conditionally by the server build."
+      description: "Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2."
       x-go-name: HashingThreads
       x-ui-tab: Advanced
     file_pool_size:
@@ -312,17 +312,17 @@ Patch:
       x-ui-tab: Advanced
     checking_memory_use:
       type: integer
-      description: "Memory limit while checking torrents in MiB; sent as a signed 32-bit integer."
+      description: "Memory limit while checking torrents in MiB; native setter clamps the minimum to 1."
       x-go-name: CheckingMemoryUse
       x-ui-tab: Advanced
     disk_cache:
       type: integer
-      description: "Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value."
+      description: "Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2."
       x-go-name: DiskCache
       x-ui-tab: Advanced
     disk_cache_ttl:
       type: integer
-      description: "Disk cache expiry in seconds; sent as a signed 32-bit integer."
+      description: "Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2."
       x-go-name: DiskCacheTTL
       x-ui-tab: Advanced
     disk_queue_size:
@@ -333,7 +333,7 @@ Patch:
       x-ui-tab: Advanced
     disk_io_type:
       type: integer
-      description: "Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence."
+      description: "Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset."
       x-go-name: DiskIOType
       x-ui-tab: Advanced
     disk_io_read_mode:
@@ -343,12 +343,12 @@ Patch:
       x-ui-tab: Advanced
     disk_io_write_mode:
       type: integer
-      description: "OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence."
+      description: "OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset."
       x-go-name: DiskIOWriteMode
       x-ui-tab: Advanced
     enable_coalesce_read_write:
       type: boolean
-      description: "Enable coalescing disk reads and writes; availability depends on the linked libtorrent build."
+      description: "Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2."
       x-go-name: EnableCoalesceReadWrite
       x-ui-tab: Advanced
     enable_piece_extent_affinity:
@@ -443,7 +443,7 @@ Patch:
       x-ui-tab: Advanced
     enable_multi_connections_from_same_peer_id:
       type: boolean
-      description: "Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build."
+      description: "Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013."
       x-go-name: EnableMultiConnectionsFromSamePeerId
       x-ui-tab: Advanced
     validate_https_tracker_certificate:
@@ -528,41 +528,41 @@ Patch:
       x-ui-tab: Advanced
     dht_bootstrap_nodes:
       type: string
-      description: "DHT bootstrap node list; empty resets to libtorrent defaults."
+      description: "DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list."
       x-go-name: DHTBootstrapNodes
       x-ui-tab: Advanced
     webtorrent_stun_server:
       type: string
-      description: "WebTorrent NAT traversal STUN server; exposed conditionally by the server build."
+      description: "WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100."
       x-go-name: WebtorrentStunServer
       x-ui-tab: Advanced
     i2p_inbound_quantity:
       type: integer
-      description: "I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      description: "I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2PInboundQuantity
       x-ui-tab: Advanced
     i2p_outbound_quantity:
       type: integer
-      description: "I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      description: "I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2POutboundQuantity
       x-ui-tab: Advanced
     i2p_inbound_length:
       type: integer
-      description: "I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      description: "I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2PInboundLength
       x-ui-tab: Advanced
     i2p_outbound_length:
       type: integer
-      description: "I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      description: "I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P."
       x-go-name: I2POutboundLength
       x-ui-tab: Advanced
     i2p_inbound_length_variance:
       type: integer
-      description: "I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      description: "I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012."
       x-go-name: I2PInboundLengthVariance
       x-ui-tab: Advanced
     i2p_outbound_length_variance:
       type: integer
-      description: "I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      description: "I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012."
       x-go-name: I2POutboundLengthVariance
       x-ui-tab: Advanced

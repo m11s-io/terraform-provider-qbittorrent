@@ -52,7 +52,8 @@ resource "qbittorrent_preferences" "advanced_libtorrent_coverage" {
   peer_turnover_interval = 300
   request_queue_size = 2000
   max_outstanding_block_requests = 500
-  dht_bootstrap_nodes = ""
+  # Use the getter's canonical value; empty resets to this default and reads back normalized.
+  dht_bootstrap_nodes = "dht.libtorrent.org:25401, dht.transmissionbt.com:6881, router.bt.ouinet.work:6881"
   webtorrent_stun_server = ""
   i2p_inbound_quantity = 3
   i2p_outbound_quantity = 3
