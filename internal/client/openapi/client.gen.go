@@ -147,6 +147,24 @@ func (e PreferencesProxyType) Valid() bool {
 	}
 }
 
+// Defines values for PreferencesResumeDataStorageType.
+const (
+	PreferencesResumeDataStorageTypeLegacy PreferencesResumeDataStorageType = "Legacy"
+	PreferencesResumeDataStorageTypeSQLite PreferencesResumeDataStorageType = "SQLite"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesResumeDataStorageType enum.
+func (e PreferencesResumeDataStorageType) Valid() bool {
+	switch e {
+	case PreferencesResumeDataStorageTypeLegacy:
+		return true
+	case PreferencesResumeDataStorageTypeSQLite:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PreferencesShareLimitsMode.
 const (
 	PreferencesShareLimitsModeMatchAll PreferencesShareLimitsMode = "MatchAll"
@@ -180,6 +198,24 @@ func (e PreferencesTorrentContentLayout) Valid() bool {
 	case PreferencesTorrentContentLayoutOriginal:
 		return true
 	case PreferencesTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesTorrentContentRemoveOption.
+const (
+	PreferencesTorrentContentRemoveOptionDelete      PreferencesTorrentContentRemoveOption = "Delete"
+	PreferencesTorrentContentRemoveOptionMoveToTrash PreferencesTorrentContentRemoveOption = "MoveToTrash"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesTorrentContentRemoveOption enum.
+func (e PreferencesTorrentContentRemoveOption) Valid() bool {
+	switch e {
+	case PreferencesTorrentContentRemoveOptionDelete:
+		return true
+	case PreferencesTorrentContentRemoveOptionMoveToTrash:
 		return true
 	default:
 		return false
@@ -294,6 +330,24 @@ func (e PreferencesPatchProxyType) Valid() bool {
 	}
 }
 
+// Defines values for PreferencesPatchResumeDataStorageType.
+const (
+	PreferencesPatchResumeDataStorageTypeLegacy PreferencesPatchResumeDataStorageType = "Legacy"
+	PreferencesPatchResumeDataStorageTypeSQLite PreferencesPatchResumeDataStorageType = "SQLite"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchResumeDataStorageType enum.
+func (e PreferencesPatchResumeDataStorageType) Valid() bool {
+	switch e {
+	case PreferencesPatchResumeDataStorageTypeLegacy:
+		return true
+	case PreferencesPatchResumeDataStorageTypeSQLite:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PreferencesPatchShareLimitsMode.
 const (
 	PreferencesPatchShareLimitsModeMatchAll PreferencesPatchShareLimitsMode = "MatchAll"
@@ -327,6 +381,24 @@ func (e PreferencesPatchTorrentContentLayout) Valid() bool {
 	case PreferencesPatchTorrentContentLayoutOriginal:
 		return true
 	case PreferencesPatchTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchTorrentContentRemoveOption.
+const (
+	PreferencesPatchTorrentContentRemoveOptionDelete      PreferencesPatchTorrentContentRemoveOption = "Delete"
+	PreferencesPatchTorrentContentRemoveOptionMoveToTrash PreferencesPatchTorrentContentRemoveOption = "MoveToTrash"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchTorrentContentRemoveOption enum.
+func (e PreferencesPatchTorrentContentRemoveOption) Valid() bool {
+	switch e {
+	case PreferencesPatchTorrentContentRemoveOptionDelete:
+		return true
+	case PreferencesPatchTorrentContentRemoveOptionMoveToTrash:
 		return true
 	default:
 		return false
@@ -485,6 +557,9 @@ type Preferences struct {
 	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
 	AnonymousMode  *bool           `json:"anonymous_mode,omitempty"`
 
+	// AppInstanceName Application instance name shown by qBittorrent.
+	AppInstanceName *string `json:"app_instance_name,omitempty"`
+
 	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
 	AutoDeleteMode *PreferencesAutoDeleteMode `json:"auto_delete_mode,omitempty"`
 	AutoTMMEnabled *bool                      `json:"auto_tmm_enabled,omitempty"`
@@ -510,13 +585,40 @@ type Preferences struct {
 	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
 	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
 
+	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
+	ConfirmRemoveAllTags *bool `json:"confirm_remove_all_tags,omitempty"`
+
+	// ConfirmRemoveTrackerFromAllTorrents Ask before removing a tracker from all torrents.
+	ConfirmRemoveTrackerFromAllTorrents *bool `json:"confirm_remove_tracker_from_all_torrents,omitempty"`
+
 	// ConfirmTorrentDeletion Confirm torrent deletion.
 	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
-	DHT                    *bool `json:"dht,omitempty"`
+
+	// ConfirmTorrentRecheck Ask for confirmation before rechecking a torrent.
+	ConfirmTorrentRecheck *bool `json:"confirm_torrent_recheck,omitempty"`
+
+	// CurrentInterfaceAddress Optional IP address to bind on the selected server interface.
+	CurrentInterfaceAddress *string `json:"current_interface_address,omitempty"`
+
+	// CurrentInterfaceName Resolved display name for the selected server network interface; read-only.
+	CurrentInterfaceName *string `json:"current_interface_name,omitempty"`
+
+	// CurrentNetworkInterface Network interface name on the qBittorrent server; the API stores the supplied name and resolves its display name when the interface exists on the server.
+	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
+	DHT                     *bool   `json:"dht,omitempty"`
 
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
 	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+
+	// EmbeddedTrackerPort Port used by the embedded tracker.
+	EmbeddedTrackerPort *int64 `json:"embedded_tracker_port,omitempty"`
+
+	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
+	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
+
+	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
+	EnableEmbeddedTracker *bool `json:"enable_embedded_tracker,omitempty"`
 
 	// Encryption Encryption mode: allow, require, or disable encryption.
 	Encryption *PreferencesEncryption `json:"encryption,omitempty"`
@@ -554,6 +656,9 @@ type Preferences struct {
 	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
 	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
 	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IgnoreSslErrors Ignore SSL certificate errors; enabling this weakens TLS verification.
+	IgnoreSslErrors *bool `json:"ignore_ssl_errors,omitempty"`
 
 	// IncompleteFilesExt Append .!qB to incomplete files.
 	IncompleteFilesExt *bool   `json:"incomplete_files_ext,omitempty"`
@@ -596,6 +701,9 @@ type Preferences struct {
 	// MailNotificationUsername SMTP authentication username.
 	MailNotificationUsername *string `json:"mail_notification_username,omitempty"`
 
+	// MarkOfTheWeb Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
+	MarkOfTheWeb *bool `json:"mark_of_the_web,omitempty"`
+
 	// MaxActiveCheckingTorrents Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.
 	MaxActiveCheckingTorrents *int32 `json:"max_active_checking_torrents,omitempty"`
 	MaxActiveDownloads        *int32 `json:"max_active_downloads,omitempty"`
@@ -627,6 +735,9 @@ type Preferences struct {
 	// MaxUploadsPerTorrent Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
 	MaxUploadsPerTorrent *int64 `json:"max_uploads_per_torrent,omitempty"`
 
+	// MemoryWorkingSetLimit Physical memory working-set limit in MiB.
+	MemoryWorkingSetLimit *int64 `json:"memory_working_set_limit,omitempty"`
+
 	// MergeTrackers Merge trackers when adding a duplicate torrent.
 	MergeTrackers *bool `json:"merge_trackers,omitempty"`
 
@@ -646,12 +757,33 @@ type Preferences struct {
 	ProxyRSS             *bool                 `json:"proxy_rss,omitempty"`
 	ProxyType            *PreferencesProxyType `json:"proxy_type,omitempty"`
 	ProxyUsername        *string               `json:"proxy_username,omitempty"`
-	QueueingEnabled      *bool                 `json:"queueing_enabled,omitempty"`
+
+	// PythonExecutablePath Server-side Python executable path; empty requests automatic detection. Changing this may require a qBittorrent restart.
+	PythonExecutablePath *string `json:"python_executable_path,omitempty"`
+	QueueingEnabled      *bool   `json:"queueing_enabled,omitempty"`
+
+	// ReannounceWhenAddressChanged Reannounce to trackers when the local IP address or port changes.
+	ReannounceWhenAddressChanged *bool `json:"reannounce_when_address_changed,omitempty"`
+
+	// RecheckCompletedTorrents Recheck torrents after they finish downloading.
+	RecheckCompletedTorrents *bool `json:"recheck_completed_torrents,omitempty"`
+
+	// RefreshInterval Internal state refresh interval in milliseconds.
+	RefreshInterval *int64 `json:"refresh_interval,omitempty"`
 
 	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
-	RemoveTorrentFileBackup         *bool `json:"remove_torrent_file_backup,omitempty"`
-	RssAutoDownloadingEnabled       *bool `json:"rss_auto_downloading_enabled,omitempty"`
-	RssDownloadRepackProperEpisodes *bool `json:"rss_download_repack_proper_episodes,omitempty"`
+	RemoveTorrentFileBackup *bool `json:"remove_torrent_file_backup,omitempty"`
+
+	// ResolvePeerCountries Resolve peer IP addresses to country names.
+	ResolvePeerCountries *bool `json:"resolve_peer_countries,omitempty"`
+
+	// ResolvePeerHostNames Resolve peer IP addresses to host names.
+	ResolvePeerHostNames *bool `json:"resolve_peer_host_names,omitempty"`
+
+	// ResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+	ResumeDataStorageType           *PreferencesResumeDataStorageType `json:"resume_data_storage_type,omitempty"`
+	RssAutoDownloadingEnabled       *bool                             `json:"rss_auto_downloading_enabled,omitempty"`
+	RssDownloadRepackProperEpisodes *bool                             `json:"rss_download_repack_proper_episodes,omitempty"`
 
 	// RssFetchDelay Same-host request delay in seconds.
 	RssFetchDelay         *int64 `json:"rss_fetch_delay,omitempty"`
@@ -667,6 +799,12 @@ type Preferences struct {
 
 	// SavePathChangedTmmEnabled Relocate affected torrents when the default save path changes.
 	SavePathChangedTmmEnabled *bool `json:"save_path_changed_tmm_enabled,omitempty"`
+
+	// SaveResumeDataInterval Resume data save interval in minutes.
+	SaveResumeDataInterval *int64 `json:"save_resume_data_interval,omitempty"`
+
+	// SaveStatisticsInterval Statistics save interval in minutes.
+	SaveStatisticsInterval *int64 `json:"save_statistics_interval,omitempty"`
 
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
@@ -687,6 +825,9 @@ type Preferences struct {
 	SchedulerEnabled *bool                       `json:"scheduler_enabled,omitempty"`
 	ShareLimitsMode  *PreferencesShareLimitsMode `json:"share_limits_mode,omitempty"`
 
+	// ShutdownTimeout Session shutdown timeout in seconds; -1 means unlimited.
+	ShutdownTimeout *int64 `json:"shutdown_timeout,omitempty"`
+
 	// SlowTorrentDlRateThreshold Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
 
@@ -695,6 +836,9 @@ type Preferences struct {
 
 	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
+
+	// StartPaused Start the BitTorrent session in the paused state.
+	StartPaused *bool `json:"start_paused,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
@@ -712,6 +856,12 @@ type Preferences struct {
 
 	// TorrentContentLayout Layout for the content directory when adding torrents.
 	TorrentContentLayout *PreferencesTorrentContentLayout `json:"torrent_content_layout,omitempty"`
+
+	// TorrentContentRemoveOption Torrent content removal mode.
+	TorrentContentRemoveOption *PreferencesTorrentContentRemoveOption `json:"torrent_content_remove_option,omitempty"`
+
+	// TorrentFileSizeLimit .torrent file size limit in bytes (the UI displays MiB).
+	TorrentFileSizeLimit *int64 `json:"torrent_file_size_limit,omitempty"`
 
 	// TorrentFilesBackupDir Server directory for torrent file backups.
 	TorrentFilesBackupDir *string `json:"torrent_files_backup_dir,omitempty"`
@@ -757,11 +907,17 @@ type PreferencesMaxRatioAct int32
 // PreferencesProxyType defines model for Preferences.ProxyType.
 type PreferencesProxyType string
 
+// PreferencesResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+type PreferencesResumeDataStorageType string
+
 // PreferencesShareLimitsMode defines model for Preferences.ShareLimitsMode.
 type PreferencesShareLimitsMode string
 
 // PreferencesTorrentContentLayout Layout for the content directory when adding torrents.
 type PreferencesTorrentContentLayout string
+
+// PreferencesTorrentContentRemoveOption Torrent content removal mode.
+type PreferencesTorrentContentRemoveOption string
 
 // PreferencesTorrentStopCondition Condition at which a torrent stops automatically.
 type PreferencesTorrentStopCondition string
@@ -784,6 +940,9 @@ type PreferencesPatch struct {
 	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
 	AnonymousMode  *bool           `json:"anonymous_mode,omitempty"`
+
+	// AppInstanceName Application instance name shown by qBittorrent.
+	AppInstanceName *string `json:"app_instance_name,omitempty"`
 
 	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
 	AutoDeleteMode *PreferencesPatchAutoDeleteMode `json:"auto_delete_mode,omitempty"`
@@ -810,14 +969,38 @@ type PreferencesPatch struct {
 	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
 	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
 
+	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
+	ConfirmRemoveAllTags *bool `json:"confirm_remove_all_tags,omitempty"`
+
+	// ConfirmRemoveTrackerFromAllTorrents Ask before removing a tracker from all torrents.
+	ConfirmRemoveTrackerFromAllTorrents *bool `json:"confirm_remove_tracker_from_all_torrents,omitempty"`
+
 	// ConfirmTorrentDeletion Confirm torrent deletion.
 	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
-	DHT                    *bool `json:"dht,omitempty"`
+
+	// ConfirmTorrentRecheck Ask for confirmation before rechecking a torrent.
+	ConfirmTorrentRecheck *bool `json:"confirm_torrent_recheck,omitempty"`
+
+	// CurrentInterfaceAddress Optional IP address to bind on the selected server interface.
+	CurrentInterfaceAddress *string `json:"current_interface_address,omitempty"`
+
+	// CurrentNetworkInterface Network interface name on the qBittorrent server; the API stores the supplied name and resolves its display name when the interface exists on the server.
+	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
+	DHT                     *bool   `json:"dht,omitempty"`
 
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
 	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
-	Encryption            *int32         `json:"encryption,omitempty"`
+
+	// EmbeddedTrackerPort Port used by the embedded tracker.
+	EmbeddedTrackerPort *int64 `json:"embedded_tracker_port,omitempty"`
+
+	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
+	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
+
+	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
+	EnableEmbeddedTracker *bool  `json:"enable_embedded_tracker,omitempty"`
+	Encryption            *int32 `json:"encryption,omitempty"`
 
 	// ExcludedFileNames Newline-delimited file name exclusion patterns; blank lines are preserved.
 	ExcludedFileNames *string `json:"excluded_file_names,omitempty"`
@@ -852,6 +1035,9 @@ type PreferencesPatch struct {
 	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
 	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
 	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IgnoreSslErrors Ignore SSL certificate errors; enabling this weakens TLS verification.
+	IgnoreSslErrors *bool `json:"ignore_ssl_errors,omitempty"`
 
 	// IncompleteFilesExt Append .!qB to incomplete files.
 	IncompleteFilesExt *bool   `json:"incomplete_files_ext,omitempty"`
@@ -894,6 +1080,9 @@ type PreferencesPatch struct {
 	// MailNotificationUsername SMTP authentication username.
 	MailNotificationUsername *string `json:"mail_notification_username,omitempty"`
 
+	// MarkOfTheWeb Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
+	MarkOfTheWeb *bool `json:"mark_of_the_web,omitempty"`
+
 	// MaxActiveCheckingTorrents Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.
 	MaxActiveCheckingTorrents *int32 `json:"max_active_checking_torrents,omitempty"`
 	MaxActiveDownloads        *int32 `json:"max_active_downloads,omitempty"`
@@ -916,6 +1105,9 @@ type PreferencesPatch struct {
 	// MaxUploadsPerTorrent Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
 	MaxUploadsPerTorrent *int64 `json:"max_uploads_per_torrent,omitempty"`
 
+	// MemoryWorkingSetLimit Physical memory working-set limit in MiB.
+	MemoryWorkingSetLimit *int64 `json:"memory_working_set_limit,omitempty"`
+
 	// MergeTrackers Merge trackers when adding a duplicate torrent.
 	MergeTrackers *bool `json:"merge_trackers,omitempty"`
 
@@ -935,21 +1127,48 @@ type PreferencesPatch struct {
 	ProxyRSS             *bool                      `json:"proxy_rss,omitempty"`
 	ProxyType            *PreferencesPatchProxyType `json:"proxy_type,omitempty"`
 	ProxyUsername        *string                    `json:"proxy_username,omitempty"`
-	QueueingEnabled      *bool                      `json:"queueing_enabled,omitempty"`
+
+	// PythonExecutablePath Server-side Python executable path; empty requests automatic detection. Changing this may require a qBittorrent restart.
+	PythonExecutablePath *string `json:"python_executable_path,omitempty"`
+	QueueingEnabled      *bool   `json:"queueing_enabled,omitempty"`
+
+	// ReannounceWhenAddressChanged Reannounce to trackers when the local IP address or port changes.
+	ReannounceWhenAddressChanged *bool `json:"reannounce_when_address_changed,omitempty"`
+
+	// RecheckCompletedTorrents Recheck torrents after they finish downloading.
+	RecheckCompletedTorrents *bool `json:"recheck_completed_torrents,omitempty"`
+
+	// RefreshInterval Internal state refresh interval in milliseconds.
+	RefreshInterval *int64 `json:"refresh_interval,omitempty"`
 
 	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
-	RemoveTorrentFileBackup         *bool   `json:"remove_torrent_file_backup,omitempty"`
-	RssAutoDownloadingEnabled       *bool   `json:"rss_auto_downloading_enabled,omitempty"`
-	RssDownloadRepackProperEpisodes *bool   `json:"rss_download_repack_proper_episodes,omitempty"`
-	RssFetchDelay                   *int64  `json:"rss_fetch_delay,omitempty"`
-	RssMaxArticlesPerFeed           *int32  `json:"rss_max_articles_per_feed,omitempty"`
-	RssProcessingEnabled            *bool   `json:"rss_processing_enabled,omitempty"`
-	RssRefreshInterval              *int32  `json:"rss_refresh_interval,omitempty"`
-	RssSmartEpisodeFilters          *string `json:"rss_smart_episode_filters,omitempty"`
-	SavePath                        *string `json:"save_path,omitempty"`
+	RemoveTorrentFileBackup *bool `json:"remove_torrent_file_backup,omitempty"`
+
+	// ResolvePeerCountries Resolve peer IP addresses to country names.
+	ResolvePeerCountries *bool `json:"resolve_peer_countries,omitempty"`
+
+	// ResolvePeerHostNames Resolve peer IP addresses to host names.
+	ResolvePeerHostNames *bool `json:"resolve_peer_host_names,omitempty"`
+
+	// ResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+	ResumeDataStorageType           *PreferencesPatchResumeDataStorageType `json:"resume_data_storage_type,omitempty"`
+	RssAutoDownloadingEnabled       *bool                                  `json:"rss_auto_downloading_enabled,omitempty"`
+	RssDownloadRepackProperEpisodes *bool                                  `json:"rss_download_repack_proper_episodes,omitempty"`
+	RssFetchDelay                   *int64                                 `json:"rss_fetch_delay,omitempty"`
+	RssMaxArticlesPerFeed           *int32                                 `json:"rss_max_articles_per_feed,omitempty"`
+	RssProcessingEnabled            *bool                                  `json:"rss_processing_enabled,omitempty"`
+	RssRefreshInterval              *int32                                 `json:"rss_refresh_interval,omitempty"`
+	RssSmartEpisodeFilters          *string                                `json:"rss_smart_episode_filters,omitempty"`
+	SavePath                        *string                                `json:"save_path,omitempty"`
 
 	// SavePathChangedTmmEnabled Relocate affected torrents when the default save path changes.
 	SavePathChangedTmmEnabled *bool `json:"save_path_changed_tmm_enabled,omitempty"`
+
+	// SaveResumeDataInterval Resume data save interval in minutes.
+	SaveResumeDataInterval *int64 `json:"save_resume_data_interval,omitempty"`
+
+	// SaveStatisticsInterval Statistics save interval in minutes.
+	SaveStatisticsInterval *int64 `json:"save_statistics_interval,omitempty"`
 
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
@@ -970,6 +1189,9 @@ type PreferencesPatch struct {
 	SchedulerEnabled *bool                            `json:"scheduler_enabled,omitempty"`
 	ShareLimitsMode  *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
 
+	// ShutdownTimeout Session shutdown timeout in seconds; -1 means unlimited.
+	ShutdownTimeout *int64 `json:"shutdown_timeout,omitempty"`
+
 	// SlowTorrentDlRateThreshold Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
 
@@ -978,6 +1200,9 @@ type PreferencesPatch struct {
 
 	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
+
+	// StartPaused Start the BitTorrent session in the paused state.
+	StartPaused *bool `json:"start_paused,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
@@ -995,6 +1220,12 @@ type PreferencesPatch struct {
 
 	// TorrentContentLayout Layout for the content directory when adding torrents.
 	TorrentContentLayout *PreferencesPatchTorrentContentLayout `json:"torrent_content_layout,omitempty"`
+
+	// TorrentContentRemoveOption Torrent content removal mode.
+	TorrentContentRemoveOption *PreferencesPatchTorrentContentRemoveOption `json:"torrent_content_remove_option,omitempty"`
+
+	// TorrentFileSizeLimit .torrent file size limit in bytes (the UI displays MiB).
+	TorrentFileSizeLimit *int64 `json:"torrent_file_size_limit,omitempty"`
 
 	// TorrentFilesBackupDir Server directory for torrent file backups.
 	TorrentFilesBackupDir *string `json:"torrent_files_backup_dir,omitempty"`
@@ -1034,11 +1265,17 @@ type PreferencesPatchMailNotificationEncryptionType string
 // PreferencesPatchProxyType defines model for PreferencesPatch.ProxyType.
 type PreferencesPatchProxyType string
 
+// PreferencesPatchResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+type PreferencesPatchResumeDataStorageType string
+
 // PreferencesPatchShareLimitsMode defines model for PreferencesPatch.ShareLimitsMode.
 type PreferencesPatchShareLimitsMode string
 
 // PreferencesPatchTorrentContentLayout Layout for the content directory when adding torrents.
 type PreferencesPatchTorrentContentLayout string
+
+// PreferencesPatchTorrentContentRemoveOption Torrent content removal mode.
+type PreferencesPatchTorrentContentRemoveOption string
 
 // PreferencesPatchTorrentStopCondition Condition at which a torrent stops automatically.
 type PreferencesPatchTorrentStopCondition string
