@@ -138,9 +138,12 @@ go test -race ./...
 ```
 
 `generate.go` pins the generator version, and `api/oapi-codegen.yaml` configures
-models and client generation. Generation uses the 3.2.1 document directly without
-conversion; the covered constructs are shared with earlier OpenAPI versions.
-Remote specification references are disabled. CI regenerates and rejects drift.
+models and client generation. `scripts/bundle_openapi.go` resolves local YAML
+fragments into an ignored, worktree-local bundle because oapi-codegen expects
+references within a single generated document. It does not change the OpenAPI
+version or wire contracts. `scripts/validate_openapi.py` validates the source
+document against the pinned official schema-base; its Python dependencies are
+tool-only and pinned in `scripts/requirements-openapi.txt`.
 
 Generated operations own endpoint paths, HTTP methods and form serialization;
 generated models own the wire keys and optional pointers. `internal/client`
@@ -151,7 +154,7 @@ and decodes generated models directly instead of using the generated response
 helpers, which buffer raw response bodies. Unknown preference keys are discarded
 and must never be captured through generated additional-properties maps.
 
-For a new supported field/endpoint, review the corresponding upstream C++ at the
+Validate with `uv run --with-requirements scripts/requirements-openapi.txt python scripts/validate_openapi.py`. For a new supported field/endpoint, review the corresponding upstream C++ at the
 baseline tag, update the specification and regenerate, then add the Terraform
 mapping and contract/acceptance coverage. Existing fields and IDs remain
 compatible. Current field coverage and the separate WebUI resource are documented

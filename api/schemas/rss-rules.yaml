@@ -1,0 +1,21 @@
+Rule:
+  type: object
+  properties: {}
+Rules:
+  type: object
+  additionalProperties:
+    $ref: '#/Rule'
+SetRuleForm:
+  type: object
+  required: [ruleName, ruleDef]
+  properties:
+    ruleName:
+      type: string
+    ruleDef:
+      type: string
+RemoveRuleForm:
+  type: object
+  required: [ruleName]
+  properties:
+    ruleName:
+      type: string

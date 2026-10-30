@@ -23,47 +23,6 @@ type preferencesResource struct {
 	webui  bool
 }
 
-type preferenceField struct{ name, kind, description string }
-
-// The field table defines only public nonsecret attributes. All optional values
-// remain nullable: null relinquishes ownership, false/zero are managed values.
-var preferenceFields = []preferenceField{
-	{"locale", "string", "Behavior: user interface language (upstream locale identifier)."},
-	{"confirm_torrent_deletion", "bool", "Behavior: confirm torrent deletion."},
-	{"status_bar_external_ip", "bool", "Behavior: show external IP in the status bar."},
-	{"store_search_jobs", "bool", "Behavior: save search tabs."},
-	{"store_search_job_results", "bool", "Behavior: also save search results."},
-	{"performance_warning", "bool", "Behavior: log performance warnings."},
-	{"file_log_enabled", "bool", "Behavior: enable file logging."},
-	{"file_log_path", "string", "Behavior: log directory on the server."},
-	{"file_log_backup_enabled", "bool", "Behavior: rotate log files by size."},
-	{"file_log_max_size", "log_size", "Behavior: rotate logs after this size in KiB, 1..1024000."},
-	{"file_log_delete_old", "bool", "Behavior: delete old backup logs."},
-	{"file_log_age", "log_age", "Behavior: backup log retention count, 1..365."},
-	{"file_log_age_type", "log_unit", "Behavior: retention unit, 0 days, 1 months, 2 years."},
-
-	{"save_path", "string", "Default save path on the server. Use a normalized absolute path."},
-	{"temp_path", "string", "Incomplete-download path on the server. Use a normalized absolute path."},
-	{"temp_path_enabled", "bool", "Enable the incomplete-download path."},
-	{"auto_tmm_enabled", "bool", "Enable automatic torrent management by default. Changes may relocate files."},
-	{"dl_limit", "rate", "Global download limit in bytes/s; 0 means unlimited."},
-	{"up_limit", "rate", "Global upload limit in bytes/s; 0 means unlimited."},
-	{"alt_dl_limit", "rate", "Alternate download limit in bytes/s; 0 means unlimited."},
-	{"alt_up_limit", "rate", "Alternate upload limit in bytes/s; 0 means unlimited."},
-	{"scheduler_enabled", "bool", "Schedule the use of alternative rate limits using the server's local time."},
-	{"schedule_from_hour", "hour", "Schedule start hour, 0..23. Configure together with schedule_from_min."},
-	{"schedule_from_min", "minute", "Schedule start minute, 0..59. Configure together with schedule_from_hour."},
-	{"schedule_to_hour", "hour", "Schedule end hour, 0..23. Configure together with schedule_to_min."},
-	{"schedule_to_min", "minute", "Schedule end minute, 0..59. Configure together with schedule_to_hour."},
-	{"scheduler_days", "days", "Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday."},
-	{"limit_utp_rate", "bool", "Apply rate limits to the uTP protocol."},
-	{"limit_tcp_overhead", "bool", "Apply rate limits to transport overhead."},
-	{"limit_lan_peers", "bool", "Apply rate limits to peers on the LAN."},
-	{"dht", "bool", "Enable DHT."}, {"pex", "bool", "Enable peer exchange."}, {"lsd", "bool", "Enable local service discovery."},
-	{"listen_port", "port", "Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field."},
-	{"upnp", "bool", "Enable UPnP/NAT-PMP port forwarding."},
-}
-
 func (r *preferencesResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_preferences"
 	if r.webui {
@@ -75,22 +34,33 @@ func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest
 	for _, f := range r.fields() {
 		switch f.kind {
 		case "string":
-			attrs[f.name] = schema.StringAttribute{Optional: true, MarkdownDescription: f.description, Validators: webUIStringValidators(f.name, r.webui)}
+			if f.readOnly {
+				attrs[f.name] = schema.StringAttribute{Computed: true, MarkdownDescription: f.description}
+			} else {
+				validators := webUIStringValidators(f.name, r.webui)
+				if len(f.stringEnums) > 0 {
+					validators = append(validators, stringChoiceValidator{allowed: f.stringEnums})
+				}
+				attrs[f.name] = schema.StringAttribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: validators}
+			}
 		case "bool":
-			attrs[f.name] = schema.BoolAttribute{Optional: true, MarkdownDescription: f.description}
-		case "hour", "minute", "days", "log_size", "log_age", "log_unit":
-			max := map[string]int64{"hour": 23, "minute": 59, "days": 9, "log_size": 1024000, "log_age": 365, "log_unit": 2}[f.kind]
-			min := int64(0)
-			if f.kind == "log_size" || f.kind == "log_age" {
-				min = 1
+			if f.readOnly {
+				attrs[f.name] = schema.BoolAttribute{Computed: true, MarkdownDescription: f.description}
+			} else {
+				attrs[f.name] = schema.BoolAttribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description}
 			}
-			attrs[f.name] = schema.Int64Attribute{Optional: true, MarkdownDescription: f.description, Validators: []validator.Int64{rangeValidator{min: min, max: max}}}
-		default:
-			description := f.description
-			if f.kind == "rate" {
-				description += " Rate limits must be multiples of 1024, at most 2147482624."
+		case "int":
+			if f.readOnly {
+				attrs[f.name] = schema.Int64Attribute{Computed: true, MarkdownDescription: f.description}
+			} else {
+				attrs[f.name] = schema.Int64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: []validator.Int64{preferenceIntValidator{field: f}}}
 			}
-			attrs[f.name] = schema.Int64Attribute{Optional: true, MarkdownDescription: description, Validators: []validator.Int64{numberValidator{port: f.kind == "port"}}}
+		case "float":
+			if f.readOnly {
+				attrs[f.name] = schema.Float64Attribute{Computed: true, MarkdownDescription: f.description}
+			} else {
+				attrs[f.name] = schema.Float64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: []validator.Float64{preferenceFloatValidator{field: f}}}
+			}
 		}
 	}
 	resp.Schema = schema.Schema{MarkdownDescription: "Singleton partial ownership of application preferences. Configure only settings to manage. Removing an attribute relinquishes management without resetting it. Import ID: application; import reads the server without claiming unconfigured settings. Destroy removes state only. Use one instance per server; overlapping ownership is unsupported. Read-after-write reports normalized/rejected fields: use server-normalized paths.", Attributes: attrs}
@@ -147,9 +117,33 @@ func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, st
 	if d.HasError() {
 		return
 	}
+	capabilityFields := configuredCapabilityFields(r.fields(), obj.Attributes())
+	if len(capabilityFields) > 0 {
+		response, err := r.readPreferences(ctx)
+		if err != nil {
+			d.AddError("Cannot verify preference support", "The server capability could not be checked before writing.")
+			return
+		}
+		b, err := json.Marshal(response)
+		if err != nil {
+			d.AddError("Cannot verify preference support", "The server capability response could not be checked before writing.")
+			return
+		}
+		var remote map[string]json.RawMessage
+		if err := json.Unmarshal(b, &remote); err != nil {
+			d.AddError("Cannot verify preference support", "The server capability response could not be checked before writing.")
+			return
+		}
+		for _, f := range unsupportedCapabilityFields(capabilityFields, remote) {
+			d.AddAttributeError(path.Root(f.name), "Unsupported preference capability", fmt.Sprintf("The server response does not expose this preference (required capability %s). No update was sent.", f.capability))
+		}
+		if d.HasError() {
+			return
+		}
+	}
 	patch := map[string]any{}
 	for k, v := range obj.Attributes() {
-		if k == "id" || v.IsNull() {
+		if k == "id" || v.IsNull() || fieldReadOnly(r.fields(), k) {
 			continue
 		}
 		if v.IsUnknown() {
@@ -158,11 +152,21 @@ func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, st
 		}
 		switch v := v.(type) {
 		case types.String:
-			patch[k] = v.ValueString()
+			if wire, value, include := preferencePatchEntry(r.fields(), k, v.ValueString()); include {
+				patch[wire] = value
+			}
 		case types.Bool:
-			patch[k] = v.ValueBool()
+			if wire, value, include := preferencePatchEntry(r.fields(), k, v.ValueBool()); include {
+				patch[wire] = value
+			}
 		case types.Int64:
-			patch[k] = v.ValueInt64()
+			if wire, value, include := preferencePatchEntry(r.fields(), k, v.ValueInt64()); include {
+				patch[wire] = value
+			}
+		case types.Float64:
+			if wire, value, include := preferencePatchEntry(r.fields(), k, v.ValueFloat64()); include {
+				patch[wire] = value
+			}
 		}
 	}
 	if d.HasError() {
@@ -180,12 +184,12 @@ func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, st
 				return
 			}
 		} else {
-			var p client.Preferences
+			var p client.PreferencesPatch
 			if err = json.Unmarshal(b, &p); err != nil {
 				d.AddError("Cannot encode preferences", "Preference types do not match the client contract.")
 				return
 			}
-			if err = r.client.SetPreferences(ctx, p); err != nil {
+			if err = r.client.SetPreferencesPatch(ctx, p); err != nil {
 				d.AddError("Cannot update preferences", err.Error())
 				return
 			}
@@ -219,8 +223,12 @@ func (r *preferencesResource) refresh(ctx context.Context, state *tfsdk.State, d
 		if k == "id" || v.IsNull() {
 			continue
 		}
-		raw, ok := remote[k]
+		raw, ok := remote[fieldWireKey(r.fields(), k)]
 		if !ok {
+			if f, exists := findPreferenceField(r.fields(), k); exists && f.readOnly && f.capability != "" {
+				values[k] = nullPreferenceValue(v)
+				continue
+			}
 			d.AddError("Unsupported preference response", fmt.Sprintf("Server omitted managed preference %s.", k))
 			continue
 		}
@@ -238,6 +246,22 @@ func (r *preferencesResource) refresh(ctx context.Context, state *tfsdk.State, d
 	d.Append(ds...)
 	d.Append(state.Set(ctx, value)...)
 }
+
+func nullPreferenceValue(v attr.Value) attr.Value {
+	switch v.(type) {
+	case types.String:
+		return types.StringNull()
+	case types.Bool:
+		return types.BoolNull()
+	case types.Int64:
+		return types.Int64Null()
+	case types.Float64:
+		return types.Float64Null()
+	default:
+		return v
+	}
+}
+
 func preferenceValue(kind attr.Value, b []byte) (attr.Value, error) {
 	switch kind.(type) {
 	case types.String:
@@ -252,6 +276,10 @@ func preferenceValue(kind attr.Value, b []byte) (attr.Value, error) {
 		var v int64
 		err := json.Unmarshal(b, &v)
 		return types.Int64Value(v), err
+	case types.Float64:
+		var v float64
+		err := json.Unmarshal(b, &v)
+		return types.Float64Value(v), err
 	}
 	return nil, fmt.Errorf("unsupported preference type")
 }

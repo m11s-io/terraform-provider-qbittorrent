@@ -30,9 +30,99 @@ type Category struct {
 // DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 type DownloadLimit = int64
 
-// Preferences Allowlisted fields only. Unknown server fields (including credentials)
+// LegacyPreferences Allowlisted fields only. Unknown server fields (including credentials)
 // are ignored, never captured in an additional-properties map. Every
 // property is optional; absence must stay distinct from false or zero.
+type LegacyPreferences struct {
+	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
+
+	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
+	AutoTMMEnabled *bool           `json:"auto_tmm_enabled,omitempty"`
+
+	// ConfirmTorrentDeletion Confirm torrent deletion.
+	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
+	DHT                    *bool `json:"dht,omitempty"`
+
+	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	DownloadLimit *DownloadLimit `json:"dl_limit,omitempty"`
+
+	// FileLogAge Backup log retention count, 1..365.
+	FileLogAge *int64 `json:"file_log_age,omitempty"`
+
+	// FileLogAgeType Retention unit: 0 days, 1 months, 2 years.
+	FileLogAgeType *int64 `json:"file_log_age_type,omitempty"`
+
+	// FileLogBackupEnabled Rotate log files by size.
+	FileLogBackupEnabled *bool `json:"file_log_backup_enabled,omitempty"`
+
+	// FileLogDeleteOld Delete old backup logs.
+	FileLogDeleteOld *bool `json:"file_log_delete_old,omitempty"`
+
+	// FileLogEnabled Enable file logging.
+	FileLogEnabled *bool `json:"file_log_enabled,omitempty"`
+
+	// FileLogMaxSize Log rotation size in KiB, 1..1024000.
+	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
+
+	// FileLogPath Server log directory.
+	FileLogPath *string `json:"file_log_path,omitempty"`
+
+	// LimitLANPeers Apply rate limits to peers on the LAN.
+	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
+
+	// LimitTCPOverhead Apply rate limits to transport overhead.
+	LimitTCPOverhead *bool `json:"limit_tcp_overhead,omitempty"`
+
+	// LimitUTPRate Apply rate limits to the uTP protocol.
+	LimitUTPRate *bool  `json:"limit_utp_rate,omitempty"`
+	ListenPort   *int64 `json:"listen_port,omitempty"`
+
+	// Locale User interface language (upstream locale identifier).
+	Locale *string `json:"locale,omitempty"`
+	LSD    *bool   `json:"lsd,omitempty"`
+
+	// PerformanceWarning Log performance warnings.
+	PerformanceWarning *bool   `json:"performance_warning,omitempty"`
+	PeX                *bool   `json:"pex,omitempty"`
+	SavePath           *string `json:"save_path,omitempty"`
+
+	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
+	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
+
+	// ScheduleFromMin Start minute; must be supplied together with schedule_from_hour.
+	ScheduleFromMin *int64 `json:"schedule_from_min,omitempty"`
+
+	// ScheduleToHour End hour; must be supplied together with schedule_to_min.
+	ScheduleToHour *int64 `json:"schedule_to_hour,omitempty"`
+
+	// ScheduleToMin End minute; must be supplied together with schedule_to_hour.
+	ScheduleToMin *int64 `json:"schedule_to_min,omitempty"`
+
+	// SchedulerDays 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
+
+	// SchedulerEnabled Schedule alternative rate limits using the server local time.
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// StatusBarExternalIP Show external IP in the status bar.
+	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StoreSearchJobResults Save search results with search tabs.
+	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
+
+	// StoreSearchJobs Save search tabs.
+	StoreSearchJobs *bool   `json:"store_search_jobs,omitempty"`
+	TempPath        *string `json:"temp_path,omitempty"`
+	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
+
+	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
+	UPnP        *bool        `json:"upnp,omitempty"`
+}
+
+// Preferences Nonsecret allowlisted preference response fields only.
 type Preferences struct {
 	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
@@ -122,6 +212,113 @@ type Preferences struct {
 	UPnP        *bool        `json:"upnp,omitempty"`
 }
 
+// PreferencesPatch Typed partial preference writes; response-only properties are excluded.
+type PreferencesPatch struct {
+	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
+
+	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
+	AutoTMMEnabled *bool           `json:"auto_tmm_enabled,omitempty"`
+
+	// ConfirmTorrentDeletion Confirm torrent deletion.
+	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
+	DHT                    *bool `json:"dht,omitempty"`
+
+	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	DownloadLimit *DownloadLimit `json:"dl_limit,omitempty"`
+
+	// FileLogAge Backup log retention count, 1..365.
+	FileLogAge *int64 `json:"file_log_age,omitempty"`
+
+	// FileLogAgeType Retention unit: 0 days, 1 months, 2 years.
+	FileLogAgeType *int64 `json:"file_log_age_type,omitempty"`
+
+	// FileLogBackupEnabled Rotate log files by size.
+	FileLogBackupEnabled *bool `json:"file_log_backup_enabled,omitempty"`
+
+	// FileLogDeleteOld Delete old backup logs.
+	FileLogDeleteOld *bool `json:"file_log_delete_old,omitempty"`
+
+	// FileLogEnabled Enable file logging.
+	FileLogEnabled *bool `json:"file_log_enabled,omitempty"`
+
+	// FileLogMaxSize Log rotation size in KiB, 1..1024000.
+	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
+
+	// FileLogPath Server log directory.
+	FileLogPath *string `json:"file_log_path,omitempty"`
+
+	// LimitLANPeers Apply rate limits to peers on the LAN.
+	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
+
+	// LimitTCPOverhead Apply rate limits to transport overhead.
+	LimitTCPOverhead *bool `json:"limit_tcp_overhead,omitempty"`
+
+	// LimitUTPRate Apply rate limits to the uTP protocol.
+	LimitUTPRate *bool  `json:"limit_utp_rate,omitempty"`
+	ListenPort   *int64 `json:"listen_port,omitempty"`
+
+	// Locale User interface language (upstream locale identifier).
+	Locale *string `json:"locale,omitempty"`
+	LSD    *bool   `json:"lsd,omitempty"`
+
+	// PerformanceWarning Log performance warnings.
+	PerformanceWarning *bool   `json:"performance_warning,omitempty"`
+	PeX                *bool   `json:"pex,omitempty"`
+	SavePath           *string `json:"save_path,omitempty"`
+
+	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
+	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
+
+	// ScheduleFromMin Start minute; must be supplied together with schedule_from_hour.
+	ScheduleFromMin *int64 `json:"schedule_from_min,omitempty"`
+
+	// ScheduleToHour End hour; must be supplied together with schedule_to_min.
+	ScheduleToHour *int64 `json:"schedule_to_hour,omitempty"`
+
+	// ScheduleToMin End minute; must be supplied together with schedule_to_hour.
+	ScheduleToMin *int64 `json:"schedule_to_min,omitempty"`
+
+	// SchedulerDays 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
+
+	// SchedulerEnabled Schedule alternative rate limits using the server local time.
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// StatusBarExternalIP Show external IP in the status bar.
+	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StoreSearchJobResults Save search results with search tabs.
+	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
+
+	// StoreSearchJobs Save search tabs.
+	StoreSearchJobs *bool   `json:"store_search_jobs,omitempty"`
+	TempPath        *string `json:"temp_path,omitempty"`
+	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
+
+	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
+	UPnP        *bool        `json:"upnp,omitempty"`
+}
+
+// RSSRule defines model for RSSRule.
+type RSSRule = map[string]interface{}
+
+// RSSRules defines model for RSSRules.
+type RSSRules map[string]map[string]interface{}
+
+// RemoveRSSRuleForm defines model for RemoveRSSRuleForm.
+type RemoveRSSRuleForm struct {
+	RuleName string `json:"ruleName"`
+}
+
+// SetRSSRuleForm defines model for SetRSSRuleForm.
+type SetRSSRuleForm struct {
+	RuleDef  string `json:"ruleDef"`
+	RuleName string `json:"ruleName"`
+}
+
 // UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 type UploadLimit = int64
 
@@ -164,6 +361,17 @@ type StoreClientDataFormdataBody struct {
 	Data string `form:"data" json:"data"`
 }
 
+// RemoveRSSRuleFormdataBody defines parameters for RemoveRSSRule.
+type RemoveRSSRuleFormdataBody struct {
+	RuleName string `form:"ruleName" json:"ruleName"`
+}
+
+// SetRSSRuleFormdataBody defines parameters for SetRSSRule.
+type SetRSSRuleFormdataBody struct {
+	RuleDef  string `form:"ruleDef" json:"ruleDef"`
+	RuleName string `form:"ruleName" json:"ruleName"`
+}
+
 // CreateCategoryFormdataBody defines parameters for CreateCategory.
 type CreateCategoryFormdataBody struct {
 	Category string `form:"category" json:"category"`
@@ -197,6 +405,12 @@ type LoadClientDataFormdataRequestBody LoadClientDataFormdataBody
 
 // StoreClientDataFormdataRequestBody defines body for StoreClientData for application/x-www-form-urlencoded ContentType.
 type StoreClientDataFormdataRequestBody StoreClientDataFormdataBody
+
+// RemoveRSSRuleFormdataRequestBody defines body for RemoveRSSRule for application/x-www-form-urlencoded ContentType.
+type RemoveRSSRuleFormdataRequestBody RemoveRSSRuleFormdataBody
+
+// SetRSSRuleFormdataRequestBody defines body for SetRSSRule for application/x-www-form-urlencoded ContentType.
+type SetRSSRuleFormdataRequestBody SetRSSRuleFormdataBody
 
 // CreateCategoryFormdataRequestBody defines body for CreateCategory for application/x-www-form-urlencoded ContentType.
 type CreateCategoryFormdataRequestBody CreateCategoryFormdataBody
@@ -361,6 +575,39 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
 	StoreClientDataWithFormdataBody(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveRSSRuleWithBody Remove an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveRSSRuleWithFormdataBody Remove an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithFormdataBody(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetRSSRules Read RSS auto-download rules
+	//
+	// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+	GetRSSRules(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetRSSRuleWithBody Create or update an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetRSSRuleWithFormdataBody Create or update an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithFormdataBody(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetCategories Read categories keyed by name
 	//
@@ -603,6 +850,89 @@ func (c *Client) StoreClientDataWithBody(ctx context.Context, contentType string
 // Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
 func (c *Client) StoreClientDataWithFormdataBody(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewStoreClientDataRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RemoveRSSRuleWithBody Remove an RSS auto-download rule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *Client) RemoveRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveRSSRuleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RemoveRSSRuleWithFormdataBody Remove an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *Client) RemoveRSSRuleWithFormdataBody(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveRSSRuleRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetRSSRules Read RSS auto-download rules
+//
+// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+func (c *Client) GetRSSRules(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRSSRulesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SetRSSRuleWithBody Create or update an RSS auto-download rule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *Client) SetRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetRSSRuleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SetRSSRuleWithFormdataBody Create or update an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *Client) SetRSSRuleWithFormdataBody(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetRSSRuleRequestWithFormdataBody(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -983,6 +1313,113 @@ func NewStoreClientDataRequestWithBody(server string, contentType string, body i
 	return req, nil
 }
 
+// NewRemoveRSSRuleRequestWithFormdataBody calls the generic RemoveRSSRule builder with application/x-www-form-urlencoded body
+func NewRemoveRSSRuleRequestWithFormdataBody(server string, body RemoveRSSRuleFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewRemoveRSSRuleRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewRemoveRSSRuleRequestWithBody constructs an http.Request for the RemoveRSSRule method, with any body, and a specified content type
+func NewRemoveRSSRuleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/rss/removeRule")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetRSSRulesRequest constructs an http.Request for the GetRSSRules method
+func NewGetRSSRulesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/rss/rules")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetRSSRuleRequestWithFormdataBody calls the generic SetRSSRule builder with application/x-www-form-urlencoded body
+func NewSetRSSRuleRequestWithFormdataBody(server string, body SetRSSRuleFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewSetRSSRuleRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewSetRSSRuleRequestWithBody constructs an http.Request for the SetRSSRule method, with any body, and a specified content type
+func NewSetRSSRuleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/rss/setRule")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetCategoriesRequest constructs an http.Request for the GetCategories method
 func NewGetCategoriesRequest(server string) (*http.Request, error) {
 	var err error
@@ -1260,6 +1697,41 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
 	StoreClientDataWithFormdataBodyWithResponse(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*StoreClientDataResponse, error)
+
+	// RemoveRSSRuleWithBodyWithResponse Remove an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error)
+
+	// RemoveRSSRuleWithFormdataBodyWithResponse Remove an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error)
+
+	// GetRSSRulesWithResponse Read RSS auto-download rules
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+	GetRSSRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRSSRulesResponse, error)
+
+	// SetRSSRuleWithBodyWithResponse Create or update an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error)
+
+	// SetRSSRuleWithFormdataBodyWithResponse Create or update an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error)
 
 	// GetCategoriesWithResponse Read categories keyed by name
 	//
@@ -1575,6 +2047,115 @@ func (r StoreClientDataResponse) ContentType() string {
 	return ""
 }
 
+type RemoveRSSRuleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r RemoveRSSRuleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RemoveRSSRuleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RemoveRSSRuleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RemoveRSSRuleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetRSSRulesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *map[string]map[string]interface{}
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetRSSRulesResponse) GetJSON200() *map[string]map[string]interface{} {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r GetRSSRulesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetRSSRulesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetRSSRulesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetRSSRulesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type SetRSSRuleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r SetRSSRuleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SetRSSRuleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetRSSRuleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SetRSSRuleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetCategoriesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -1871,6 +2452,71 @@ func (c *ClientWithResponses) StoreClientDataWithFormdataBodyWithResponse(ctx co
 	return ParseStoreClientDataResponse(rsp)
 }
 
+// RemoveRSSRuleWithBodyWithResponse Remove an RSS auto-download rule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *ClientWithResponses) RemoveRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error) {
+	rsp, err := c.RemoveRSSRuleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveRSSRuleResponse(rsp)
+}
+
+// RemoveRSSRuleWithFormdataBodyWithResponse Remove an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *ClientWithResponses) RemoveRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error) {
+	rsp, err := c.RemoveRSSRuleWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveRSSRuleResponse(rsp)
+}
+
+// GetRSSRulesWithResponse Read RSS auto-download rules
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+func (c *ClientWithResponses) GetRSSRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRSSRulesResponse, error) {
+	rsp, err := c.GetRSSRules(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetRSSRulesResponse(rsp)
+}
+
+// SetRSSRuleWithBodyWithResponse Create or update an RSS auto-download rule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *ClientWithResponses) SetRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error) {
+	rsp, err := c.SetRSSRuleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetRSSRuleResponse(rsp)
+}
+
+// SetRSSRuleWithFormdataBodyWithResponse Create or update an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *ClientWithResponses) SetRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error) {
+	rsp, err := c.SetRSSRuleWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetRSSRuleResponse(rsp)
+}
+
 // GetCategoriesWithResponse Read categories keyed by name
 //
 // Returns a wrapper object for the known response body format(s).
@@ -2099,6 +2745,64 @@ func ParseStoreClientDataResponse(rsp *http.Response) (*StoreClientDataResponse,
 	}
 
 	response := &StoreClientDataResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseRemoveRSSRuleResponse parses an HTTP response from a RemoveRSSRuleWithResponse call
+func ParseRemoveRSSRuleResponse(rsp *http.Response) (*RemoveRSSRuleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RemoveRSSRuleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetRSSRulesResponse parses an HTTP response from a GetRSSRulesWithResponse call
+func ParseGetRSSRulesResponse(rsp *http.Response) (*GetRSSRulesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRSSRulesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest map[string]map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetRSSRuleResponse parses an HTTP response from a SetRSSRuleWithResponse call
+func ParseSetRSSRuleResponse(rsp *http.Response) (*SetRSSRuleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetRSSRuleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

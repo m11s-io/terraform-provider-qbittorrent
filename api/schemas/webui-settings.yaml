@@ -1,0 +1,6 @@
+Read:
+  type: object
+  properties: {}
+Patch:
+  type: object
+  properties: {}

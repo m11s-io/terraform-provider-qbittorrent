@@ -3,4 +3,6 @@ allow-remote-refs-from: []
 generate:
   models: true
   client: true
+output-options:
+  skip-prune: true
 output: client.gen.go

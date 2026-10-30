@@ -4,8 +4,62 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"math"
 	"strings"
 )
+
+type preferenceIntValidator struct{ field preferenceField }
+
+func (v preferenceIntValidator) Description(context.Context) string {
+	return "Value is outside the supported integer range or enum."
+}
+func (v preferenceIntValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
+}
+func (v preferenceIntValidator) ValidateInt64(ctx context.Context, req validator.Int64Request, resp *validator.Int64Response) {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
+		return
+	}
+	n := req.ConfigValue.ValueInt64()
+	inRange := (v.field.integerMin == nil || n >= *v.field.integerMin) && (v.field.integerMax == nil || n <= *v.field.integerMax)
+	inEnum := len(v.field.integerEnums) == 0
+	for _, x := range v.field.integerEnums {
+		inEnum = inEnum || n == x
+	}
+	isSentinel := false
+	for _, x := range v.field.integerSentinels {
+		isSentinel = isSentinel || n == x
+	}
+	valid := (inRange && inEnum) || isSentinel
+	if v.field.integerMultipleOf > 0 && !isSentinel && n%v.field.integerMultipleOf != 0 {
+		valid = false
+	}
+	if !valid {
+		resp.Diagnostics.AddAttributeError(req.Path, "Invalid numeric preference", v.Description(ctx))
+	}
+}
+
+type preferenceFloatValidator struct{ field preferenceField }
+
+func (v preferenceFloatValidator) Description(context.Context) string {
+	return "Value must be finite and within the supported range."
+}
+func (v preferenceFloatValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
+}
+func (v preferenceFloatValidator) ValidateFloat64(ctx context.Context, req validator.Float64Request, resp *validator.Float64Response) {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
+		return
+	}
+	n := req.ConfigValue.ValueFloat64()
+	if !validPreferenceFloat(v.field, n) {
+		resp.Diagnostics.AddAttributeError(req.Path, "Invalid numeric preference", v.Description(ctx))
+	}
+}
+
+func validPreferenceFloat(f preferenceField, n float64) bool {
+	return !math.IsNaN(n) && !math.IsInf(n, 0) && (f.floatMin == nil || n >= *f.floatMin) && (f.floatMax == nil || n <= *f.floatMax)
+}
 
 type rangeValidator struct{ min, max int64 }
 

@@ -1,0 +1,3 @@
+type: object
+description: Read-only computed preference outputs. Never included in PreferencesPatch.
+properties: {}

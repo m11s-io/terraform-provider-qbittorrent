@@ -39,6 +39,8 @@ func testState(t *testing.T, s rschema.Schema, fields map[string]attr.Value) tfs
 			vals[k] = types.BoolNull()
 		case types.Int64Type:
 			vals[k] = types.Int64Null()
+		case types.Float64Type:
+			vals[k] = types.Float64Null()
 		}
 	}
 	for k, v := range fields {
@@ -146,6 +148,30 @@ func TestPreferencesOwnershipLifecycle(t *testing.T) {
 	r.ImportState(ctx, resource.ImportStateRequest{ID: "wrong"}, &bad)
 	if !bad.Diagnostics.HasError() {
 		t.Fatal("bad import accepted")
+	}
+}
+
+func TestConfiguredUnsupportedCapabilityStopsBeforePatch(t *testing.T) {
+	original := downloadsPreferenceFields
+	f := field("conditional_pref", "Downloads", "int", "Build-dependent preference")
+	f.capability = "optional-native-support"
+	downloadsPreferenceFields = append(append([]preferenceField(nil), original...), f)
+	t.Cleanup(func() { downloadsPreferenceFields = original })
+	var writes atomic.Int32
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "setPreferences") {
+			writes.Add(1)
+			return
+		}
+		fmt.Fprint(w, `{}`)
+	})
+	s := testState(t, prefsSchema(), map[string]attr.Value{"conditional_pref": types.Int64Value(1)})
+	r := &preferencesResource{client: c}
+	var out resource.CreateResponse
+	out.State = tfsdk.State{Schema: s.Schema}
+	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: s.Raw}}, &out)
+	if !out.Diagnostics.HasError() || writes.Load() != 0 {
+		t.Fatalf("unsupported field did not fail before write: writes=%d diagnostics=%v", writes.Load(), out.Diagnostics)
 	}
 }
 func TestPreferencesRejectedNormalization(t *testing.T) {
