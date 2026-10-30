@@ -53,7 +53,7 @@ func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest
 			if f.readOnly {
 				attrs[f.name] = schema.Int64Attribute{Computed: true, MarkdownDescription: f.description}
 			} else {
-				attrs[f.name] = schema.Int64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: []validator.Int64{preferenceIntValidator{field: f}}}
+				attrs[f.name] = schema.Int64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: preferenceResourceDescription(f), Validators: []validator.Int64{preferenceIntValidator{field: f}}}
 			}
 		case "float":
 			if f.readOnly {

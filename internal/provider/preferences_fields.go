@@ -22,6 +22,7 @@ type preferenceField struct {
 	name, wireKey                              string
 	kind                                       preferenceKind
 	tab, description                           string
+	resourceDescriptionSuffix                  string
 	integerMin, integerMax                     *int64
 	integerSentinels                           []int64
 	integerMultipleOf                          int64
@@ -57,10 +58,10 @@ var legacyPreferenceFields = []preferenceField{
 	field("temp_path", "Downloads", "string", "Incomplete-download path on the server. Use a normalized absolute path."),
 	field("temp_path_enabled", "Downloads", "bool", "Enable the incomplete-download path."),
 	field("auto_tmm_enabled", "Downloads", "bool", "Enable automatic torrent management by default. Changes may relocate files."),
-	{name: "dl_limit", wireKey: "dl_limit", kind: preferenceInt, tab: "Speed", description: "Global download limit in bytes/s; 0 means unlimited.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
-	{name: "up_limit", wireKey: "up_limit", kind: preferenceInt, tab: "Speed", description: "Global upload limit in bytes/s; 0 means unlimited.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
-	{name: "alt_dl_limit", wireKey: "alt_dl_limit", kind: preferenceInt, tab: "Speed", description: "Alternate download limit in bytes/s; 0 means unlimited.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
-	{name: "alt_up_limit", wireKey: "alt_up_limit", kind: preferenceInt, tab: "Speed", description: "Alternate upload limit in bytes/s; 0 means unlimited.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
+	{name: "dl_limit", wireKey: "dl_limit", kind: preferenceInt, tab: "Speed", description: "Global download limit in bytes/s; 0 means unlimited.", resourceDescriptionSuffix: " Rate limits must be multiples of 1024, at most 2147482624.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
+	{name: "up_limit", wireKey: "up_limit", kind: preferenceInt, tab: "Speed", description: "Global upload limit in bytes/s; 0 means unlimited.", resourceDescriptionSuffix: " Rate limits must be multiples of 1024, at most 2147482624.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
+	{name: "alt_dl_limit", wireKey: "alt_dl_limit", kind: preferenceInt, tab: "Speed", description: "Alternate download limit in bytes/s; 0 means unlimited.", resourceDescriptionSuffix: " Rate limits must be multiples of 1024, at most 2147482624.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
+	{name: "alt_up_limit", wireKey: "alt_up_limit", kind: preferenceInt, tab: "Speed", description: "Alternate upload limit in bytes/s; 0 means unlimited.", resourceDescriptionSuffix: " Rate limits must be multiples of 1024, at most 2147482624.", integerMin: int64ptr(0), integerMax: int64ptr(2147482624), integerMultipleOf: 1024},
 	field("scheduler_enabled", "Speed", "bool", "Schedule the use of alternative rate limits using the server's local time."),
 	{name: "schedule_from_hour", wireKey: "schedule_from_hour", kind: preferenceInt, tab: "Speed", description: "Schedule start hour, 0..23. Configure together with schedule_from_min.", integerMin: int64ptr(0), integerMax: int64ptr(23)},
 	{name: "schedule_from_min", wireKey: "schedule_from_min", kind: preferenceInt, tab: "Speed", description: "Schedule start minute, 0..59. Configure together with schedule_from_hour.", integerMin: int64ptr(0), integerMax: int64ptr(59)},
@@ -128,6 +129,10 @@ func findPreferenceField(fields []preferenceField, name string) (preferenceField
 		}
 	}
 	return preferenceField{}, false
+}
+
+func preferenceResourceDescription(f preferenceField) string {
+	return f.description + f.resourceDescriptionSuffix
 }
 
 func preferencePatchEntry(fields []preferenceField, name string, value any) (string, any, bool) {

@@ -34,4 +34,6 @@ The upstream baseline remains qBittorrent `5.3.0`, Web API `2.16.2`, commit `921
 - Official OpenAPI schema-base validation — passed for both source and bundled specs using `jsonschema==4.25.1`, `PyYAML==6.0.3`, and `https://spec.openapis.org/oas/3.2/schema-base/2026-08-30`.
 - `make generate` — passed. Two consecutive generations produced identical `client.gen.go` SHA-256: `33830203d8edfcdba0ad76af5a628822a8c0e67c2008d3633fc5885c5bbe478c`.
 - `make generate-check` before commit reported the expected difference from the base generated file; rerun after committing the generated output.
-- Disposable Terraform/OpenTofu acceptance and `make docs-check` are left to the coordinator’s integration pass.
+- `make generate-check` after commit — passed with no generated drift.
+- `make docs-check` — passed after retaining the existing resource-only Speed rate-limit description text.
+- Disposable Terraform and OpenTofu acceptance — passed in the coordinator’s integration run.

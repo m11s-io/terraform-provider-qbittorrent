@@ -105,6 +105,19 @@ func TestPreferenceFieldsRejectDuplicateWireOwnership(t *testing.T) {
 	}
 }
 
+func TestLegacyRateResourceDescriptionsRetainCompatibilityText(t *testing.T) {
+	for _, name := range []string{"dl_limit", "up_limit", "alt_dl_limit", "alt_up_limit"} {
+		f, ok := findPreferenceField(legacyPreferenceFields, name)
+		if !ok {
+			t.Fatalf("missing legacy field %s", name)
+		}
+		want := f.description + " Rate limits must be multiples of 1024, at most 2147482624."
+		if got := preferenceResourceDescription(f); got != want {
+			t.Errorf("%s description = %q want %q", name, got, want)
+		}
+	}
+}
+
 func TestReadOnlyPreferenceNeverEntersGenericPatch(t *testing.T) {
 	f := field("resolved_name", "Advanced", "string", "Display-only server value")
 	f.readOnly = true
