@@ -7,15 +7,15 @@ Read:
       enum: [0, 1, 2]
       description: "Encryption mode: allow, require, or disable encryption."
     anonymous_mode: {type: boolean}
-    max_active_checking_torrents: {type: integer, format: int32}
+    max_active_checking_torrents: {type: integer, format: int32, description: Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.}
     queueing_enabled: {type: boolean}
     max_active_downloads: {type: integer, format: int32}
     max_active_uploads: {type: integer, format: int32}
     max_active_torrents: {type: integer, format: int32}
     dont_count_slow_torrents: {type: boolean}
-    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s.}
-    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s.}
-    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds.}
+    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
+    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
+    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.}
     max_ratio: {type: number, format: double, description: Share ratio; -1 disables the limit.}
     max_ratio_enabled: {type: boolean, readOnly: true}
     max_seeding_time: {type: integer, format: int32, description: Maximum seeding minutes; -1 disables the limit.}
@@ -34,15 +34,15 @@ Patch:
   properties:
     encryption: {type: integer, format: int32}
     anonymous_mode: {type: boolean}
-    max_active_checking_torrents: {type: integer, format: int32}
+    max_active_checking_torrents: {type: integer, format: int32, description: Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.}
     queueing_enabled: {type: boolean}
     max_active_downloads: {type: integer, format: int32}
     max_active_uploads: {type: integer, format: int32}
     max_active_torrents: {type: integer, format: int32}
     dont_count_slow_torrents: {type: boolean}
-    slow_torrent_dl_rate_threshold: {type: integer, format: int32}
-    slow_torrent_ul_rate_threshold: {type: integer, format: int32}
-    slow_torrent_inactive_timer: {type: integer, format: int32}
+    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
+    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
+    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.}
     max_ratio: {type: number, format: double}
     max_seeding_time: {type: integer, format: int32}
     max_inactive_seeding_time: {type: integer, format: int32}

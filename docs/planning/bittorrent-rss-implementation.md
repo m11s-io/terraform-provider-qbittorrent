@@ -9,11 +9,13 @@ resetting the server.
 ## BitTorrent queue and privacy settings
 
 `encryption` accepts `0` (allow), `1` (require), or `2` (disable). The
-`max_active_checking_torrents`, `max_active_downloads`, `max_active_uploads`,
-and `max_active_torrents` values accept `-1` for unlimited or nonnegative
-integers. Slow download/upload thresholds use KiB/s, and the slow inactivity
-timer uses seconds. Those three UI inputs require at least 1. The
-`dont_count_slow_torrents` boolean follows the checkbox wording directly.
+`max_active_checking_torrents` is a signed 32-bit integer stored as supplied
+by qBittorrent. The active download/upload/torrent maxima accept `-1` for
+unlimited or nonnegative values. Slow download/upload thresholds use KiB/s,
+and the slow inactivity timer uses seconds. Their native setters store signed
+32-bit values as supplied; the WebUI's minimum of 1 is only a presentation
+restriction. The `dont_count_slow_torrents` boolean follows the checkbox
+wording directly.
 
 ## Share limits and tracker additions
 

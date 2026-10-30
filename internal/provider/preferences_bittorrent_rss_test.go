@@ -47,13 +47,13 @@ func TestBitTorrentPreferenceValidators(t *testing.T) {
 		valid, invalid []int64
 	}{
 		"encryption":                     {[]int64{0, 1, 2}, []int64{-1, 3}},
-		"max_active_checking_torrents":   {[]int64{-1, 0, 2}, []int64{-2}},
+		"max_active_checking_torrents":   {[]int64{-2147483648, -1, 0, 2, 2147483647}, []int64{-2147483649, 2147483648}},
 		"max_active_downloads":           {[]int64{-1, 0, 2}, []int64{-2}},
 		"max_active_uploads":             {[]int64{-1, 0, 2}, []int64{-2}},
 		"max_active_torrents":            {[]int64{-1, 0, 2}, []int64{-2}},
-		"slow_torrent_dl_rate_threshold": {[]int64{1, 1024}, []int64{0, -1}},
-		"slow_torrent_ul_rate_threshold": {[]int64{1, 1024}, []int64{0, -1}},
-		"slow_torrent_inactive_timer":    {[]int64{1, 300}, []int64{0, -1}},
+		"slow_torrent_dl_rate_threshold": {[]int64{-2147483648, -1, 0, 1, 1024, 2147483647}, []int64{-2147483649, 2147483648}},
+		"slow_torrent_ul_rate_threshold": {[]int64{-2147483648, -1, 0, 1, 1024, 2147483647}, []int64{-2147483649, 2147483648}},
+		"slow_torrent_inactive_timer":    {[]int64{-2147483648, -1, 0, 1, 300, 2147483647}, []int64{-2147483649, 2147483648}},
 		"max_seeding_time":               {[]int64{-1, 0, 120}, []int64{-2}},
 		"max_inactive_seeding_time":      {[]int64{-1, 0, 120}, []int64{-2}},
 		"max_ratio_act":                  {[]int64{0, 1, 2, 3}, []int64{-1, 4}},
@@ -197,6 +197,56 @@ func TestBitTorrentAndRSSPreferenceWireRoundTrip(t *testing.T) {
 	}
 	if !strings.Contains(filters, "\n\n") {
 		t.Fatal("fixture must include a blank filter line")
+	}
+}
+
+func TestRSSDistinctUnitsAndEmptyFilterRoundTrip(t *testing.T) {
+	want := map[string]any{
+		"rss_processing_enabled":    false,
+		"rss_refresh_interval":      float64(17),
+		"rss_fetch_delay":           float64(43),
+		"rss_smart_episode_filters": "",
+	}
+	fields := map[string]attr.Value{
+		"rss_processing_enabled":    types.BoolValue(false),
+		"rss_refresh_interval":      types.Int64Value(17),
+		"rss_fetch_delay":           types.Int64Value(43),
+		"rss_smart_episode_filters": types.StringValue(""),
+	}
+	writes := 0
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "setPreferences") {
+			writes++
+			_ = r.ParseForm()
+			var got map[string]any
+			if err := json.Unmarshal([]byte(r.Form.Get("json")), &got); err != nil {
+				t.Fatal(err)
+			}
+			if len(got) != len(want) {
+				t.Fatalf("patch keys differ: got %v", got)
+			}
+			for k, v := range want {
+				if got[k] != v {
+					t.Errorf("patch %s: got %#v want %#v", k, got[k], v)
+				}
+			}
+			return
+		}
+		_ = json.NewEncoder(w).Encode(want)
+	})
+	r := &preferencesResource{client: c}
+	s := testState(t, prefsSchema(), fields)
+	var out resource.CreateResponse
+	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: s.Raw}}, &out)
+	if out.Diagnostics.HasError() || writes != 1 {
+		t.Fatalf("writes=%d diagnostics=%v", writes, out.Diagnostics)
+	}
+	var obj types.Object
+	out.State.Get(ctx, &obj)
+	for name, value := range fields {
+		if !value.Equal(obj.Attributes()[name]) {
+			t.Errorf("state %s: got %v want %v", name, obj.Attributes()[name], value)
+		}
 	}
 }
 
