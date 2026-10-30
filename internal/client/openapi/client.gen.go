@@ -574,7 +574,7 @@ type Preferences struct {
 	// AppInstanceName Application instance name shown by qBittorrent.
 	AppInstanceName *string `json:"app_instance_name,omitempty"`
 
-	// AsyncIOThreads Asynchronous I/O thread count; sent as a signed 32-bit integer.
+	// AsyncIOThreads Asynchronous I/O thread count; the native getter clamps to 1..1024.
 	AsyncIOThreads *int `json:"async_io_threads,omitempty"`
 
 	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
@@ -614,7 +614,7 @@ type Preferences struct {
 	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
 	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
 
-	// CheckingMemoryUse Memory limit while checking torrents in MiB; sent as a signed 32-bit integer.
+	// CheckingMemoryUse Memory limit while checking torrents in MiB; native setter clamps the minimum to 1.
 	CheckingMemoryUse *int `json:"checking_memory_use,omitempty"`
 
 	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
@@ -642,22 +642,22 @@ type Preferences struct {
 	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
 	DHT                     *bool   `json:"dht,omitempty"`
 
-	// DHTBootstrapNodes DHT bootstrap node list; empty resets to libtorrent defaults.
+	// DHTBootstrapNodes DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list.
 	DHTBootstrapNodes *string `json:"dht_bootstrap_nodes,omitempty"`
 
-	// DiskCache Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value.
+	// DiskCache Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2.
 	DiskCache *int `json:"disk_cache,omitempty"`
 
-	// DiskCacheTTL Disk cache expiry in seconds; sent as a signed 32-bit integer.
+	// DiskCacheTTL Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2.
 	DiskCacheTTL *int `json:"disk_cache_ttl,omitempty"`
 
 	// DiskIOReadMode OS read cache: 0 disabled, 1 enabled.
 	DiskIOReadMode *int `json:"disk_io_read_mode,omitempty"`
 
-	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence.
+	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset.
 	DiskIOType *int `json:"disk_io_type,omitempty"`
 
-	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence.
+	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset.
 	DiskIOWriteMode *int `json:"disk_io_write_mode,omitempty"`
 
 	// DiskQueueSize Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
@@ -677,7 +677,7 @@ type Preferences struct {
 	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
 	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
 
-	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; availability depends on the linked libtorrent build.
+	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2.
 	EnableCoalesceReadWrite *bool `json:"enable_coalesce_read_write,omitempty"`
 
 	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
@@ -686,7 +686,7 @@ type Preferences struct {
 	// EnableMultiConnectionsFromSameIp Allow multiple peer connections from one IP address.
 	EnableMultiConnectionsFromSameIp *bool `json:"enable_multi_connections_from_same_ip,omitempty"`
 
-	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build.
+	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013.
 	EnableMultiConnectionsFromSamePeerId *bool `json:"enable_multi_connections_from_same_peer_id,omitempty"`
 
 	// EnablePieceExtentAffinity Prefer allocating pieces near each other on disk.
@@ -728,7 +728,7 @@ type Preferences struct {
 	// FilePoolSize Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
 	FilePoolSize *int `json:"file_pool_size,omitempty"`
 
-	// HashingThreads Hashing thread count; exposed conditionally by the server build.
+	// HashingThreads Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2.
 	HashingThreads *int `json:"hashing_threads,omitempty"`
 
 	// HostnameCacheTTL Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
@@ -736,23 +736,23 @@ type Preferences struct {
 	I2PAddress       *string `json:"i2p_address,omitempty"`
 	I2PEnabled       *bool   `json:"i2p_enabled,omitempty"`
 
-	// I2PInboundLength I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	// I2PInboundLength I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2PInboundLength *int `json:"i2p_inbound_length,omitempty"`
 
-	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
 	I2PInboundLengthVariance *int `json:"i2p_inbound_length_variance,omitempty"`
 
-	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2PInboundQuantity *int  `json:"i2p_inbound_quantity,omitempty"`
 	I2PMixedMode       *bool `json:"i2p_mixed_mode,omitempty"`
 
-	// I2POutboundLength I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	// I2POutboundLength I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2POutboundLength *int `json:"i2p_outbound_length,omitempty"`
 
-	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
 	I2POutboundLengthVariance *int `json:"i2p_outbound_length_variance,omitempty"`
 
-	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2POutboundQuantity *int `json:"i2p_outbound_quantity,omitempty"`
 
 	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
@@ -1075,7 +1075,7 @@ type Preferences struct {
 	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
 	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
 
-	// WebtorrentStunServer WebTorrent NAT traversal STUN server; exposed conditionally by the server build.
+	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
 	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
 }
 
@@ -1148,7 +1148,7 @@ type PreferencesPatch struct {
 	// AppInstanceName Application instance name shown by qBittorrent.
 	AppInstanceName *string `json:"app_instance_name,omitempty"`
 
-	// AsyncIOThreads Asynchronous I/O thread count; sent as a signed 32-bit integer.
+	// AsyncIOThreads Asynchronous I/O thread count; the native getter clamps to 1..1024.
 	AsyncIOThreads *int `json:"async_io_threads,omitempty"`
 
 	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
@@ -1188,7 +1188,7 @@ type PreferencesPatch struct {
 	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
 	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
 
-	// CheckingMemoryUse Memory limit while checking torrents in MiB; sent as a signed 32-bit integer.
+	// CheckingMemoryUse Memory limit while checking torrents in MiB; native setter clamps the minimum to 1.
 	CheckingMemoryUse *int `json:"checking_memory_use,omitempty"`
 
 	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
@@ -1213,22 +1213,22 @@ type PreferencesPatch struct {
 	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
 	DHT                     *bool   `json:"dht,omitempty"`
 
-	// DHTBootstrapNodes DHT bootstrap node list; empty resets to libtorrent defaults.
+	// DHTBootstrapNodes DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list.
 	DHTBootstrapNodes *string `json:"dht_bootstrap_nodes,omitempty"`
 
-	// DiskCache Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value.
+	// DiskCache Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2.
 	DiskCache *int `json:"disk_cache,omitempty"`
 
-	// DiskCacheTTL Disk cache expiry in seconds; sent as a signed 32-bit integer.
+	// DiskCacheTTL Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2.
 	DiskCacheTTL *int `json:"disk_cache_ttl,omitempty"`
 
 	// DiskIOReadMode OS read cache: 0 disabled, 1 enabled.
 	DiskIOReadMode *int `json:"disk_io_read_mode,omitempty"`
 
-	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence.
+	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset.
 	DiskIOType *int `json:"disk_io_type,omitempty"`
 
-	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence.
+	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset.
 	DiskIOWriteMode *int `json:"disk_io_write_mode,omitempty"`
 
 	// DiskQueueSize Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
@@ -1249,7 +1249,7 @@ type PreferencesPatch struct {
 	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
 	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
 
-	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; availability depends on the linked libtorrent build.
+	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2.
 	EnableCoalesceReadWrite *bool `json:"enable_coalesce_read_write,omitempty"`
 
 	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
@@ -1258,7 +1258,7 @@ type PreferencesPatch struct {
 	// EnableMultiConnectionsFromSameIp Allow multiple peer connections from one IP address.
 	EnableMultiConnectionsFromSameIp *bool `json:"enable_multi_connections_from_same_ip,omitempty"`
 
-	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build.
+	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013.
 	EnableMultiConnectionsFromSamePeerId *bool `json:"enable_multi_connections_from_same_peer_id,omitempty"`
 
 	// EnablePieceExtentAffinity Prefer allocating pieces near each other on disk.
@@ -1298,7 +1298,7 @@ type PreferencesPatch struct {
 	// FilePoolSize Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
 	FilePoolSize *int `json:"file_pool_size,omitempty"`
 
-	// HashingThreads Hashing thread count; exposed conditionally by the server build.
+	// HashingThreads Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2.
 	HashingThreads *int `json:"hashing_threads,omitempty"`
 
 	// HostnameCacheTTL Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
@@ -1306,23 +1306,23 @@ type PreferencesPatch struct {
 	I2PAddress       *string `json:"i2p_address,omitempty"`
 	I2PEnabled       *bool   `json:"i2p_enabled,omitempty"`
 
-	// I2PInboundLength I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	// I2PInboundLength I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2PInboundLength *int `json:"i2p_inbound_length,omitempty"`
 
-	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
 	I2PInboundLengthVariance *int `json:"i2p_inbound_length_variance,omitempty"`
 
-	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2PInboundQuantity *int  `json:"i2p_inbound_quantity,omitempty"`
 	I2PMixedMode       *bool `json:"i2p_mixed_mode,omitempty"`
 
-	// I2POutboundLength I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	// I2POutboundLength I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2POutboundLength *int `json:"i2p_outbound_length,omitempty"`
 
-	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
 	I2POutboundLengthVariance *int `json:"i2p_outbound_length_variance,omitempty"`
 
-	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 	I2POutboundQuantity *int `json:"i2p_outbound_quantity,omitempty"`
 
 	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
@@ -1632,7 +1632,7 @@ type PreferencesPatch struct {
 	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
 	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
 
-	// WebtorrentStunServer WebTorrent NAT traversal STUN server; exposed conditionally by the server build.
+	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
 	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
 }
 
