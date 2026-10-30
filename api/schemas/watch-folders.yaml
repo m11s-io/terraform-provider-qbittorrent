@@ -1,6 +1,28 @@
 Read:
   type: object
-  properties: {}
+  properties:
+    scan_dirs:
+      type: object
+      additionalProperties:
+        oneOf:
+          - type: integer
+            enum: [0, 1]
+          - type: string
+      description: >-
+        Complete qBittorrent watched-folder map. Values are integer 0 for the
+        watched folder, integer 1 for the default save path, or a custom path.
+      x-go-name: ScanDirs
 Patch:
   type: object
-  properties: {}
+  properties:
+    scan_dirs:
+      type: object
+      additionalProperties:
+        oneOf:
+          - type: integer
+            enum: [0, 1]
+          - type: string
+      description: >-
+        Replaces the complete qBittorrent watched-folder map. An empty object
+        clears all watched folders.
+      x-go-name: ScanDirs
