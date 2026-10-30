@@ -34,18 +34,59 @@ output "current_save_path" {
 - `add_trackers_url_list` (String) Computed fetched tracker list; this output is never patched.
 - `alt_dl_limit` (Number) Alternate download limit in bytes/s; 0 means unlimited.
 - `alt_up_limit` (Number) Alternate upload limit in bytes/s; 0 means unlimited.
+- `alternative_webui_enabled` (Boolean) Enable the alternative WebUI.
+- `alternative_webui_path` (String) Server-side directory path for the alternative WebUI.
+- `announce_ip` (String) IP address announced to trackers; empty uses the default. Changes require restart.
+- `announce_port` (Number) Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied.
+- `announce_to_all_tiers` (Boolean) Announce to all tracker tiers.
+- `announce_to_all_trackers` (Boolean) Announce to all trackers in each tier.
 - `anonymous_mode` (Boolean) Enable anonymous mode.
+- `app_instance_name` (String) Application instance name shown by qBittorrent.
+- `async_io_threads` (Number) Asynchronous I/O thread count; the native getter clamps to 1..1024.
 - `auto_delete_mode` (Number) Delete the source .torrent file: 0 never, 1 after a successful add, 2 also when adding is cancelled.
 - `auto_tmm_enabled` (Boolean) Enable automatic torrent management by default. Changes may relocate files.
 - `autorun_enabled` (Boolean) Run a configured program when a torrent finishes.
 - `autorun_on_torrent_added_enabled` (Boolean) Run a configured program when a torrent is added.
 - `banned_ips` (String) Manually banned IP addresses as raw newline-delimited text. qBittorrent drops empty lines and may normalize or reject entries.
+- `bdecode_depth_limit` (Number) Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer.
+- `bdecode_token_limit` (Number) Libtorrent bdecode maximum token count; sent as a signed 32-bit integer.
 - `bittorrent_protocol` (Number) Peer protocol: 0 TCP and µTP, 1 TCP only, or 2 µTP only.
+- `block_peers_on_privileged_ports` (Boolean) Block peer connections to privileged destination ports.
+- `bypass_auth_subnet_whitelist` (String) Raw newline-delimited subnet whitelist. qBittorrent also accepts commas and normalizes delimiters.
+- `bypass_auth_subnet_whitelist_enabled` (Boolean) Bypass authentication for clients in the configured subnet whitelist. This weakens authentication.
+- `bypass_local_auth` (Boolean) Bypass authentication for clients connecting from localhost. This weakens authentication.
 - `category_changed_tmm_enabled` (Boolean) Relocate affected torrents when a category save path changes.
+- `checking_memory_use` (Number) Memory limit while checking torrents in MiB; native setter clamps the minimum to 1.
+- `confirm_remove_all_tags` (Boolean) Ask before removing all tags from torrents.
+- `confirm_remove_tracker_from_all_torrents` (Boolean) Ask before removing a tracker from all torrents.
 - `confirm_torrent_deletion` (Boolean) Behavior: confirm torrent deletion.
+- `confirm_torrent_recheck` (Boolean) Ask for confirmation before rechecking a torrent.
+- `connection_speed` (Number) Outgoing connection attempts per second.
+- `current_interface_address` (String) Optional IP address to bind on the selected server interface. This is writable; the server trims and canonicalizes valid addresses and clears invalid or empty values.
+- `current_interface_name` (String) Resolved display name for the selected server network interface; read-only and omitted from the resource schema.
+- `current_network_interface` (String) Network interface name on the qBittorrent server. Choose a name from that server's interfaces; the server stores the supplied name and resolves its display name only when it matches an available interface. No interface is selected by an empty string.
 - `dht` (Boolean) Enable DHT.
+- `dht_bootstrap_nodes` (String) DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list.
+- `disk_cache` (Number) Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2.
+- `disk_cache_ttl` (Number) Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2.
+- `disk_io_read_mode` (Number) OS read cache: 0 disabled, 1 enabled.
+- `disk_io_type` (Number) Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset.
+- `disk_io_write_mode` (Number) OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset.
+- `disk_queue_size` (Number) Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
 - `dl_limit` (Number) Global download limit in bytes/s; 0 means unlimited.
 - `dont_count_slow_torrents` (Boolean) Do not count slow torrents against queue limits.
+- `dyndns_domain` (String) Dynamic DNS domain name.
+- `dyndns_enabled` (Boolean) Enable dynamic DNS updates. Applying configuration does not register an account or perform an external registration flow.
+- `dyndns_service` (Number) Dynamic DNS provider: 0 DynDNS, 1 NO-IP.
+- `dyndns_username` (String) Dynamic DNS account username.
+- `embedded_tracker_port` (Number) Port used by the embedded tracker; native setter accepts a signed 32-bit integer.
+- `embedded_tracker_port_forwarding` (Boolean) Enable port forwarding for the embedded tracker.
+- `enable_coalesce_read_write` (Boolean) Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2.
+- `enable_embedded_tracker` (Boolean) Enable qBittorrent's embedded tracker.
+- `enable_multi_connections_from_same_ip` (Boolean) Allow multiple peer connections from one IP address.
+- `enable_multi_connections_from_same_peer_id` (Boolean) Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013.
+- `enable_piece_extent_affinity` (Boolean) Prefer allocating pieces near each other on disk.
+- `enable_upload_suggestions` (Boolean) Allow upload piece suggestions.
 - `encryption` (Number) Encryption mode: 0 allow, 1 require, 2 disable.
 - `excluded_file_names` (String) Newline-delimited file name exclusion patterns; blank lines are preserved.
 - `excluded_file_names_enabled` (Boolean) Exclude files matching the configured newline-delimited patterns.
@@ -56,12 +97,23 @@ output "current_save_path" {
 - `file_log_enabled` (Boolean) Behavior: enable file logging.
 - `file_log_max_size` (Number) Behavior: rotate logs after this size in KiB, 1..1024000.
 - `file_log_path` (String) Behavior: log directory on the server.
+- `file_pool_size` (Number) Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
+- `hashing_threads` (Number) Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2.
+- `hostname_cache_ttl` (Number) Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
 - `i2p_address` (String) I2P router host address. Configure independently of i2p_enabled; the server stores it while I2P is disabled.
 - `i2p_enabled` (Boolean) Enable the experimental I2P network settings.
+- `i2p_inbound_length` (Number) I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+- `i2p_inbound_length_variance` (Number) I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
+- `i2p_inbound_quantity` (Number) I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 - `i2p_mixed_mode` (Boolean) Allow I2P torrents to connect to regular IP peers as well as I2P peers. Configure independently of i2p_enabled.
+- `i2p_outbound_length` (Number) I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+- `i2p_outbound_length_variance` (Number) I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
+- `i2p_outbound_quantity` (Number) I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
 - `i2p_pex_enabled` (Boolean) Enable I2P peer exchange. qBittorrent indicates this setting requires a restart.
 - `i2p_port` (Number) I2P router port, 0..65535. Configure independently of i2p_enabled.
 - `id` (String) Singleton ID: application.
+- `idn_support_enabled` (Boolean) Resolve internationalized domain names.
+- `ignore_ssl_errors` (Boolean) Ignore SSL certificate errors. This weakens TLS verification; only enable it explicitly.
 - `incomplete_files_ext` (Boolean) Append .!qB to incomplete files.
 - `ip_filter_enabled` (Boolean) Enable the server-side IP filter file.
 - `ip_filter_path` (String) IP filter file path on the qBittorrent server, not the Terraform runner. Stored while filtering is disabled.
@@ -79,14 +131,17 @@ output "current_save_path" {
 - `mail_notification_sender` (String) Sender address for completion email notifications.
 - `mail_notification_smtp` (String) SMTP server host with an optional port.
 - `mail_notification_username` (String) SMTP authentication username.
+- `mark_of_the_web` (Boolean) Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
 - `max_active_checking_torrents` (Number) Maximum concurrent checking torrents as a signed 32-bit integer; qBittorrent stores the value as supplied.
 - `max_active_downloads` (Number) Maximum active downloads; -1 means unlimited.
 - `max_active_torrents` (Number) Maximum active torrents; -1 means unlimited.
 - `max_active_uploads` (Number) Maximum active uploads; -1 means unlimited.
+- `max_concurrent_http_announces` (Number) Maximum concurrent HTTP tracker announces.
 - `max_connec` (Number) Global peer connection limit. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
 - `max_connec_per_torrent` (Number) Peer connection limit per torrent. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
 - `max_inactive_seeding_time` (Number) Maximum inactive seeding time in minutes; -1 disables the limit.
 - `max_inactive_seeding_time_enabled` (Boolean) Computed view indicating whether max_inactive_seeding_time is enabled.
+- `max_outstanding_block_requests` (Number) Maximum outstanding block requests from one peer.
 - `max_ratio` (Number) Share ratio limit; -1 disables the limit.
 - `max_ratio_act` (Number) Action when a share limit is reached: 0 stop, 1 remove torrent, 2 enable super seeding, 3 remove torrent and its files.
 - `max_ratio_enabled` (Boolean) Computed view indicating whether max_ratio is enabled.
@@ -94,7 +149,14 @@ output "current_save_path" {
 - `max_seeding_time_enabled` (Boolean) Computed view indicating whether max_seeding_time is enabled.
 - `max_uploads` (Number) Global upload slot limit. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
 - `max_uploads_per_torrent` (Number) Upload slot limit per torrent. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
+- `memory_working_set_limit` (Number) Physical memory working-set limit in MiB; native setter accepts a signed 32-bit integer.
 - `merge_trackers` (Boolean) Merge trackers when adding a duplicate torrent.
+- `outgoing_ports_max` (Number) Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range.
+- `outgoing_ports_min` (Number) Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range.
+- `peer_tos` (Number) Peer connection DSCP/TOS value.
+- `peer_turnover` (Number) Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied.
+- `peer_turnover_cutoff` (Number) Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied.
+- `peer_turnover_interval` (Number) Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied.
 - `performance_warning` (Boolean) Behavior: log performance warnings.
 - `pex` (Boolean) Enable peer exchange.
 - `preallocate_all` (Boolean) Preallocate disk space for all files when adding a torrent.
@@ -108,8 +170,16 @@ output "current_save_path" {
 - `proxy_rss` (Boolean) Use the configured proxy for RSS purposes.
 - `proxy_type` (String) Proxy type: None, SOCKS4, SOCKS5, or HTTP.
 - `proxy_username` (String) Proxy authentication username. Configure independently of proxy type and authentication enablement.
+- `python_executable_path` (String) Server-side Python executable path; an empty string requests automatic detection. Changing this option may require a qBittorrent restart.
 - `queueing_enabled` (Boolean) Enable torrent queueing.
+- `reannounce_when_address_changed` (Boolean) Reannounce to trackers when the local IP address or port changes.
+- `recheck_completed_torrents` (Boolean) Recheck torrents after they finish downloading.
+- `refresh_interval` (Number) Internal state refresh interval in milliseconds; native setter accepts a signed 32-bit integer.
 - `remove_torrent_file_backup` (Boolean) Remove a torrent file backup when removing its torrent.
+- `request_queue_size` (Number) Maximum outstanding requests to one peer.
+- `resolve_peer_countries` (Boolean) Resolve peer IP addresses to country names.
+- `resolve_peer_host_names` (Boolean) Resolve peer IP addresses to host names.
+- `resume_data_storage_type` (String) Resume data storage backend: Legacy or experimental SQLite. Changing this option requires a qBittorrent restart.
 - `rss_auto_downloading_enabled` (Boolean) Enable RSS auto-download processing. RSS rule definitions are managed separately.
 - `rss_download_repack_proper_episodes` (Boolean) Allow REPACK and PROPER episode releases in RSS auto-downloads.
 - `rss_fetch_delay` (Number) Delay between requests to the same host in seconds. qBittorrent stores this value as supplied.
@@ -119,29 +189,63 @@ output "current_save_path" {
 - `rss_smart_episode_filters` (String) Newline-delimited RSS smart episode filters; blank lines are preserved.
 - `save_path` (String) Default save path on the server. Use a normalized absolute path.
 - `save_path_changed_tmm_enabled` (Boolean) Relocate affected torrents when the default save path changes.
+- `save_resume_data_interval` (Number) Resume data save interval in minutes; native setter accepts a signed 32-bit integer.
+- `save_statistics_interval` (Number) Statistics save interval in minutes; native setter accepts a signed 32-bit integer.
 - `schedule_from_hour` (Number) Schedule start hour, 0..23. Configure together with schedule_from_min.
 - `schedule_from_min` (Number) Schedule start minute, 0..59. Configure together with schedule_from_hour.
 - `schedule_to_hour` (Number) Schedule end hour, 0..23. Configure together with schedule_to_min.
 - `schedule_to_min` (Number) Schedule end minute, 0..59. Configure together with schedule_to_hour.
 - `scheduler_days` (Number) Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
 - `scheduler_enabled` (Boolean) Schedule the use of alternative rate limits using the server's local time.
+- `seeding_outgoing_connections` (Boolean) Allow outgoing connections while seeding.
+- `send_buffer_low_watermark` (Number) Low send buffer watermark in KiB (wire units).
+- `send_buffer_watermark` (Number) Send buffer watermark in KiB (wire units).
+- `send_buffer_watermark_factor` (Number) Send buffer watermark growth factor in percent.
 - `share_limits_mode` (String) Apply share limits when MatchAny or MatchAll conditions are met.
+- `shutdown_timeout` (Number) Session shutdown timeout in seconds; -1 means unlimited. Native range is -1..2147483647.
 - `slow_torrent_dl_rate_threshold` (Number) Slow download threshold in KiB/s; the native signed 32-bit setter stores the value as supplied.
 - `slow_torrent_inactive_timer` (Number) Slow-torrent inactivity timer in seconds; the native signed 32-bit setter stores the value as supplied.
 - `slow_torrent_ul_rate_threshold` (Number) Slow upload threshold in KiB/s; the native signed 32-bit setter stores the value as supplied.
+- `socket_backlog_size` (Number) Listen socket backlog size.
+- `socket_receive_buffer_size` (Number) Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+- `socket_send_buffer_size` (Number) Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+- `ssrf_mitigation` (Boolean) Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy.
+- `start_paused` (Boolean) Start the BitTorrent session in the paused state.
 - `status_bar_external_ip` (Boolean) Behavior: show external IP in the status bar.
+- `stop_tracker_timeout` (Number) Stop tracker announce timeout in seconds; 0 disables the timeout.
 - `store_search_job_results` (Boolean) Behavior: also save search results.
 - `store_search_jobs` (Boolean) Behavior: save search tabs.
 - `temp_path` (String) Incomplete-download path on the server. Use a normalized absolute path.
 - `temp_path_enabled` (Boolean) Enable the incomplete-download path.
 - `torrent_changed_tmm_enabled` (Boolean) Relocate torrents when their category changes.
 - `torrent_content_layout` (String) Layout for the content directory when adding torrents.
+- `torrent_content_remove_option` (String) Torrent content removal mode: Delete permanently or MoveToTrash when supported.
+- `torrent_file_size_limit` (Number) .torrent file size limit in bytes (the UI displays MiB); preserve exact byte units.
 - `torrent_files_backup_dir` (String) Server directory for torrent file backups.
 - `torrent_files_backup_enabled` (Boolean) Back up torrent files.
 - `torrent_files_finished_backup_dir` (String) Server directory for finished torrent file backups.
 - `torrent_files_finished_backup_dir_enabled` (Boolean) Move finished torrent file backups to a separate directory.
 - `torrent_stop_condition` (String) Condition at which a torrent stops automatically.
 - `up_limit` (Number) Global upload limit in bytes/s; 0 means unlimited.
+- `upload_choking_algorithm` (Number) Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech.
+- `upload_slots_behavior` (Number) Upload slot behavior: 0 fixed slots, 1 upload-rate-based.
 - `upnp` (Boolean) Enable UPnP/NAT-PMP port forwarding.
+- `upnp_lease_duration` (Number) UPnP lease duration in seconds; 0 requests a permanent lease.
 - `use_category_paths_in_manual_mode` (Boolean) Resolve relative save paths against the category path in Manual Mode.
 - `use_unwanted_folder` (Boolean) Keep unselected files in the .unwanted folder.
+- `utp_tcp_mixed_mode` (Number) Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional.
+- `validate_https_tracker_certificate` (Boolean) Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
+- `web_ui_ban_duration` (Number) WebUI ban duration in seconds; signed 32-bit integer, stored by qBittorrent without a narrower bound.
+- `web_ui_clickjacking_protection_enabled` (Boolean) Enable clickjacking protection.
+- `web_ui_csrf_protection_enabled` (Boolean) Enable CSRF protection.
+- `web_ui_domain_list` (String) Semicolon-delimited allowed WebUI domains; * is the upstream wildcard.
+- `web_ui_host_header_validation_enabled` (Boolean) Validate the HTTP Host header.
+- `web_ui_max_auth_fail_count` (Number) Consecutive failed WebUI authentication attempts before a ban; signed 32-bit integer. Nonpositive values disable the count.
+- `web_ui_reverse_proxies_list` (String) Raw semicolon-delimited trusted reverse proxy addresses or subnets.
+- `web_ui_reverse_proxy_enabled` (Boolean) Enable trusted reverse proxy support.
+- `web_ui_secure_cookie_enabled` (Boolean) Mark WebUI session cookies Secure. Requires HTTPS or localhost.
+- `web_ui_session_timeout` (Number) WebUI session timeout in seconds; signed 32-bit integer, stored by qBittorrent without a narrower bound.
+- `web_ui_sessions_count_limit` (Number) Maximum simultaneous WebUI sessions; signed 32-bit integer. Nonpositive values mean unlimited.
+- `web_ui_upnp` (Boolean) Enable UPnP/NAT-PMP forwarding for the WebUI port. Configure explicitly; disabled values are preserved.
+- `web_ui_use_custom_http_headers_enabled` (Boolean) Enable custom HTTP response headers.
+- `webtorrent_stun_server` (String) WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
