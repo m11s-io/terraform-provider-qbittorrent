@@ -1,6 +1,568 @@
 Read:
   type: object
-  properties: {}
+  properties:
+    bdecode_depth_limit:
+      type: integer
+      description: "Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer."
+      x-go-name: BdecodeDepthLimit
+      x-ui-tab: Advanced
+    bdecode_token_limit:
+      type: integer
+      description: "Libtorrent bdecode maximum token count; sent as a signed 32-bit integer."
+      x-go-name: BdecodeTokenLimit
+      x-ui-tab: Advanced
+    async_io_threads:
+      type: integer
+      description: "Asynchronous I/O thread count; sent as a signed 32-bit integer."
+      x-go-name: AsyncIOThreads
+      x-ui-tab: Advanced
+    hashing_threads:
+      type: integer
+      description: "Hashing thread count; exposed conditionally by the server build."
+      x-go-name: HashingThreads
+      x-ui-tab: Advanced
+    file_pool_size:
+      type: integer
+      description: "Maximum open files retained by libtorrent; sent as a signed 32-bit integer."
+      x-go-name: FilePoolSize
+      x-ui-tab: Advanced
+    checking_memory_use:
+      type: integer
+      description: "Memory limit while checking torrents in MiB; sent as a signed 32-bit integer."
+      x-go-name: CheckingMemoryUse
+      x-ui-tab: Advanced
+    disk_cache:
+      type: integer
+      description: "Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value."
+      x-go-name: DiskCache
+      x-ui-tab: Advanced
+    disk_cache_ttl:
+      type: integer
+      description: "Disk cache expiry in seconds; sent as a signed 32-bit integer."
+      x-go-name: DiskCacheTTL
+      x-ui-tab: Advanced
+    disk_queue_size:
+      type: integer
+      format: int64
+      description: "Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values."
+      x-go-name: DiskQueueSize
+      x-ui-tab: Advanced
+    disk_io_type:
+      type: integer
+      description: "Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence."
+      x-go-name: DiskIOType
+      x-ui-tab: Advanced
+    disk_io_read_mode:
+      type: integer
+      description: "OS read cache: 0 disabled, 1 enabled."
+      x-go-name: DiskIOReadMode
+      x-ui-tab: Advanced
+    disk_io_write_mode:
+      type: integer
+      description: "OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence."
+      x-go-name: DiskIOWriteMode
+      x-ui-tab: Advanced
+    enable_coalesce_read_write:
+      type: boolean
+      description: "Enable coalescing disk reads and writes; availability depends on the linked libtorrent build."
+      x-go-name: EnableCoalesceReadWrite
+      x-ui-tab: Advanced
+    enable_piece_extent_affinity:
+      type: boolean
+      description: "Prefer allocating pieces near each other on disk."
+      x-go-name: EnablePieceExtentAffinity
+      x-ui-tab: Advanced
+    enable_upload_suggestions:
+      type: boolean
+      description: "Allow upload piece suggestions."
+      x-go-name: EnableUploadSuggestions
+      x-ui-tab: Advanced
+    send_buffer_watermark:
+      type: integer
+      description: "Send buffer watermark in KiB (wire units)."
+      x-go-name: SendBufferWatermark
+      x-ui-tab: Advanced
+    send_buffer_low_watermark:
+      type: integer
+      description: "Low send buffer watermark in KiB (wire units)."
+      x-go-name: SendBufferLowWatermark
+      x-ui-tab: Advanced
+    send_buffer_watermark_factor:
+      type: integer
+      description: "Send buffer watermark growth factor in percent."
+      x-go-name: SendBufferWatermarkFactor
+      x-ui-tab: Advanced
+    connection_speed:
+      type: integer
+      description: "Outgoing connection attempts per second."
+      x-go-name: ConnectionSpeed
+      x-ui-tab: Advanced
+    seeding_outgoing_connections:
+      type: boolean
+      description: "Allow outgoing connections while seeding."
+      x-go-name: SeedingOutgoingConnections
+      x-ui-tab: Advanced
+    socket_send_buffer_size:
+      type: integer
+      description: "Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default."
+      x-go-name: SocketSendBufferSize
+      x-ui-tab: Advanced
+    socket_receive_buffer_size:
+      type: integer
+      description: "Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default."
+      x-go-name: SocketReceiveBufferSize
+      x-ui-tab: Advanced
+    socket_backlog_size:
+      type: integer
+      description: "Listen socket backlog size."
+      x-go-name: SocketBacklogSize
+      x-ui-tab: Advanced
+    outgoing_ports_min:
+      type: integer
+      description: "Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range."
+      x-go-name: OutgoingPortsMin
+      x-ui-tab: Advanced
+    outgoing_ports_max:
+      type: integer
+      description: "Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range."
+      x-go-name: OutgoingPortsMax
+      x-ui-tab: Advanced
+    upnp_lease_duration:
+      type: integer
+      description: "UPnP lease duration in seconds; 0 requests a permanent lease."
+      x-go-name: UPnPLeaseDuration
+      x-ui-tab: Advanced
+    peer_tos:
+      type: integer
+      description: "Peer connection DSCP/TOS value."
+      x-go-name: PeerTos
+      x-ui-tab: Advanced
+    utp_tcp_mixed_mode:
+      type: integer
+      description: "Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional."
+      x-go-name: UtpTcpMixedMode
+      x-ui-tab: Advanced
+    hostname_cache_ttl:
+      type: integer
+      description: "Hostname resolver cache time to live in seconds; 0 disables the cache lifetime."
+      x-go-name: HostnameCacheTTL
+      x-ui-tab: Advanced
+    idn_support_enabled:
+      type: boolean
+      description: "Resolve internationalized domain names."
+      x-go-name: IDNSupportEnabled
+      x-ui-tab: Advanced
+    enable_multi_connections_from_same_ip:
+      type: boolean
+      description: "Allow multiple peer connections from one IP address."
+      x-go-name: EnableMultiConnectionsFromSameIp
+      x-ui-tab: Advanced
+    enable_multi_connections_from_same_peer_id:
+      type: boolean
+      description: "Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build."
+      x-go-name: EnableMultiConnectionsFromSamePeerId
+      x-ui-tab: Advanced
+    validate_https_tracker_certificate:
+      type: boolean
+      description: "Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy."
+      x-go-name: ValidateHttpsTrackerCertificate
+      x-ui-tab: Advanced
+    ssrf_mitigation:
+      type: boolean
+      description: "Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy."
+      x-go-name: SSRFMitigation
+      x-ui-tab: Advanced
+    block_peers_on_privileged_ports:
+      type: boolean
+      description: "Block peer connections to privileged destination ports."
+      x-go-name: BlockPeersOnPrivilegedPorts
+      x-ui-tab: Advanced
+    upload_slots_behavior:
+      type: integer
+      description: "Upload slot behavior: 0 fixed slots, 1 upload-rate-based."
+      x-go-name: UploadSlotsBehavior
+      x-ui-tab: Advanced
+    upload_choking_algorithm:
+      type: integer
+      description: "Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech."
+      x-go-name: UploadChokingAlgorithm
+      x-ui-tab: Advanced
+    announce_to_all_trackers:
+      type: boolean
+      description: "Announce to all trackers in each tier."
+      x-go-name: AnnounceToAllTrackers
+      x-ui-tab: Advanced
+    announce_to_all_tiers:
+      type: boolean
+      description: "Announce to all tracker tiers."
+      x-go-name: AnnounceToAllTiers
+      x-ui-tab: Advanced
+    announce_ip:
+      type: string
+      description: "IP address announced to trackers; empty uses the default. Changes require restart."
+      x-go-name: AnnounceIp
+      x-ui-tab: Advanced
+    announce_port:
+      type: integer
+      description: "Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied."
+      x-go-name: AnnouncePort
+      x-ui-tab: Advanced
+    max_concurrent_http_announces:
+      type: integer
+      description: "Maximum concurrent HTTP tracker announces."
+      x-go-name: MaxConcurrentHttpAnnounces
+      x-ui-tab: Advanced
+    stop_tracker_timeout:
+      type: integer
+      description: "Stop tracker announce timeout in seconds; 0 disables the timeout."
+      x-go-name: StopTrackerTimeout
+      x-ui-tab: Advanced
+    peer_turnover:
+      type: integer
+      description: "Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied."
+      x-go-name: PeerTurnover
+      x-ui-tab: Advanced
+    peer_turnover_cutoff:
+      type: integer
+      description: "Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied."
+      x-go-name: PeerTurnoverCutoff
+      x-ui-tab: Advanced
+    peer_turnover_interval:
+      type: integer
+      description: "Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied."
+      x-go-name: PeerTurnoverInterval
+      x-ui-tab: Advanced
+    request_queue_size:
+      type: integer
+      description: "Maximum outstanding requests to one peer."
+      x-go-name: RequestQueueSize
+      x-ui-tab: Advanced
+    max_outstanding_block_requests:
+      type: integer
+      description: "Maximum outstanding block requests from one peer."
+      x-go-name: MaxOutstandingBlockRequests
+      x-ui-tab: Advanced
+    dht_bootstrap_nodes:
+      type: string
+      description: "DHT bootstrap node list; empty resets to libtorrent defaults."
+      x-go-name: DHTBootstrapNodes
+      x-ui-tab: Advanced
+    webtorrent_stun_server:
+      type: string
+      description: "WebTorrent NAT traversal STUN server; exposed conditionally by the server build."
+      x-go-name: WebtorrentStunServer
+      x-ui-tab: Advanced
+    i2p_inbound_quantity:
+      type: integer
+      description: "I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      x-go-name: I2PInboundQuantity
+      x-ui-tab: Advanced
+    i2p_outbound_quantity:
+      type: integer
+      description: "I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      x-go-name: I2POutboundQuantity
+      x-ui-tab: Advanced
+    i2p_inbound_length:
+      type: integer
+      description: "I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2PInboundLength
+      x-ui-tab: Advanced
+    i2p_outbound_length:
+      type: integer
+      description: "I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2POutboundLength
+      x-ui-tab: Advanced
+    i2p_inbound_length_variance:
+      type: integer
+      description: "I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2PInboundLengthVariance
+      x-ui-tab: Advanced
+    i2p_outbound_length_variance:
+      type: integer
+      description: "I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2POutboundLengthVariance
+      x-ui-tab: Advanced
 Patch:
   type: object
-  properties: {}
+  properties:
+    bdecode_depth_limit:
+      type: integer
+      description: "Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer."
+      x-go-name: BdecodeDepthLimit
+      x-ui-tab: Advanced
+    bdecode_token_limit:
+      type: integer
+      description: "Libtorrent bdecode maximum token count; sent as a signed 32-bit integer."
+      x-go-name: BdecodeTokenLimit
+      x-ui-tab: Advanced
+    async_io_threads:
+      type: integer
+      description: "Asynchronous I/O thread count; sent as a signed 32-bit integer."
+      x-go-name: AsyncIOThreads
+      x-ui-tab: Advanced
+    hashing_threads:
+      type: integer
+      description: "Hashing thread count; exposed conditionally by the server build."
+      x-go-name: HashingThreads
+      x-ui-tab: Advanced
+    file_pool_size:
+      type: integer
+      description: "Maximum open files retained by libtorrent; sent as a signed 32-bit integer."
+      x-go-name: FilePoolSize
+      x-ui-tab: Advanced
+    checking_memory_use:
+      type: integer
+      description: "Memory limit while checking torrents in MiB; sent as a signed 32-bit integer."
+      x-go-name: CheckingMemoryUse
+      x-ui-tab: Advanced
+    disk_cache:
+      type: integer
+      description: "Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value."
+      x-go-name: DiskCache
+      x-ui-tab: Advanced
+    disk_cache_ttl:
+      type: integer
+      description: "Disk cache expiry in seconds; sent as a signed 32-bit integer."
+      x-go-name: DiskCacheTTL
+      x-ui-tab: Advanced
+    disk_queue_size:
+      type: integer
+      format: int64
+      description: "Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values."
+      x-go-name: DiskQueueSize
+      x-ui-tab: Advanced
+    disk_io_type:
+      type: integer
+      description: "Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence."
+      x-go-name: DiskIOType
+      x-ui-tab: Advanced
+    disk_io_read_mode:
+      type: integer
+      description: "OS read cache: 0 disabled, 1 enabled."
+      x-go-name: DiskIOReadMode
+      x-ui-tab: Advanced
+    disk_io_write_mode:
+      type: integer
+      description: "OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence."
+      x-go-name: DiskIOWriteMode
+      x-ui-tab: Advanced
+    enable_coalesce_read_write:
+      type: boolean
+      description: "Enable coalescing disk reads and writes; availability depends on the linked libtorrent build."
+      x-go-name: EnableCoalesceReadWrite
+      x-ui-tab: Advanced
+    enable_piece_extent_affinity:
+      type: boolean
+      description: "Prefer allocating pieces near each other on disk."
+      x-go-name: EnablePieceExtentAffinity
+      x-ui-tab: Advanced
+    enable_upload_suggestions:
+      type: boolean
+      description: "Allow upload piece suggestions."
+      x-go-name: EnableUploadSuggestions
+      x-ui-tab: Advanced
+    send_buffer_watermark:
+      type: integer
+      description: "Send buffer watermark in KiB (wire units)."
+      x-go-name: SendBufferWatermark
+      x-ui-tab: Advanced
+    send_buffer_low_watermark:
+      type: integer
+      description: "Low send buffer watermark in KiB (wire units)."
+      x-go-name: SendBufferLowWatermark
+      x-ui-tab: Advanced
+    send_buffer_watermark_factor:
+      type: integer
+      description: "Send buffer watermark growth factor in percent."
+      x-go-name: SendBufferWatermarkFactor
+      x-ui-tab: Advanced
+    connection_speed:
+      type: integer
+      description: "Outgoing connection attempts per second."
+      x-go-name: ConnectionSpeed
+      x-ui-tab: Advanced
+    seeding_outgoing_connections:
+      type: boolean
+      description: "Allow outgoing connections while seeding."
+      x-go-name: SeedingOutgoingConnections
+      x-ui-tab: Advanced
+    socket_send_buffer_size:
+      type: integer
+      description: "Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default."
+      x-go-name: SocketSendBufferSize
+      x-ui-tab: Advanced
+    socket_receive_buffer_size:
+      type: integer
+      description: "Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default."
+      x-go-name: SocketReceiveBufferSize
+      x-ui-tab: Advanced
+    socket_backlog_size:
+      type: integer
+      description: "Listen socket backlog size."
+      x-go-name: SocketBacklogSize
+      x-ui-tab: Advanced
+    outgoing_ports_min:
+      type: integer
+      description: "Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range."
+      x-go-name: OutgoingPortsMin
+      x-ui-tab: Advanced
+    outgoing_ports_max:
+      type: integer
+      description: "Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range."
+      x-go-name: OutgoingPortsMax
+      x-ui-tab: Advanced
+    upnp_lease_duration:
+      type: integer
+      description: "UPnP lease duration in seconds; 0 requests a permanent lease."
+      x-go-name: UPnPLeaseDuration
+      x-ui-tab: Advanced
+    peer_tos:
+      type: integer
+      description: "Peer connection DSCP/TOS value."
+      x-go-name: PeerTos
+      x-ui-tab: Advanced
+    utp_tcp_mixed_mode:
+      type: integer
+      description: "Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional."
+      x-go-name: UtpTcpMixedMode
+      x-ui-tab: Advanced
+    hostname_cache_ttl:
+      type: integer
+      description: "Hostname resolver cache time to live in seconds; 0 disables the cache lifetime."
+      x-go-name: HostnameCacheTTL
+      x-ui-tab: Advanced
+    idn_support_enabled:
+      type: boolean
+      description: "Resolve internationalized domain names."
+      x-go-name: IDNSupportEnabled
+      x-ui-tab: Advanced
+    enable_multi_connections_from_same_ip:
+      type: boolean
+      description: "Allow multiple peer connections from one IP address."
+      x-go-name: EnableMultiConnectionsFromSameIp
+      x-ui-tab: Advanced
+    enable_multi_connections_from_same_peer_id:
+      type: boolean
+      description: "Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build."
+      x-go-name: EnableMultiConnectionsFromSamePeerId
+      x-ui-tab: Advanced
+    validate_https_tracker_certificate:
+      type: boolean
+      description: "Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy."
+      x-go-name: ValidateHttpsTrackerCertificate
+      x-ui-tab: Advanced
+    ssrf_mitigation:
+      type: boolean
+      description: "Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy."
+      x-go-name: SSRFMitigation
+      x-ui-tab: Advanced
+    block_peers_on_privileged_ports:
+      type: boolean
+      description: "Block peer connections to privileged destination ports."
+      x-go-name: BlockPeersOnPrivilegedPorts
+      x-ui-tab: Advanced
+    upload_slots_behavior:
+      type: integer
+      description: "Upload slot behavior: 0 fixed slots, 1 upload-rate-based."
+      x-go-name: UploadSlotsBehavior
+      x-ui-tab: Advanced
+    upload_choking_algorithm:
+      type: integer
+      description: "Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech."
+      x-go-name: UploadChokingAlgorithm
+      x-ui-tab: Advanced
+    announce_to_all_trackers:
+      type: boolean
+      description: "Announce to all trackers in each tier."
+      x-go-name: AnnounceToAllTrackers
+      x-ui-tab: Advanced
+    announce_to_all_tiers:
+      type: boolean
+      description: "Announce to all tracker tiers."
+      x-go-name: AnnounceToAllTiers
+      x-ui-tab: Advanced
+    announce_ip:
+      type: string
+      description: "IP address announced to trackers; empty uses the default. Changes require restart."
+      x-go-name: AnnounceIp
+      x-ui-tab: Advanced
+    announce_port:
+      type: integer
+      description: "Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied."
+      x-go-name: AnnouncePort
+      x-ui-tab: Advanced
+    max_concurrent_http_announces:
+      type: integer
+      description: "Maximum concurrent HTTP tracker announces."
+      x-go-name: MaxConcurrentHttpAnnounces
+      x-ui-tab: Advanced
+    stop_tracker_timeout:
+      type: integer
+      description: "Stop tracker announce timeout in seconds; 0 disables the timeout."
+      x-go-name: StopTrackerTimeout
+      x-ui-tab: Advanced
+    peer_turnover:
+      type: integer
+      description: "Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied."
+      x-go-name: PeerTurnover
+      x-ui-tab: Advanced
+    peer_turnover_cutoff:
+      type: integer
+      description: "Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied."
+      x-go-name: PeerTurnoverCutoff
+      x-ui-tab: Advanced
+    peer_turnover_interval:
+      type: integer
+      description: "Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied."
+      x-go-name: PeerTurnoverInterval
+      x-ui-tab: Advanced
+    request_queue_size:
+      type: integer
+      description: "Maximum outstanding requests to one peer."
+      x-go-name: RequestQueueSize
+      x-ui-tab: Advanced
+    max_outstanding_block_requests:
+      type: integer
+      description: "Maximum outstanding block requests from one peer."
+      x-go-name: MaxOutstandingBlockRequests
+      x-ui-tab: Advanced
+    dht_bootstrap_nodes:
+      type: string
+      description: "DHT bootstrap node list; empty resets to libtorrent defaults."
+      x-go-name: DHTBootstrapNodes
+      x-ui-tab: Advanced
+    webtorrent_stun_server:
+      type: string
+      description: "WebTorrent NAT traversal STUN server; exposed conditionally by the server build."
+      x-go-name: WebtorrentStunServer
+      x-ui-tab: Advanced
+    i2p_inbound_quantity:
+      type: integer
+      description: "I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      x-go-name: I2PInboundQuantity
+      x-ui-tab: Advanced
+    i2p_outbound_quantity:
+      type: integer
+      description: "I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent."
+      x-go-name: I2POutboundQuantity
+      x-ui-tab: Advanced
+    i2p_inbound_length:
+      type: integer
+      description: "I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2PInboundLength
+      x-ui-tab: Advanced
+    i2p_outbound_length:
+      type: integer
+      description: "I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2POutboundLength
+      x-ui-tab: Advanced
+    i2p_inbound_length_variance:
+      type: integer
+      description: "I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2PInboundLengthVariance
+      x-ui-tab: Advanced
+    i2p_outbound_length_variance:
+      type: integer
+      description: "I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent."
+      x-go-name: I2POutboundLengthVariance
+      x-ui-tab: Advanced
