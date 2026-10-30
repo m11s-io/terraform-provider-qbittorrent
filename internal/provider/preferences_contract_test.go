@@ -26,7 +26,7 @@ func TestPreferenceRegistryMatchesGeneratedModels(t *testing.T) {
 	}
 	for _, f := range allPreferenceFields() {
 		t.Run(f.name, func(t *testing.T) {
-			if got, ok := read[f.wireKey]; !ok || got.Kind() != kinds[f.kind] {
+			if got, ok := read[f.wireKey]; !ok || !preferenceModelKindMatches(f, got, kinds[f.kind]) {
 				t.Errorf("response model type for %s: %v, want %v", f.wireKey, got, kinds[f.kind])
 			}
 			pt, writable := patch[f.wireKey]
@@ -34,7 +34,7 @@ func TestPreferenceRegistryMatchesGeneratedModels(t *testing.T) {
 				if writable || rs.Schema.Attributes[f.name] != nil {
 					t.Error("data-source-only field has writable ownership")
 				}
-			} else if !writable || pt.Kind() != kinds[f.kind] || rs.Schema.Attributes[f.name] == nil {
+			} else if !writable || !preferenceModelKindMatches(f, pt, kinds[f.kind]) || rs.Schema.Attributes[f.name] == nil {
 				t.Errorf("missing or mistyped writable contract: %s (%v)", f.wireKey, pt)
 			}
 			_, exposed := ds.Schema.Attributes[f.name]
@@ -72,4 +72,30 @@ func preferenceJSONFields(model reflect.Type) map[string]reflect.Type {
 		fields[key] = typ
 	}
 	return fields
+}
+
+func preferenceModelKindMatches(f preferenceField, typ reflect.Type, want reflect.Kind) bool {
+	if typ.Kind() == want {
+		return true
+	}
+	if f.kind != preferenceInt || (typ.Kind() != reflect.Int && typ.Kind() != reflect.Int32) {
+		return false
+	}
+	// Native 32-bit counters and bounded enums need not become int64 in the
+	// transport model. Large/unbounded byte counters must remain int64.
+	fits32 := func(n int64) bool { return n >= -2147483648 && n <= 2147483647 }
+	for _, n := range f.integerSentinels {
+		if !fits32(n) {
+			return false
+		}
+	}
+	if len(f.integerEnums) > 0 {
+		for _, n := range f.integerEnums {
+			if !fits32(n) {
+				return false
+			}
+		}
+		return true
+	}
+	return f.integerMin != nil && f.integerMax != nil && fits32(*f.integerMin) && fits32(*f.integerMax)
 }

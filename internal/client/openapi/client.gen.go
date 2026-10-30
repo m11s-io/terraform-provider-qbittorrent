@@ -15,6 +15,345 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for PreferencesAutoDeleteMode.
+const (
+	PreferencesAutoDeleteModeN0 PreferencesAutoDeleteMode = 0
+	PreferencesAutoDeleteModeN1 PreferencesAutoDeleteMode = 1
+	PreferencesAutoDeleteModeN2 PreferencesAutoDeleteMode = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesAutoDeleteMode enum.
+func (e PreferencesAutoDeleteMode) Valid() bool {
+	switch e {
+	case PreferencesAutoDeleteModeN0:
+		return true
+	case PreferencesAutoDeleteModeN1:
+		return true
+	case PreferencesAutoDeleteModeN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesBittorrentProtocol.
+const (
+	PreferencesBittorrentProtocolN0 PreferencesBittorrentProtocol = 0
+	PreferencesBittorrentProtocolN1 PreferencesBittorrentProtocol = 1
+	PreferencesBittorrentProtocolN2 PreferencesBittorrentProtocol = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesBittorrentProtocol enum.
+func (e PreferencesBittorrentProtocol) Valid() bool {
+	switch e {
+	case PreferencesBittorrentProtocolN0:
+		return true
+	case PreferencesBittorrentProtocolN1:
+		return true
+	case PreferencesBittorrentProtocolN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesEncryption.
+const (
+	PreferencesEncryptionN0 PreferencesEncryption = 0
+	PreferencesEncryptionN1 PreferencesEncryption = 1
+	PreferencesEncryptionN2 PreferencesEncryption = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesEncryption enum.
+func (e PreferencesEncryption) Valid() bool {
+	switch e {
+	case PreferencesEncryptionN0:
+		return true
+	case PreferencesEncryptionN1:
+		return true
+	case PreferencesEncryptionN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesMailNotificationEncryptionType.
+const (
+	PreferencesMailNotificationEncryptionTypeNone     PreferencesMailNotificationEncryptionType = "None"
+	PreferencesMailNotificationEncryptionTypeSMTPS    PreferencesMailNotificationEncryptionType = "SMTPS"
+	PreferencesMailNotificationEncryptionTypeSTARTTLS PreferencesMailNotificationEncryptionType = "STARTTLS"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesMailNotificationEncryptionType enum.
+func (e PreferencesMailNotificationEncryptionType) Valid() bool {
+	switch e {
+	case PreferencesMailNotificationEncryptionTypeNone:
+		return true
+	case PreferencesMailNotificationEncryptionTypeSMTPS:
+		return true
+	case PreferencesMailNotificationEncryptionTypeSTARTTLS:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesMaxRatioAct.
+const (
+	PreferencesMaxRatioActN0 PreferencesMaxRatioAct = 0
+	PreferencesMaxRatioActN1 PreferencesMaxRatioAct = 1
+	PreferencesMaxRatioActN2 PreferencesMaxRatioAct = 2
+	PreferencesMaxRatioActN3 PreferencesMaxRatioAct = 3
+)
+
+// Valid indicates whether the value is a known member of the PreferencesMaxRatioAct enum.
+func (e PreferencesMaxRatioAct) Valid() bool {
+	switch e {
+	case PreferencesMaxRatioActN0:
+		return true
+	case PreferencesMaxRatioActN1:
+		return true
+	case PreferencesMaxRatioActN2:
+		return true
+	case PreferencesMaxRatioActN3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesProxyType.
+const (
+	PreferencesProxyTypeHTTP   PreferencesProxyType = "HTTP"
+	PreferencesProxyTypeNone   PreferencesProxyType = "None"
+	PreferencesProxyTypeSOCKS4 PreferencesProxyType = "SOCKS4"
+	PreferencesProxyTypeSOCKS5 PreferencesProxyType = "SOCKS5"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesProxyType enum.
+func (e PreferencesProxyType) Valid() bool {
+	switch e {
+	case PreferencesProxyTypeHTTP:
+		return true
+	case PreferencesProxyTypeNone:
+		return true
+	case PreferencesProxyTypeSOCKS4:
+		return true
+	case PreferencesProxyTypeSOCKS5:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesShareLimitsMode.
+const (
+	PreferencesShareLimitsModeMatchAll PreferencesShareLimitsMode = "MatchAll"
+	PreferencesShareLimitsModeMatchAny PreferencesShareLimitsMode = "MatchAny"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesShareLimitsMode enum.
+func (e PreferencesShareLimitsMode) Valid() bool {
+	switch e {
+	case PreferencesShareLimitsModeMatchAll:
+		return true
+	case PreferencesShareLimitsModeMatchAny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesTorrentContentLayout.
+const (
+	PreferencesTorrentContentLayoutNoSubfolder PreferencesTorrentContentLayout = "NoSubfolder"
+	PreferencesTorrentContentLayoutOriginal    PreferencesTorrentContentLayout = "Original"
+	PreferencesTorrentContentLayoutSubfolder   PreferencesTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesTorrentContentLayout enum.
+func (e PreferencesTorrentContentLayout) Valid() bool {
+	switch e {
+	case PreferencesTorrentContentLayoutNoSubfolder:
+		return true
+	case PreferencesTorrentContentLayoutOriginal:
+		return true
+	case PreferencesTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesTorrentStopCondition.
+const (
+	PreferencesTorrentStopConditionFilesChecked     PreferencesTorrentStopCondition = "FilesChecked"
+	PreferencesTorrentStopConditionMetadataReceived PreferencesTorrentStopCondition = "MetadataReceived"
+	PreferencesTorrentStopConditionNone             PreferencesTorrentStopCondition = "None"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesTorrentStopCondition enum.
+func (e PreferencesTorrentStopCondition) Valid() bool {
+	switch e {
+	case PreferencesTorrentStopConditionFilesChecked:
+		return true
+	case PreferencesTorrentStopConditionMetadataReceived:
+		return true
+	case PreferencesTorrentStopConditionNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchAutoDeleteMode.
+const (
+	PreferencesPatchAutoDeleteModeN0 PreferencesPatchAutoDeleteMode = 0
+	PreferencesPatchAutoDeleteModeN1 PreferencesPatchAutoDeleteMode = 1
+	PreferencesPatchAutoDeleteModeN2 PreferencesPatchAutoDeleteMode = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchAutoDeleteMode enum.
+func (e PreferencesPatchAutoDeleteMode) Valid() bool {
+	switch e {
+	case PreferencesPatchAutoDeleteModeN0:
+		return true
+	case PreferencesPatchAutoDeleteModeN1:
+		return true
+	case PreferencesPatchAutoDeleteModeN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchBittorrentProtocol.
+const (
+	PreferencesPatchBittorrentProtocolN0 PreferencesPatchBittorrentProtocol = 0
+	PreferencesPatchBittorrentProtocolN1 PreferencesPatchBittorrentProtocol = 1
+	PreferencesPatchBittorrentProtocolN2 PreferencesPatchBittorrentProtocol = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchBittorrentProtocol enum.
+func (e PreferencesPatchBittorrentProtocol) Valid() bool {
+	switch e {
+	case PreferencesPatchBittorrentProtocolN0:
+		return true
+	case PreferencesPatchBittorrentProtocolN1:
+		return true
+	case PreferencesPatchBittorrentProtocolN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchMailNotificationEncryptionType.
+const (
+	PreferencesPatchMailNotificationEncryptionTypeNone     PreferencesPatchMailNotificationEncryptionType = "None"
+	PreferencesPatchMailNotificationEncryptionTypeSMTPS    PreferencesPatchMailNotificationEncryptionType = "SMTPS"
+	PreferencesPatchMailNotificationEncryptionTypeSTARTTLS PreferencesPatchMailNotificationEncryptionType = "STARTTLS"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchMailNotificationEncryptionType enum.
+func (e PreferencesPatchMailNotificationEncryptionType) Valid() bool {
+	switch e {
+	case PreferencesPatchMailNotificationEncryptionTypeNone:
+		return true
+	case PreferencesPatchMailNotificationEncryptionTypeSMTPS:
+		return true
+	case PreferencesPatchMailNotificationEncryptionTypeSTARTTLS:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchProxyType.
+const (
+	PreferencesPatchProxyTypeHTTP   PreferencesPatchProxyType = "HTTP"
+	PreferencesPatchProxyTypeNone   PreferencesPatchProxyType = "None"
+	PreferencesPatchProxyTypeSOCKS4 PreferencesPatchProxyType = "SOCKS4"
+	PreferencesPatchProxyTypeSOCKS5 PreferencesPatchProxyType = "SOCKS5"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchProxyType enum.
+func (e PreferencesPatchProxyType) Valid() bool {
+	switch e {
+	case PreferencesPatchProxyTypeHTTP:
+		return true
+	case PreferencesPatchProxyTypeNone:
+		return true
+	case PreferencesPatchProxyTypeSOCKS4:
+		return true
+	case PreferencesPatchProxyTypeSOCKS5:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchShareLimitsMode.
+const (
+	PreferencesPatchShareLimitsModeMatchAll PreferencesPatchShareLimitsMode = "MatchAll"
+	PreferencesPatchShareLimitsModeMatchAny PreferencesPatchShareLimitsMode = "MatchAny"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchShareLimitsMode enum.
+func (e PreferencesPatchShareLimitsMode) Valid() bool {
+	switch e {
+	case PreferencesPatchShareLimitsModeMatchAll:
+		return true
+	case PreferencesPatchShareLimitsModeMatchAny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchTorrentContentLayout.
+const (
+	PreferencesPatchTorrentContentLayoutNoSubfolder PreferencesPatchTorrentContentLayout = "NoSubfolder"
+	PreferencesPatchTorrentContentLayoutOriginal    PreferencesPatchTorrentContentLayout = "Original"
+	PreferencesPatchTorrentContentLayoutSubfolder   PreferencesPatchTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchTorrentContentLayout enum.
+func (e PreferencesPatchTorrentContentLayout) Valid() bool {
+	switch e {
+	case PreferencesPatchTorrentContentLayoutNoSubfolder:
+		return true
+	case PreferencesPatchTorrentContentLayoutOriginal:
+		return true
+	case PreferencesPatchTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchTorrentStopCondition.
+const (
+	PreferencesPatchTorrentStopConditionFilesChecked     PreferencesPatchTorrentStopCondition = "FilesChecked"
+	PreferencesPatchTorrentStopConditionMetadataReceived PreferencesPatchTorrentStopCondition = "MetadataReceived"
+	PreferencesPatchTorrentStopConditionNone             PreferencesPatchTorrentStopCondition = "None"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchTorrentStopCondition enum.
+func (e PreferencesPatchTorrentStopCondition) Valid() bool {
+	switch e {
+	case PreferencesPatchTorrentStopConditionFilesChecked:
+		return true
+	case PreferencesPatchTorrentStopConditionMetadataReceived:
+		return true
+	case PreferencesPatchTorrentStopConditionNone:
+		return true
+	default:
+		return false
+	}
+}
+
 // AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 type AltDownloadLimit = int64
 
@@ -124,19 +463,69 @@ type LegacyPreferences struct {
 
 // Preferences Nonsecret allowlisted preference response fields only.
 type Preferences struct {
+	// AddStoppedEnabled Add new torrents in the stopped state.
+	AddStoppedEnabled *bool `json:"add_stopped_enabled,omitempty"`
+
+	// AddToTopOfQueue Add new torrents to the top of the queue.
+	AddToTopOfQueue *bool `json:"add_to_top_of_queue,omitempty"`
+
+	// AddTrackers Newline-delimited tracker URLs.
+	AddTrackers               *string `json:"add_trackers,omitempty"`
+	AddTrackersEnabled        *bool   `json:"add_trackers_enabled,omitempty"`
+	AddTrackersFromUrlEnabled *bool   `json:"add_trackers_from_url_enabled,omitempty"`
+	AddTrackersUrl            *string `json:"add_trackers_url,omitempty"`
+
+	// AddTrackersUrlList Newline-delimited tracker list fetched by qBittorrent.
+	AddTrackersUrlList *string `json:"add_trackers_url_list,omitempty"`
+
 	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
 
 	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
-	AutoTMMEnabled *bool           `json:"auto_tmm_enabled,omitempty"`
+	AnonymousMode  *bool           `json:"anonymous_mode,omitempty"`
+
+	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+	AutoDeleteMode *PreferencesAutoDeleteMode `json:"auto_delete_mode,omitempty"`
+	AutoTMMEnabled *bool                      `json:"auto_tmm_enabled,omitempty"`
+
+	// AutorunEnabled Run a configured program when a torrent finishes.
+	AutorunEnabled *bool `json:"autorun_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedEnabled Run a configured program when a torrent is added.
+	AutorunOnTorrentAddedEnabled *bool `json:"autorun_on_torrent_added_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedProgram Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+	AutorunOnTorrentAddedProgram *string `json:"autorun_on_torrent_added_program,omitempty"`
+
+	// AutorunProgram Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
+	AutorunProgram *string `json:"autorun_program,omitempty"`
+
+	// BannedIPs Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
+	BannedIPs *string `json:"banned_IPs,omitempty"`
+
+	// BittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+	BittorrentProtocol *PreferencesBittorrentProtocol `json:"bittorrent_protocol,omitempty"`
+
+	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
+	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
 
 	// ConfirmTorrentDeletion Confirm torrent deletion.
 	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
 	DHT                    *bool `json:"dht,omitempty"`
 
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
-	DownloadLimit *DownloadLimit `json:"dl_limit,omitempty"`
+	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
+	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+
+	// Encryption Encryption mode: allow, require, or disable encryption.
+	Encryption *PreferencesEncryption `json:"encryption,omitempty"`
+
+	// ExcludedFileNames Newline-delimited file name exclusion patterns; blank lines are preserved.
+	ExcludedFileNames *string `json:"excluded_file_names,omitempty"`
+
+	// ExcludedFileNamesEnabled Exclude files matching the configured newline-delimited patterns.
+	ExcludedFileNamesEnabled *bool `json:"excluded_file_names_enabled,omitempty"`
 
 	// FileLogAge Backup log retention count, 1..365.
 	FileLogAge *int64 `json:"file_log_age,omitempty"`
@@ -157,7 +546,20 @@ type Preferences struct {
 	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
 
 	// FileLogPath Server log directory.
-	FileLogPath *string `json:"file_log_path,omitempty"`
+	FileLogPath  *string `json:"file_log_path,omitempty"`
+	I2PAddress   *string `json:"i2p_address,omitempty"`
+	I2PEnabled   *bool   `json:"i2p_enabled,omitempty"`
+	I2PMixedMode *bool   `json:"i2p_mixed_mode,omitempty"`
+
+	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
+	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
+	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IncompleteFilesExt Append .!qB to incomplete files.
+	IncompleteFilesExt *bool   `json:"incomplete_files_ext,omitempty"`
+	IPFilterEnabled    *bool   `json:"ip_filter_enabled,omitempty"`
+	IPFilterPath       *string `json:"ip_filter_path,omitempty"`
+	IPFilterTrackers   *bool   `json:"ip_filter_trackers,omitempty"`
 
 	// LimitLANPeers Apply rate limits to peers on the LAN.
 	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
@@ -173,10 +575,96 @@ type Preferences struct {
 	Locale *string `json:"locale,omitempty"`
 	LSD    *bool   `json:"lsd,omitempty"`
 
+	// MailNotificationAuthEnabled Enable SMTP authentication.
+	MailNotificationAuthEnabled *bool `json:"mail_notification_auth_enabled,omitempty"`
+
+	// MailNotificationEmail Recipient addresses for completion email notifications.
+	MailNotificationEmail *string `json:"mail_notification_email,omitempty"`
+
+	// MailNotificationEnabled Send an email notification when a download completes.
+	MailNotificationEnabled *bool `json:"mail_notification_enabled,omitempty"`
+
+	// MailNotificationEncryptionType SMTP encryption mode.
+	MailNotificationEncryptionType *PreferencesMailNotificationEncryptionType `json:"mail_notification_encryption_type,omitempty"`
+
+	// MailNotificationSender Sender address for completion email notifications.
+	MailNotificationSender *string `json:"mail_notification_sender,omitempty"`
+
+	// MailNotificationSmtp SMTP server host with an optional port.
+	MailNotificationSmtp *string `json:"mail_notification_smtp,omitempty"`
+
+	// MailNotificationUsername SMTP authentication username.
+	MailNotificationUsername  *string `json:"mail_notification_username,omitempty"`
+	MaxActiveCheckingTorrents *int32  `json:"max_active_checking_torrents,omitempty"`
+	MaxActiveDownloads        *int32  `json:"max_active_downloads,omitempty"`
+	MaxActiveTorrents         *int32  `json:"max_active_torrents,omitempty"`
+	MaxActiveUploads          *int32  `json:"max_active_uploads,omitempty"`
+
+	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
+	MaxConnections *int64 `json:"max_connec,omitempty"`
+
+	// MaxConnectionsPerTorrent Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxConnectionsPerTorrent *int64 `json:"max_connec_per_torrent,omitempty"`
+
+	// MaxInactiveSeedingTime Maximum inactive seeding minutes; -1 disables the limit.
+	MaxInactiveSeedingTime        *int32 `json:"max_inactive_seeding_time,omitempty"`
+	MaxInactiveSeedingTimeEnabled *bool  `json:"max_inactive_seeding_time_enabled,omitempty"`
+
+	// MaxRatio Share ratio; -1 disables the limit.
+	MaxRatio        *float64                `json:"max_ratio,omitempty"`
+	MaxRatioAct     *PreferencesMaxRatioAct `json:"max_ratio_act,omitempty"`
+	MaxRatioEnabled *bool                   `json:"max_ratio_enabled,omitempty"`
+
+	// MaxSeedingTime Maximum seeding minutes; -1 disables the limit.
+	MaxSeedingTime        *int32 `json:"max_seeding_time,omitempty"`
+	MaxSeedingTimeEnabled *bool  `json:"max_seeding_time_enabled,omitempty"`
+
+	// MaxUploads Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
+	MaxUploads *int64 `json:"max_uploads,omitempty"`
+
+	// MaxUploadsPerTorrent Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxUploadsPerTorrent *int64 `json:"max_uploads_per_torrent,omitempty"`
+
+	// MergeTrackers Merge trackers when adding a duplicate torrent.
+	MergeTrackers *bool `json:"merge_trackers,omitempty"`
+
 	// PerformanceWarning Log performance warnings.
-	PerformanceWarning *bool   `json:"performance_warning,omitempty"`
-	PeX                *bool   `json:"pex,omitempty"`
-	SavePath           *string `json:"save_path,omitempty"`
+	PerformanceWarning *bool `json:"performance_warning,omitempty"`
+	PeX                *bool `json:"pex,omitempty"`
+
+	// PreallocateAll Preallocate disk space for all files when adding a torrent.
+	PreallocateAll       *bool                 `json:"preallocate_all,omitempty"`
+	ProxyAuthEnabled     *bool                 `json:"proxy_auth_enabled,omitempty"`
+	ProxyBittorrent      *bool                 `json:"proxy_bittorrent,omitempty"`
+	ProxyHostnameLookup  *bool                 `json:"proxy_hostname_lookup,omitempty"`
+	ProxyIP              *string               `json:"proxy_ip,omitempty"`
+	ProxyMisc            *bool                 `json:"proxy_misc,omitempty"`
+	ProxyPeerConnections *bool                 `json:"proxy_peer_connections,omitempty"`
+	ProxyPort            *int64                `json:"proxy_port,omitempty"`
+	ProxyRSS             *bool                 `json:"proxy_rss,omitempty"`
+	ProxyType            *PreferencesProxyType `json:"proxy_type,omitempty"`
+	ProxyUsername        *string               `json:"proxy_username,omitempty"`
+	QueueingEnabled      *bool                 `json:"queueing_enabled,omitempty"`
+
+	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
+	RemoveTorrentFileBackup         *bool `json:"remove_torrent_file_backup,omitempty"`
+	RssAutoDownloadingEnabled       *bool `json:"rss_auto_downloading_enabled,omitempty"`
+	RssDownloadRepackProperEpisodes *bool `json:"rss_download_repack_proper_episodes,omitempty"`
+
+	// RssFetchDelay Same-host request delay in seconds.
+	RssFetchDelay         *int64 `json:"rss_fetch_delay,omitempty"`
+	RssMaxArticlesPerFeed *int32 `json:"rss_max_articles_per_feed,omitempty"`
+	RssProcessingEnabled  *bool  `json:"rss_processing_enabled,omitempty"`
+
+	// RssRefreshInterval Refresh interval in minutes.
+	RssRefreshInterval *int32 `json:"rss_refresh_interval,omitempty"`
+
+	// RssSmartEpisodeFilters Newline-delimited smart episode filters.
+	RssSmartEpisodeFilters *string `json:"rss_smart_episode_filters,omitempty"`
+	SavePath               *string `json:"save_path,omitempty"`
+
+	// SavePathChangedTmmEnabled Relocate affected torrents when the default save path changes.
+	SavePathChangedTmmEnabled *bool `json:"save_path_changed_tmm_enabled,omitempty"`
 
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
@@ -194,7 +682,17 @@ type Preferences struct {
 	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
 
 	// SchedulerEnabled Schedule alternative rate limits using the server local time.
-	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+	SchedulerEnabled *bool                       `json:"scheduler_enabled,omitempty"`
+	ShareLimitsMode  *PreferencesShareLimitsMode `json:"share_limits_mode,omitempty"`
+
+	// SlowTorrentDlRateThreshold Download threshold in KiB/s.
+	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
+
+	// SlowTorrentInactiveTimer Inactivity threshold in seconds.
+	SlowTorrentInactiveTimer *int32 `json:"slow_torrent_inactive_timer,omitempty"`
+
+	// SlowTorrentUlRateThreshold Upload threshold in KiB/s.
+	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
@@ -207,26 +705,123 @@ type Preferences struct {
 	TempPath        *string `json:"temp_path,omitempty"`
 	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
 
+	// TorrentChangedTmmEnabled Relocate torrents when their category changes.
+	TorrentChangedTmmEnabled *bool `json:"torrent_changed_tmm_enabled,omitempty"`
+
+	// TorrentContentLayout Layout for the content directory when adding torrents.
+	TorrentContentLayout *PreferencesTorrentContentLayout `json:"torrent_content_layout,omitempty"`
+
+	// TorrentFilesBackupDir Server directory for torrent file backups.
+	TorrentFilesBackupDir *string `json:"torrent_files_backup_dir,omitempty"`
+
+	// TorrentFilesBackupEnabled Back up torrent files.
+	TorrentFilesBackupEnabled *bool `json:"torrent_files_backup_enabled,omitempty"`
+
+	// TorrentFilesFinishedBackupDir Server directory for finished torrent file backups.
+	TorrentFilesFinishedBackupDir *string `json:"torrent_files_finished_backup_dir,omitempty"`
+
+	// TorrentFilesFinishedBackupDirEnabled Move finished torrent file backups to a separate directory.
+	TorrentFilesFinishedBackupDirEnabled *bool `json:"torrent_files_finished_backup_dir_enabled,omitempty"`
+
+	// TorrentStopCondition Condition at which a torrent stops automatically.
+	TorrentStopCondition *PreferencesTorrentStopCondition `json:"torrent_stop_condition,omitempty"`
+
 	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
 	UPnP        *bool        `json:"upnp,omitempty"`
+
+	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
+	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
+
+	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
+	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
 }
+
+// PreferencesAutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+type PreferencesAutoDeleteMode int
+
+// PreferencesBittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+type PreferencesBittorrentProtocol int64
+
+// PreferencesEncryption Encryption mode: allow, require, or disable encryption.
+type PreferencesEncryption int32
+
+// PreferencesMailNotificationEncryptionType SMTP encryption mode.
+type PreferencesMailNotificationEncryptionType string
+
+// PreferencesMaxRatioAct defines model for Preferences.MaxRatioAct.
+type PreferencesMaxRatioAct int32
+
+// PreferencesProxyType defines model for Preferences.ProxyType.
+type PreferencesProxyType string
+
+// PreferencesShareLimitsMode defines model for Preferences.ShareLimitsMode.
+type PreferencesShareLimitsMode string
+
+// PreferencesTorrentContentLayout Layout for the content directory when adding torrents.
+type PreferencesTorrentContentLayout string
+
+// PreferencesTorrentStopCondition Condition at which a torrent stops automatically.
+type PreferencesTorrentStopCondition string
 
 // PreferencesPatch Typed partial preference writes; response-only properties are excluded.
 type PreferencesPatch struct {
+	// AddStoppedEnabled Add new torrents in the stopped state.
+	AddStoppedEnabled *bool `json:"add_stopped_enabled,omitempty"`
+
+	// AddToTopOfQueue Add new torrents to the top of the queue.
+	AddToTopOfQueue           *bool   `json:"add_to_top_of_queue,omitempty"`
+	AddTrackers               *string `json:"add_trackers,omitempty"`
+	AddTrackersEnabled        *bool   `json:"add_trackers_enabled,omitempty"`
+	AddTrackersFromUrlEnabled *bool   `json:"add_trackers_from_url_enabled,omitempty"`
+	AddTrackersUrl            *string `json:"add_trackers_url,omitempty"`
+
 	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
 
 	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
-	AutoTMMEnabled *bool           `json:"auto_tmm_enabled,omitempty"`
+	AnonymousMode  *bool           `json:"anonymous_mode,omitempty"`
+
+	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+	AutoDeleteMode *PreferencesPatchAutoDeleteMode `json:"auto_delete_mode,omitempty"`
+	AutoTMMEnabled *bool                           `json:"auto_tmm_enabled,omitempty"`
+
+	// AutorunEnabled Run a configured program when a torrent finishes.
+	AutorunEnabled *bool `json:"autorun_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedEnabled Run a configured program when a torrent is added.
+	AutorunOnTorrentAddedEnabled *bool `json:"autorun_on_torrent_added_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedProgram Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+	AutorunOnTorrentAddedProgram *string `json:"autorun_on_torrent_added_program,omitempty"`
+
+	// AutorunProgram Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
+	AutorunProgram *string `json:"autorun_program,omitempty"`
+
+	// BannedIPs Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
+	BannedIPs *string `json:"banned_IPs,omitempty"`
+
+	// BittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+	BittorrentProtocol *PreferencesPatchBittorrentProtocol `json:"bittorrent_protocol,omitempty"`
+
+	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
+	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
 
 	// ConfirmTorrentDeletion Confirm torrent deletion.
 	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
 	DHT                    *bool `json:"dht,omitempty"`
 
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
-	DownloadLimit *DownloadLimit `json:"dl_limit,omitempty"`
+	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
+	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+	Encryption            *int32         `json:"encryption,omitempty"`
+
+	// ExcludedFileNames Newline-delimited file name exclusion patterns; blank lines are preserved.
+	ExcludedFileNames *string `json:"excluded_file_names,omitempty"`
+
+	// ExcludedFileNamesEnabled Exclude files matching the configured newline-delimited patterns.
+	ExcludedFileNamesEnabled *bool `json:"excluded_file_names_enabled,omitempty"`
 
 	// FileLogAge Backup log retention count, 1..365.
 	FileLogAge *int64 `json:"file_log_age,omitempty"`
@@ -247,7 +842,20 @@ type PreferencesPatch struct {
 	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
 
 	// FileLogPath Server log directory.
-	FileLogPath *string `json:"file_log_path,omitempty"`
+	FileLogPath  *string `json:"file_log_path,omitempty"`
+	I2PAddress   *string `json:"i2p_address,omitempty"`
+	I2PEnabled   *bool   `json:"i2p_enabled,omitempty"`
+	I2PMixedMode *bool   `json:"i2p_mixed_mode,omitempty"`
+
+	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
+	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
+	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IncompleteFilesExt Append .!qB to incomplete files.
+	IncompleteFilesExt *bool   `json:"incomplete_files_ext,omitempty"`
+	IPFilterEnabled    *bool   `json:"ip_filter_enabled,omitempty"`
+	IPFilterPath       *string `json:"ip_filter_path,omitempty"`
+	IPFilterTrackers   *bool   `json:"ip_filter_trackers,omitempty"`
 
 	// LimitLANPeers Apply rate limits to peers on the LAN.
 	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
@@ -263,10 +871,81 @@ type PreferencesPatch struct {
 	Locale *string `json:"locale,omitempty"`
 	LSD    *bool   `json:"lsd,omitempty"`
 
+	// MailNotificationAuthEnabled Enable SMTP authentication.
+	MailNotificationAuthEnabled *bool `json:"mail_notification_auth_enabled,omitempty"`
+
+	// MailNotificationEmail Recipient addresses for completion email notifications.
+	MailNotificationEmail *string `json:"mail_notification_email,omitempty"`
+
+	// MailNotificationEnabled Send an email notification when a download completes.
+	MailNotificationEnabled *bool `json:"mail_notification_enabled,omitempty"`
+
+	// MailNotificationEncryptionType SMTP encryption mode.
+	MailNotificationEncryptionType *PreferencesPatchMailNotificationEncryptionType `json:"mail_notification_encryption_type,omitempty"`
+
+	// MailNotificationSender Sender address for completion email notifications.
+	MailNotificationSender *string `json:"mail_notification_sender,omitempty"`
+
+	// MailNotificationSmtp SMTP server host with an optional port.
+	MailNotificationSmtp *string `json:"mail_notification_smtp,omitempty"`
+
+	// MailNotificationUsername SMTP authentication username.
+	MailNotificationUsername  *string `json:"mail_notification_username,omitempty"`
+	MaxActiveCheckingTorrents *int32  `json:"max_active_checking_torrents,omitempty"`
+	MaxActiveDownloads        *int32  `json:"max_active_downloads,omitempty"`
+	MaxActiveTorrents         *int32  `json:"max_active_torrents,omitempty"`
+	MaxActiveUploads          *int32  `json:"max_active_uploads,omitempty"`
+
+	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
+	MaxConnections *int64 `json:"max_connec,omitempty"`
+
+	// MaxConnectionsPerTorrent Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxConnectionsPerTorrent *int64   `json:"max_connec_per_torrent,omitempty"`
+	MaxInactiveSeedingTime   *int32   `json:"max_inactive_seeding_time,omitempty"`
+	MaxRatio                 *float64 `json:"max_ratio,omitempty"`
+	MaxRatioAct              *int32   `json:"max_ratio_act,omitempty"`
+	MaxSeedingTime           *int32   `json:"max_seeding_time,omitempty"`
+
+	// MaxUploads Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
+	MaxUploads *int64 `json:"max_uploads,omitempty"`
+
+	// MaxUploadsPerTorrent Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxUploadsPerTorrent *int64 `json:"max_uploads_per_torrent,omitempty"`
+
+	// MergeTrackers Merge trackers when adding a duplicate torrent.
+	MergeTrackers *bool `json:"merge_trackers,omitempty"`
+
 	// PerformanceWarning Log performance warnings.
-	PerformanceWarning *bool   `json:"performance_warning,omitempty"`
-	PeX                *bool   `json:"pex,omitempty"`
-	SavePath           *string `json:"save_path,omitempty"`
+	PerformanceWarning *bool `json:"performance_warning,omitempty"`
+	PeX                *bool `json:"pex,omitempty"`
+
+	// PreallocateAll Preallocate disk space for all files when adding a torrent.
+	PreallocateAll       *bool                      `json:"preallocate_all,omitempty"`
+	ProxyAuthEnabled     *bool                      `json:"proxy_auth_enabled,omitempty"`
+	ProxyBittorrent      *bool                      `json:"proxy_bittorrent,omitempty"`
+	ProxyHostnameLookup  *bool                      `json:"proxy_hostname_lookup,omitempty"`
+	ProxyIP              *string                    `json:"proxy_ip,omitempty"`
+	ProxyMisc            *bool                      `json:"proxy_misc,omitempty"`
+	ProxyPeerConnections *bool                      `json:"proxy_peer_connections,omitempty"`
+	ProxyPort            *int64                     `json:"proxy_port,omitempty"`
+	ProxyRSS             *bool                      `json:"proxy_rss,omitempty"`
+	ProxyType            *PreferencesPatchProxyType `json:"proxy_type,omitempty"`
+	ProxyUsername        *string                    `json:"proxy_username,omitempty"`
+	QueueingEnabled      *bool                      `json:"queueing_enabled,omitempty"`
+
+	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
+	RemoveTorrentFileBackup         *bool   `json:"remove_torrent_file_backup,omitempty"`
+	RssAutoDownloadingEnabled       *bool   `json:"rss_auto_downloading_enabled,omitempty"`
+	RssDownloadRepackProperEpisodes *bool   `json:"rss_download_repack_proper_episodes,omitempty"`
+	RssFetchDelay                   *int64  `json:"rss_fetch_delay,omitempty"`
+	RssMaxArticlesPerFeed           *int32  `json:"rss_max_articles_per_feed,omitempty"`
+	RssProcessingEnabled            *bool   `json:"rss_processing_enabled,omitempty"`
+	RssRefreshInterval              *int32  `json:"rss_refresh_interval,omitempty"`
+	RssSmartEpisodeFilters          *string `json:"rss_smart_episode_filters,omitempty"`
+	SavePath                        *string `json:"save_path,omitempty"`
+
+	// SavePathChangedTmmEnabled Relocate affected torrents when the default save path changes.
+	SavePathChangedTmmEnabled *bool `json:"save_path_changed_tmm_enabled,omitempty"`
 
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
@@ -284,7 +963,11 @@ type PreferencesPatch struct {
 	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
 
 	// SchedulerEnabled Schedule alternative rate limits using the server local time.
-	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+	SchedulerEnabled           *bool                            `json:"scheduler_enabled,omitempty"`
+	ShareLimitsMode            *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
+	SlowTorrentDlRateThreshold *int32                           `json:"slow_torrent_dl_rate_threshold,omitempty"`
+	SlowTorrentInactiveTimer   *int32                           `json:"slow_torrent_inactive_timer,omitempty"`
+	SlowTorrentUlRateThreshold *int32                           `json:"slow_torrent_ul_rate_threshold,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
@@ -297,10 +980,58 @@ type PreferencesPatch struct {
 	TempPath        *string `json:"temp_path,omitempty"`
 	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
 
+	// TorrentChangedTmmEnabled Relocate torrents when their category changes.
+	TorrentChangedTmmEnabled *bool `json:"torrent_changed_tmm_enabled,omitempty"`
+
+	// TorrentContentLayout Layout for the content directory when adding torrents.
+	TorrentContentLayout *PreferencesPatchTorrentContentLayout `json:"torrent_content_layout,omitempty"`
+
+	// TorrentFilesBackupDir Server directory for torrent file backups.
+	TorrentFilesBackupDir *string `json:"torrent_files_backup_dir,omitempty"`
+
+	// TorrentFilesBackupEnabled Back up torrent files.
+	TorrentFilesBackupEnabled *bool `json:"torrent_files_backup_enabled,omitempty"`
+
+	// TorrentFilesFinishedBackupDir Server directory for finished torrent file backups.
+	TorrentFilesFinishedBackupDir *string `json:"torrent_files_finished_backup_dir,omitempty"`
+
+	// TorrentFilesFinishedBackupDirEnabled Move finished torrent file backups to a separate directory.
+	TorrentFilesFinishedBackupDirEnabled *bool `json:"torrent_files_finished_backup_dir_enabled,omitempty"`
+
+	// TorrentStopCondition Condition at which a torrent stops automatically.
+	TorrentStopCondition *PreferencesPatchTorrentStopCondition `json:"torrent_stop_condition,omitempty"`
+
 	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
 	UPnP        *bool        `json:"upnp,omitempty"`
+
+	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
+	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
+
+	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
+	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
 }
+
+// PreferencesPatchAutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+type PreferencesPatchAutoDeleteMode int
+
+// PreferencesPatchBittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+type PreferencesPatchBittorrentProtocol int64
+
+// PreferencesPatchMailNotificationEncryptionType SMTP encryption mode.
+type PreferencesPatchMailNotificationEncryptionType string
+
+// PreferencesPatchProxyType defines model for PreferencesPatch.ProxyType.
+type PreferencesPatchProxyType string
+
+// PreferencesPatchShareLimitsMode defines model for PreferencesPatch.ShareLimitsMode.
+type PreferencesPatchShareLimitsMode string
+
+// PreferencesPatchTorrentContentLayout Layout for the content directory when adding torrents.
+type PreferencesPatchTorrentContentLayout string
+
+// PreferencesPatchTorrentStopCondition Condition at which a torrent stops automatically.
+type PreferencesPatchTorrentStopCondition string
 
 // RSSRule defines model for RSSRule.
 type RSSRule = map[string]interface{}
