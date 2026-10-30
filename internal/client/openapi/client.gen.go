@@ -1073,6 +1073,7 @@ type Preferences struct {
 	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
 	WebUISessionTimeout                *int32  `json:"web_ui_session_timeout,omitempty"`
 	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
+	WebUIUPnP                          *bool   `json:"web_ui_upnp,omitempty"`
 	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
 
 	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
@@ -1630,6 +1631,7 @@ type PreferencesPatch struct {
 	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
 	WebUISessionTimeout                *int32  `json:"web_ui_session_timeout,omitempty"`
 	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
+	WebUIUPnP                          *bool   `json:"web_ui_upnp,omitempty"`
 	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
 
 	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.

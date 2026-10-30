@@ -1,6 +1,7 @@
 Read:
   type: object
   properties:
+    web_ui_upnp: { type: boolean, x-go-name: WebUIUPnP, x-ui-tab: WebUI }
     bypass_local_auth: { type: boolean, x-go-name: BypassLocalAuth }
     bypass_auth_subnet_whitelist_enabled: { type: boolean, x-go-name: BypassAuthSubnetWhitelistEnabled }
     bypass_auth_subnet_whitelist: { type: string, x-go-name: BypassAuthSubnetWhitelist }
@@ -26,6 +27,7 @@ Read:
 Patch:
   type: object
   properties:
+    web_ui_upnp: { type: boolean, x-go-name: WebUIUPnP, x-ui-tab: WebUI }
     bypass_local_auth: { type: boolean, x-go-name: BypassLocalAuth }
     bypass_auth_subnet_whitelist_enabled: { type: boolean, x-go-name: BypassAuthSubnetWhitelistEnabled }
     bypass_auth_subnet_whitelist: { type: string, x-go-name: BypassAuthSubnetWhitelist }

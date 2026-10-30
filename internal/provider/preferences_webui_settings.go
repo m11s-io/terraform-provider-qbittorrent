@@ -1,6 +1,7 @@
 package provider
 
 var webUISettingsPreferenceFields = []preferenceField{
+	field("web_ui_upnp", "WebUI", "bool", "Enable UPnP/NAT-PMP forwarding for the WebUI port. Configure explicitly; disabled values are preserved."),
 	field("bypass_local_auth", "WebUI", "bool", "Bypass authentication for clients connecting from localhost. This weakens authentication."),
 	field("bypass_auth_subnet_whitelist_enabled", "WebUI", "bool", "Bypass authentication for clients in the configured subnet whitelist. This weakens authentication."),
 	field("bypass_auth_subnet_whitelist", "WebUI", "string", "Raw newline-delimited subnet whitelist. qBittorrent also accepts commas and normalizes delimiters."),

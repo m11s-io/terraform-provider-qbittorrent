@@ -18,6 +18,7 @@ import (
 
 func TestWebUISettingsMetadataAndSensitiveHeaders(t *testing.T) {
 	want := []string{
+		"web_ui_upnp",
 		"bypass_local_auth", "bypass_auth_subnet_whitelist_enabled", "bypass_auth_subnet_whitelist",
 		"web_ui_max_auth_fail_count", "web_ui_ban_duration", "web_ui_session_timeout", "web_ui_sessions_count_limit",
 		"alternative_webui_enabled", "alternative_webui_path", "web_ui_clickjacking_protection_enabled",
@@ -103,7 +104,7 @@ func TestWebUISettingsPatchPreservesProtectionDefaultsAndSecrets(t *testing.T) {
 			_ = r.ParseForm()
 			var patch map[string]any
 			_ = json.Unmarshal([]byte(r.Form.Get("json")), &patch)
-			if len(patch) != 1 || patch["web_ui_max_auth_fail_count"] != float64(7) {
+			if len(patch) != 2 || patch["web_ui_max_auth_fail_count"] != float64(7) || patch["web_ui_upnp"] != false {
 				t.Errorf("unexpected sparse WebUI update: %#v", patch)
 			}
 			for key, value := range patch {
@@ -114,7 +115,7 @@ func TestWebUISettingsPatchPreservesProtectionDefaultsAndSecrets(t *testing.T) {
 		}
 		_ = json.NewEncoder(w).Encode(remote)
 	})
-	plan := testState(t, prefsSchema(), map[string]attr.Value{"web_ui_max_auth_fail_count": types.Int64Value(7)})
+	plan := testState(t, prefsSchema(), map[string]attr.Value{"web_ui_max_auth_fail_count": types.Int64Value(7), "web_ui_upnp": types.BoolValue(false)})
 	var out resource.CreateResponse
 	out.State = tfsdk.State{Schema: plan.Schema}
 	(&preferencesResource{client: c}).Create(context.Background(), resource.CreateRequest{Plan: tfsdk.Plan{Schema: plan.Schema, Raw: plan.Raw}}, &out)
