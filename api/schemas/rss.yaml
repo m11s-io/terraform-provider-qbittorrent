@@ -1,20 +1,20 @@
 Read:
   type: object
   properties:
-    rss_processing_enabled: {type: boolean}
-    rss_refresh_interval: {type: integer, format: int32, description: Refresh interval in minutes.}
-    rss_fetch_delay: {type: integer, format: int64, description: Same-host request delay in seconds.}
-    rss_max_articles_per_feed: {type: integer, format: int32}
-    rss_auto_downloading_enabled: {type: boolean}
-    rss_download_repack_proper_episodes: {type: boolean}
-    rss_smart_episode_filters: {type: string, description: Newline-delimited smart episode filters.}
+    rss_processing_enabled: {type: boolean, x-go-name: RssProcessingEnabled, x-ui-tab: RSS }
+    rss_refresh_interval: {type: integer, format: int32, description: Refresh interval in minutes., x-go-name: RssRefreshInterval, x-ui-tab: RSS }
+    rss_fetch_delay: {type: integer, format: int64, description: Same-host request delay in seconds., x-go-name: RssFetchDelay, x-ui-tab: RSS }
+    rss_max_articles_per_feed: {type: integer, format: int32, x-go-name: RssMaxArticlesPerFeed, x-ui-tab: RSS }
+    rss_auto_downloading_enabled: {type: boolean, x-go-name: RssAutoDownloadingEnabled, x-ui-tab: RSS }
+    rss_download_repack_proper_episodes: {type: boolean, x-go-name: RssDownloadRepackProperEpisodes, x-ui-tab: RSS }
+    rss_smart_episode_filters: {type: string, description: Newline-delimited smart episode filters., x-go-name: RssSmartEpisodeFilters, x-ui-tab: RSS }
 Patch:
   type: object
   properties:
-    rss_processing_enabled: {type: boolean}
-    rss_refresh_interval: {type: integer, format: int32}
-    rss_fetch_delay: {type: integer, format: int64}
-    rss_max_articles_per_feed: {type: integer, format: int32}
-    rss_auto_downloading_enabled: {type: boolean}
-    rss_download_repack_proper_episodes: {type: boolean}
-    rss_smart_episode_filters: {type: string}
+    rss_processing_enabled: {type: boolean, x-go-name: RssProcessingEnabled, x-ui-tab: RSS }
+    rss_refresh_interval: {type: integer, format: int32, x-go-name: RssRefreshInterval, x-ui-tab: RSS }
+    rss_fetch_delay: {type: integer, format: int64, x-go-name: RssFetchDelay, x-ui-tab: RSS }
+    rss_max_articles_per_feed: {type: integer, format: int32, x-go-name: RssMaxArticlesPerFeed, x-ui-tab: RSS }
+    rss_auto_downloading_enabled: {type: boolean, x-go-name: RssAutoDownloadingEnabled, x-ui-tab: RSS }
+    rss_download_repack_proper_episodes: {type: boolean, x-go-name: RssDownloadRepackProperEpisodes, x-ui-tab: RSS }
+    rss_smart_episode_filters: {type: string, x-go-name: RssSmartEpisodeFilters, x-ui-tab: RSS }

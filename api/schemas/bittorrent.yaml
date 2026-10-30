@@ -2,53 +2,55 @@ Read:
   type: object
   properties:
     encryption:
+      x-go-name: Encryption
+      x-ui-tab: BitTorrent
       type: integer
       format: int32
       enum: [0, 1, 2]
       description: "Encryption mode: allow, require, or disable encryption."
-    anonymous_mode: {type: boolean}
-    max_active_checking_torrents: {type: integer, format: int32, description: Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.}
-    queueing_enabled: {type: boolean}
-    max_active_downloads: {type: integer, format: int32}
-    max_active_uploads: {type: integer, format: int32}
-    max_active_torrents: {type: integer, format: int32}
-    dont_count_slow_torrents: {type: boolean}
-    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
-    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
-    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.}
-    max_ratio: {type: number, format: double, description: Share ratio; -1 disables the limit.}
-    max_ratio_enabled: {type: boolean, readOnly: true}
-    max_seeding_time: {type: integer, format: int32, description: Maximum seeding minutes; -1 disables the limit.}
-    max_seeding_time_enabled: {type: boolean, readOnly: true}
-    max_inactive_seeding_time: {type: integer, format: int32, description: Maximum inactive seeding minutes; -1 disables the limit.}
-    max_inactive_seeding_time_enabled: {type: boolean, readOnly: true}
-    share_limits_mode: {type: string, enum: [MatchAny, MatchAll]}
-    max_ratio_act: {type: integer, format: int32, enum: [0, 1, 2, 3]}
-    add_trackers_enabled: {type: boolean}
-    add_trackers: {type: string, description: Newline-delimited tracker URLs.}
-    add_trackers_from_url_enabled: {type: boolean}
-    add_trackers_url: {type: string}
-    add_trackers_url_list: {type: string, readOnly: true, description: Newline-delimited tracker list fetched by qBittorrent.}
+    anonymous_mode: {type: boolean, x-go-name: AnonymousMode, x-ui-tab: BitTorrent }
+    max_active_checking_torrents: {type: integer, format: int32, description: Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged., x-go-name: MaxActiveCheckingTorrents, x-ui-tab: BitTorrent }
+    queueing_enabled: {type: boolean, x-go-name: QueueingEnabled, x-ui-tab: BitTorrent }
+    max_active_downloads: {type: integer, format: int32, x-go-name: MaxActiveDownloads, x-ui-tab: BitTorrent }
+    max_active_uploads: {type: integer, format: int32, x-go-name: MaxActiveUploads, x-ui-tab: BitTorrent }
+    max_active_torrents: {type: integer, format: int32, x-go-name: MaxActiveTorrents, x-ui-tab: BitTorrent }
+    dont_count_slow_torrents: {type: boolean, x-go-name: DontCountSlowTorrents, x-ui-tab: BitTorrent }
+    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s; native setter stores signed 32-bit input unchanged., x-go-name: SlowTorrentDlRateThreshold, x-ui-tab: BitTorrent }
+    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged., x-go-name: SlowTorrentUlRateThreshold, x-ui-tab: BitTorrent }
+    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged., x-go-name: SlowTorrentInactiveTimer, x-ui-tab: BitTorrent }
+    max_ratio: {type: number, format: double, description: Share ratio; -1 disables the limit., x-go-name: MaxRatio, x-ui-tab: BitTorrent }
+    max_ratio_enabled: {type: boolean, readOnly: true, x-go-name: MaxRatioEnabled, x-ui-tab: BitTorrent }
+    max_seeding_time: {type: integer, format: int32, description: Maximum seeding minutes; -1 disables the limit., x-go-name: MaxSeedingTime, x-ui-tab: BitTorrent }
+    max_seeding_time_enabled: {type: boolean, readOnly: true, x-go-name: MaxSeedingTimeEnabled, x-ui-tab: BitTorrent }
+    max_inactive_seeding_time: {type: integer, format: int32, description: Maximum inactive seeding minutes; -1 disables the limit., x-go-name: MaxInactiveSeedingTime, x-ui-tab: BitTorrent }
+    max_inactive_seeding_time_enabled: {type: boolean, readOnly: true, x-go-name: MaxInactiveSeedingTimeEnabled, x-ui-tab: BitTorrent }
+    share_limits_mode: {type: string, enum: [MatchAny, MatchAll], x-go-name: ShareLimitsMode, x-ui-tab: BitTorrent }
+    max_ratio_act: {type: integer, format: int32, enum: [0, 1, 2, 3], x-go-name: MaxRatioAct, x-ui-tab: BitTorrent }
+    add_trackers_enabled: {type: boolean, x-go-name: AddTrackersEnabled, x-ui-tab: BitTorrent }
+    add_trackers: {type: string, description: Newline-delimited tracker URLs., x-go-name: AddTrackers, x-ui-tab: BitTorrent }
+    add_trackers_from_url_enabled: {type: boolean, x-go-name: AddTrackersFromUrlEnabled, x-ui-tab: BitTorrent }
+    add_trackers_url: {type: string, x-go-name: AddTrackersUrl, x-ui-tab: BitTorrent }
+    add_trackers_url_list: {type: string, readOnly: true, description: Newline-delimited tracker list fetched by qBittorrent., x-go-name: AddTrackersUrlList, x-ui-tab: BitTorrent }
 Patch:
   type: object
   properties:
-    encryption: {type: integer, format: int32}
-    anonymous_mode: {type: boolean}
-    max_active_checking_torrents: {type: integer, format: int32, description: Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.}
-    queueing_enabled: {type: boolean}
-    max_active_downloads: {type: integer, format: int32}
-    max_active_uploads: {type: integer, format: int32}
-    max_active_torrents: {type: integer, format: int32}
-    dont_count_slow_torrents: {type: boolean}
-    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
-    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.}
-    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.}
-    max_ratio: {type: number, format: double}
-    max_seeding_time: {type: integer, format: int32}
-    max_inactive_seeding_time: {type: integer, format: int32}
-    share_limits_mode: {type: string, enum: [MatchAny, MatchAll]}
-    max_ratio_act: {type: integer, format: int32}
-    add_trackers_enabled: {type: boolean}
-    add_trackers: {type: string}
-    add_trackers_from_url_enabled: {type: boolean}
-    add_trackers_url: {type: string}
+    encryption: {type: integer, format: int32, x-go-name: Encryption, x-ui-tab: BitTorrent }
+    anonymous_mode: {type: boolean, x-go-name: AnonymousMode, x-ui-tab: BitTorrent }
+    max_active_checking_torrents: {type: integer, format: int32, description: Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged., x-go-name: MaxActiveCheckingTorrents, x-ui-tab: BitTorrent }
+    queueing_enabled: {type: boolean, x-go-name: QueueingEnabled, x-ui-tab: BitTorrent }
+    max_active_downloads: {type: integer, format: int32, x-go-name: MaxActiveDownloads, x-ui-tab: BitTorrent }
+    max_active_uploads: {type: integer, format: int32, x-go-name: MaxActiveUploads, x-ui-tab: BitTorrent }
+    max_active_torrents: {type: integer, format: int32, x-go-name: MaxActiveTorrents, x-ui-tab: BitTorrent }
+    dont_count_slow_torrents: {type: boolean, x-go-name: DontCountSlowTorrents, x-ui-tab: BitTorrent }
+    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s; native setter stores signed 32-bit input unchanged., x-go-name: SlowTorrentDlRateThreshold, x-ui-tab: BitTorrent }
+    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged., x-go-name: SlowTorrentUlRateThreshold, x-ui-tab: BitTorrent }
+    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged., x-go-name: SlowTorrentInactiveTimer, x-ui-tab: BitTorrent }
+    max_ratio: {type: number, format: double, x-go-name: MaxRatio, x-ui-tab: BitTorrent }
+    max_seeding_time: {type: integer, format: int32, x-go-name: MaxSeedingTime, x-ui-tab: BitTorrent }
+    max_inactive_seeding_time: {type: integer, format: int32, x-go-name: MaxInactiveSeedingTime, x-ui-tab: BitTorrent }
+    share_limits_mode: {type: string, enum: [MatchAny, MatchAll], x-go-name: ShareLimitsMode, x-ui-tab: BitTorrent }
+    max_ratio_act: {type: integer, format: int32, x-go-name: MaxRatioAct, x-ui-tab: BitTorrent }
+    add_trackers_enabled: {type: boolean, x-go-name: AddTrackersEnabled, x-ui-tab: BitTorrent }
+    add_trackers: {type: string, x-go-name: AddTrackers, x-ui-tab: BitTorrent }
+    add_trackers_from_url_enabled: {type: boolean, x-go-name: AddTrackersFromUrlEnabled, x-ui-tab: BitTorrent }
+    add_trackers_url: {type: string, x-go-name: AddTrackersUrl, x-ui-tab: BitTorrent }
