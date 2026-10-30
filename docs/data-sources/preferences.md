@@ -25,12 +25,30 @@ output "current_save_path" {
 
 ### Read-Only
 
+- `add_stopped_enabled` (Boolean) Add new torrents in the stopped state.
+- `add_to_top_of_queue` (Boolean) Add new torrents to the top of the queue.
+- `add_trackers` (String) Newline-delimited tracker URLs appended to new torrents.
+- `add_trackers_enabled` (Boolean) Append configured trackers to newly added torrents.
+- `add_trackers_from_url_enabled` (Boolean) Append trackers fetched from add_trackers_url to new torrents.
+- `add_trackers_url` (String) URL used by qBittorrent to fetch tracker additions.
+- `add_trackers_url_list` (String) Computed fetched tracker list; this output is never patched.
 - `alt_dl_limit` (Number) Alternate download limit in bytes/s; 0 means unlimited.
 - `alt_up_limit` (Number) Alternate upload limit in bytes/s; 0 means unlimited.
+- `anonymous_mode` (Boolean) Enable anonymous mode.
+- `auto_delete_mode` (Number) Delete the source .torrent file: 0 never, 1 after a successful add, 2 also when adding is cancelled.
 - `auto_tmm_enabled` (Boolean) Enable automatic torrent management by default. Changes may relocate files.
+- `autorun_enabled` (Boolean) Run a configured program when a torrent finishes.
+- `autorun_on_torrent_added_enabled` (Boolean) Run a configured program when a torrent is added.
+- `banned_ips` (String) Manually banned IP addresses as raw newline-delimited text. qBittorrent drops empty lines and may normalize or reject entries.
+- `bittorrent_protocol` (Number) Peer protocol: 0 TCP and µTP, 1 TCP only, or 2 µTP only.
+- `category_changed_tmm_enabled` (Boolean) Relocate affected torrents when a category save path changes.
 - `confirm_torrent_deletion` (Boolean) Behavior: confirm torrent deletion.
 - `dht` (Boolean) Enable DHT.
 - `dl_limit` (Number) Global download limit in bytes/s; 0 means unlimited.
+- `dont_count_slow_torrents` (Boolean) Do not count slow torrents against queue limits.
+- `encryption` (Number) Encryption mode: 0 allow, 1 require, 2 disable.
+- `excluded_file_names` (String) Newline-delimited file name exclusion patterns; blank lines are preserved.
+- `excluded_file_names_enabled` (Boolean) Exclude files matching the configured newline-delimited patterns.
 - `file_log_age` (Number) Behavior: backup log retention count, 1..365.
 - `file_log_age_type` (Number) Behavior: retention unit, 0 days, 1 months, 2 years.
 - `file_log_backup_enabled` (Boolean) Behavior: rotate log files by size.
@@ -38,26 +56,92 @@ output "current_save_path" {
 - `file_log_enabled` (Boolean) Behavior: enable file logging.
 - `file_log_max_size` (Number) Behavior: rotate logs after this size in KiB, 1..1024000.
 - `file_log_path` (String) Behavior: log directory on the server.
+- `i2p_address` (String) I2P router host address. Configure independently of i2p_enabled; the server stores it while I2P is disabled.
+- `i2p_enabled` (Boolean) Enable the experimental I2P network settings.
+- `i2p_mixed_mode` (Boolean) Allow I2P torrents to connect to regular IP peers as well as I2P peers. Configure independently of i2p_enabled.
+- `i2p_pex_enabled` (Boolean) Enable I2P peer exchange. qBittorrent indicates this setting requires a restart.
+- `i2p_port` (Number) I2P router port, 0..65535. Configure independently of i2p_enabled.
 - `id` (String) Singleton ID: application.
+- `incomplete_files_ext` (Boolean) Append .!qB to incomplete files.
+- `ip_filter_enabled` (Boolean) Enable the server-side IP filter file.
+- `ip_filter_path` (String) IP filter file path on the qBittorrent server, not the Terraform runner. Stored while filtering is disabled.
+- `ip_filter_trackers` (Boolean) Apply the IP filter to trackers.
 - `limit_lan_peers` (Boolean) Apply rate limits to peers on the LAN.
 - `limit_tcp_overhead` (Boolean) Apply rate limits to transport overhead.
 - `limit_utp_rate` (Boolean) Apply rate limits to the uTP protocol.
 - `listen_port` (Number) Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field.
 - `locale` (String) Behavior: user interface language (upstream locale identifier).
 - `lsd` (Boolean) Enable local service discovery.
+- `mail_notification_auth_enabled` (Boolean) Enable SMTP authentication.
+- `mail_notification_email` (String) Recipient addresses for completion email notifications.
+- `mail_notification_enabled` (Boolean) Send an email notification when a download completes.
+- `mail_notification_encryption_type` (String) SMTP encryption mode.
+- `mail_notification_sender` (String) Sender address for completion email notifications.
+- `mail_notification_smtp` (String) SMTP server host with an optional port.
+- `mail_notification_username` (String) SMTP authentication username.
+- `max_active_checking_torrents` (Number) Maximum concurrent checking torrents as a signed 32-bit integer; qBittorrent stores the value as supplied.
+- `max_active_downloads` (Number) Maximum active downloads; -1 means unlimited.
+- `max_active_torrents` (Number) Maximum active torrents; -1 means unlimited.
+- `max_active_uploads` (Number) Maximum active uploads; -1 means unlimited.
+- `max_connec` (Number) Global peer connection limit. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
+- `max_connec_per_torrent` (Number) Peer connection limit per torrent. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
+- `max_inactive_seeding_time` (Number) Maximum inactive seeding time in minutes; -1 disables the limit.
+- `max_inactive_seeding_time_enabled` (Boolean) Computed view indicating whether max_inactive_seeding_time is enabled.
+- `max_ratio` (Number) Share ratio limit; -1 disables the limit.
+- `max_ratio_act` (Number) Action when a share limit is reached: 0 stop, 1 remove torrent, 2 enable super seeding, 3 remove torrent and its files.
+- `max_ratio_enabled` (Boolean) Computed view indicating whether max_ratio is enabled.
+- `max_seeding_time` (Number) Maximum seeding time in minutes; -1 disables the limit.
+- `max_seeding_time_enabled` (Boolean) Computed view indicating whether max_seeding_time is enabled.
+- `max_uploads` (Number) Global upload slot limit. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
+- `max_uploads_per_torrent` (Number) Upload slot limit per torrent. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.
+- `merge_trackers` (Boolean) Merge trackers when adding a duplicate torrent.
 - `performance_warning` (Boolean) Behavior: log performance warnings.
 - `pex` (Boolean) Enable peer exchange.
+- `preallocate_all` (Boolean) Preallocate disk space for all files when adding a torrent.
+- `proxy_auth_enabled` (Boolean) Enable proxy authentication. Password configuration is managed by qbittorrent_credentials.
+- `proxy_bittorrent` (Boolean) Use the configured proxy for BitTorrent purposes.
+- `proxy_hostname_lookup` (Boolean) Resolve hostnames through the proxy. Configure independently of proxy type.
+- `proxy_ip` (String) Proxy host or IP address. This server-side setting is retained while proxy_type is None.
+- `proxy_misc` (Boolean) Use the configured proxy for general purposes.
+- `proxy_peer_connections` (Boolean) Use the configured proxy for peer connections.
+- `proxy_port` (Number) Proxy port, 0..65535. This server-side setting is retained while proxy_type is None.
+- `proxy_rss` (Boolean) Use the configured proxy for RSS purposes.
+- `proxy_type` (String) Proxy type: None, SOCKS4, SOCKS5, or HTTP.
+- `proxy_username` (String) Proxy authentication username. Configure independently of proxy type and authentication enablement.
+- `queueing_enabled` (Boolean) Enable torrent queueing.
+- `remove_torrent_file_backup` (Boolean) Remove a torrent file backup when removing its torrent.
+- `rss_auto_downloading_enabled` (Boolean) Enable RSS auto-download processing. RSS rule definitions are managed separately.
+- `rss_download_repack_proper_episodes` (Boolean) Allow REPACK and PROPER episode releases in RSS auto-downloads.
+- `rss_fetch_delay` (Number) Delay between requests to the same host in seconds. qBittorrent stores this value as supplied.
+- `rss_max_articles_per_feed` (Number) Maximum articles retained per feed; qBittorrent normalizes negative values to zero.
+- `rss_processing_enabled` (Boolean) Enable RSS feed processing and fetching.
+- `rss_refresh_interval` (Number) RSS feed refresh interval in minutes. qBittorrent stores this value as supplied.
+- `rss_smart_episode_filters` (String) Newline-delimited RSS smart episode filters; blank lines are preserved.
 - `save_path` (String) Default save path on the server. Use a normalized absolute path.
+- `save_path_changed_tmm_enabled` (Boolean) Relocate affected torrents when the default save path changes.
 - `schedule_from_hour` (Number) Schedule start hour, 0..23. Configure together with schedule_from_min.
 - `schedule_from_min` (Number) Schedule start minute, 0..59. Configure together with schedule_from_hour.
 - `schedule_to_hour` (Number) Schedule end hour, 0..23. Configure together with schedule_to_min.
 - `schedule_to_min` (Number) Schedule end minute, 0..59. Configure together with schedule_to_hour.
 - `scheduler_days` (Number) Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
 - `scheduler_enabled` (Boolean) Schedule the use of alternative rate limits using the server's local time.
+- `share_limits_mode` (String) Apply share limits when MatchAny or MatchAll conditions are met.
+- `slow_torrent_dl_rate_threshold` (Number) Slow download threshold in KiB/s; the native signed 32-bit setter stores the value as supplied.
+- `slow_torrent_inactive_timer` (Number) Slow-torrent inactivity timer in seconds; the native signed 32-bit setter stores the value as supplied.
+- `slow_torrent_ul_rate_threshold` (Number) Slow upload threshold in KiB/s; the native signed 32-bit setter stores the value as supplied.
 - `status_bar_external_ip` (Boolean) Behavior: show external IP in the status bar.
 - `store_search_job_results` (Boolean) Behavior: also save search results.
 - `store_search_jobs` (Boolean) Behavior: save search tabs.
 - `temp_path` (String) Incomplete-download path on the server. Use a normalized absolute path.
 - `temp_path_enabled` (Boolean) Enable the incomplete-download path.
+- `torrent_changed_tmm_enabled` (Boolean) Relocate torrents when their category changes.
+- `torrent_content_layout` (String) Layout for the content directory when adding torrents.
+- `torrent_files_backup_dir` (String) Server directory for torrent file backups.
+- `torrent_files_backup_enabled` (Boolean) Back up torrent files.
+- `torrent_files_finished_backup_dir` (String) Server directory for finished torrent file backups.
+- `torrent_files_finished_backup_dir_enabled` (Boolean) Move finished torrent file backups to a separate directory.
+- `torrent_stop_condition` (String) Condition at which a torrent stops automatically.
 - `up_limit` (Number) Global upload limit in bytes/s; 0 means unlimited.
 - `upnp` (Boolean) Enable UPnP/NAT-PMP port forwarding.
+- `use_category_paths_in_manual_mode` (Boolean) Resolve relative save paths against the category path in Manual Mode.
+- `use_unwanted_folder` (Boolean) Keep unselected files in the .unwanted folder.
