@@ -1,5 +1,6 @@
 """Validate and plan the shipped examples against the disposable server."""
 import os
+import secrets
 from pathlib import Path
 import subprocess
 
@@ -30,6 +31,13 @@ def verify_examples(cli, environment, root, scratch):
                QBITTORRENT_API_KEY=env['QBT_ACC_API_KEY'], QBITTORRENT_USERNAME='', QBITTORRENT_PASSWORD='',
                CHECKPOINT_DISABLE='1')
     env.pop('TF_REATTACH_PROVIDERS', None)
+    # Example passwords are ephemeral inputs. Plans never apply them to the
+    # server, and random values avoid borrowing any user credentials.
+    for variable in ('smtp_password', 'proxy_password', 'dyndns_password'):
+        value = secrets.token_urlsafe(24)
+        if os.environ.get('GITHUB_ACTIONS'):
+            print('::add-mask::' + value, flush=True)
+        env['TF_VAR_' + variable] = value
     # Each coverage/maintenance example is independent partial ownership.
     # Validate and plan it separately; never apply example maintenance changes.
     groups = [("existing", source)]
