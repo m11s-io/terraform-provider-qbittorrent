@@ -1,3 +1,30 @@
 package provider
 
-var advancedSessionPreferenceFields []preferenceField
+var advancedSessionPreferenceFields = []preferenceField{
+	{name: "resume_data_storage_type", wireKey: "resume_data_storage_type", kind: preferenceString, tab: "Advanced", description: "Resume data storage backend: Legacy or experimental SQLite. Changing this option requires a qBittorrent restart.", stringEnums: []string{"Legacy", "SQLite"}},
+	{name: "torrent_content_remove_option", wireKey: "torrent_content_remove_option", kind: preferenceString, tab: "Advanced", description: "Torrent content removal mode: Delete permanently or MoveToTrash when supported.", stringEnums: []string{"Delete", "MoveToTrash"}},
+	{name: "memory_working_set_limit", wireKey: "memory_working_set_limit", kind: preferenceInt, tab: "Advanced", description: "Physical memory working-set limit in MiB; native setter accepts a signed 32-bit integer.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	field("current_network_interface", "Advanced", "string", "Network interface name on the qBittorrent server. Choose a name from that server's interfaces; the server stores the supplied name and resolves its display name only when it matches an available interface. No interface is selected by an empty string."),
+	field("current_interface_address", "Advanced", "string", "Optional IP address to bind on the selected server interface. This is writable; the server trims and canonicalizes valid addresses and clears invalid or empty values."),
+	{name: "current_interface_name", wireKey: "current_interface_name", kind: preferenceString, tab: "Advanced", description: "Resolved display name for the selected server network interface; read-only and omitted from the resource schema.", readOnly: true},
+	{name: "save_resume_data_interval", wireKey: "save_resume_data_interval", kind: preferenceInt, tab: "Advanced", description: "Resume data save interval in minutes; native setter accepts a signed 32-bit integer.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "save_statistics_interval", wireKey: "save_statistics_interval", kind: preferenceInt, tab: "Advanced", description: "Statistics save interval in minutes; native setter accepts a signed 32-bit integer.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	field("torrent_file_size_limit", "Advanced", "int", ".torrent file size limit in bytes (the UI displays MiB); preserve exact byte units."),
+	field("confirm_torrent_recheck", "Advanced", "bool", "Ask for confirmation before rechecking a torrent."),
+	field("recheck_completed_torrents", "Advanced", "bool", "Recheck torrents after they finish downloading."),
+	field("app_instance_name", "Advanced", "string", "Application instance name shown by qBittorrent."),
+	{name: "refresh_interval", wireKey: "refresh_interval", kind: preferenceInt, tab: "Advanced", description: "Internal state refresh interval in milliseconds; native setter accepts a signed 32-bit integer.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	field("resolve_peer_host_names", "Advanced", "bool", "Resolve peer IP addresses to host names."),
+	field("resolve_peer_countries", "Advanced", "bool", "Resolve peer IP addresses to country names."),
+	field("confirm_remove_all_tags", "Advanced", "bool", "Ask before removing all tags from torrents."),
+	field("confirm_remove_tracker_from_all_torrents", "Advanced", "bool", "Ask before removing a tracker from all torrents."),
+	field("reannounce_when_address_changed", "Advanced", "bool", "Reannounce to trackers when the local IP address or port changes."),
+	field("enable_embedded_tracker", "Advanced", "bool", "Enable qBittorrent's embedded tracker."),
+	{name: "embedded_tracker_port", wireKey: "embedded_tracker_port", kind: preferenceInt, tab: "Advanced", description: "Port used by the embedded tracker; native setter accepts a signed 32-bit integer.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	field("embedded_tracker_port_forwarding", "Advanced", "bool", "Enable port forwarding for the embedded tracker."),
+	{name: "mark_of_the_web", wireKey: "mark_of_the_web", kind: preferenceBool, tab: "Advanced", description: "Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).", capability: "platform-dependent: macOS or Windows"},
+	field("ignore_ssl_errors", "Advanced", "bool", "Ignore SSL certificate errors. This weakens TLS verification; only enable it explicitly."),
+	{name: "python_executable_path", wireKey: "python_executable_path", kind: preferenceString, tab: "Advanced", description: "Server-side Python executable path; an empty string requests automatic detection. Changing this option may require a qBittorrent restart."},
+	field("start_paused", "Advanced", "bool", "Start the BitTorrent session in the paused state."),
+	{name: "shutdown_timeout", wireKey: "shutdown_timeout", kind: preferenceInt, tab: "Advanced", description: "Session shutdown timeout in seconds; -1 means unlimited. Native range is -1..2147483647.", integerMin: int64ptr(-1), integerMax: int64ptr(2147483647), integerSentinels: []int64{-1}},
+}

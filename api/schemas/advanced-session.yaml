@@ -1,6 +1,201 @@
 Read:
   type: object
-  properties: {}
+  properties:
+    resume_data_storage_type:
+      type: string
+      enum: [Legacy, SQLite]
+      description: Resume data storage backend. Changing this setting requires a qBittorrent restart.
+    torrent_content_remove_option:
+      type: string
+      enum: [Delete, MoveToTrash]
+      description: Torrent content removal mode.
+    memory_working_set_limit:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Physical memory working-set limit in MiB.
+    current_network_interface:
+      type: string
+      description: Network interface name on the qBittorrent server; the API stores the supplied name and resolves its display name when the interface exists on the server.
+    current_interface_address:
+      type: string
+      description: Optional IP address to bind on the selected server interface.
+    current_interface_name:
+      type: string
+      description: Resolved display name for the selected server network interface; read-only.
+    save_resume_data_interval:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Resume data save interval in minutes.
+    save_statistics_interval:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Statistics save interval in minutes.
+    torrent_file_size_limit:
+      type: integer
+      format: int64
+      description: .torrent file size limit in bytes (the UI displays MiB).
+    confirm_torrent_recheck:
+      type: boolean
+      description: Ask for confirmation before rechecking a torrent.
+    recheck_completed_torrents:
+      type: boolean
+      description: Recheck torrents after they finish downloading.
+    app_instance_name:
+      type: string
+      description: Application instance name shown by qBittorrent.
+    refresh_interval:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Internal state refresh interval in milliseconds.
+    resolve_peer_host_names:
+      type: boolean
+      description: Resolve peer IP addresses to host names.
+    resolve_peer_countries:
+      type: boolean
+      description: Resolve peer IP addresses to country names.
+    confirm_remove_all_tags:
+      type: boolean
+      description: Ask before removing all tags from torrents.
+    confirm_remove_tracker_from_all_torrents:
+      type: boolean
+      description: Ask before removing a tracker from all torrents.
+    reannounce_when_address_changed:
+      type: boolean
+      description: Reannounce to trackers when the local IP address or port changes.
+    enable_embedded_tracker:
+      type: boolean
+      description: Enable qBittorrent's embedded tracker.
+    embedded_tracker_port:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Port used by the embedded tracker.
+    embedded_tracker_port_forwarding:
+      type: boolean
+      description: Enable port forwarding for the embedded tracker.
+    mark_of_the_web:
+      type: boolean
+      description: Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
+    ignore_ssl_errors:
+      type: boolean
+      description: Ignore SSL certificate errors; enabling this weakens TLS verification.
+    python_executable_path:
+      type: string
+      description: Server-side Python executable path; empty requests automatic detection. Changing this may require a qBittorrent restart.
+    start_paused:
+      type: boolean
+      description: Start the BitTorrent session in the paused state.
+    shutdown_timeout:
+      type: integer
+      format: int64
+      minimum: -1
+      maximum: 2147483647
+      description: Session shutdown timeout in seconds; -1 means unlimited.
 Patch:
   type: object
-  properties: {}
+  properties:
+    resume_data_storage_type:
+      type: string
+      enum: [Legacy, SQLite]
+      description: Resume data storage backend. Changing this setting requires a qBittorrent restart.
+    torrent_content_remove_option:
+      type: string
+      enum: [Delete, MoveToTrash]
+      description: Torrent content removal mode.
+    memory_working_set_limit:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Physical memory working-set limit in MiB.
+    current_network_interface:
+      type: string
+      description: Network interface name on the qBittorrent server; the API stores the supplied name and resolves its display name when the interface exists on the server.
+    current_interface_address:
+      type: string
+      description: Optional IP address to bind on the selected server interface.
+    save_resume_data_interval:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Resume data save interval in minutes.
+    save_statistics_interval:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Statistics save interval in minutes.
+    torrent_file_size_limit:
+      type: integer
+      format: int64
+      description: .torrent file size limit in bytes (the UI displays MiB).
+    confirm_torrent_recheck:
+      type: boolean
+      description: Ask for confirmation before rechecking a torrent.
+    recheck_completed_torrents:
+      type: boolean
+      description: Recheck torrents after they finish downloading.
+    app_instance_name:
+      type: string
+      description: Application instance name shown by qBittorrent.
+    refresh_interval:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Internal state refresh interval in milliseconds.
+    resolve_peer_host_names:
+      type: boolean
+      description: Resolve peer IP addresses to host names.
+    resolve_peer_countries:
+      type: boolean
+      description: Resolve peer IP addresses to country names.
+    confirm_remove_all_tags:
+      type: boolean
+      description: Ask before removing all tags from torrents.
+    confirm_remove_tracker_from_all_torrents:
+      type: boolean
+      description: Ask before removing a tracker from all torrents.
+    reannounce_when_address_changed:
+      type: boolean
+      description: Reannounce to trackers when the local IP address or port changes.
+    enable_embedded_tracker:
+      type: boolean
+      description: Enable qBittorrent's embedded tracker.
+    embedded_tracker_port:
+      type: integer
+      format: int64
+      minimum: -2147483648
+      maximum: 2147483647
+      description: Port used by the embedded tracker.
+    embedded_tracker_port_forwarding:
+      type: boolean
+      description: Enable port forwarding for the embedded tracker.
+    mark_of_the_web:
+      type: boolean
+      description: Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
+    ignore_ssl_errors:
+      type: boolean
+      description: Ignore SSL certificate errors; enabling this weakens TLS verification.
+    python_executable_path:
+      type: string
+      description: Server-side Python executable path; empty requests automatic detection. Changing this may require a qBittorrent restart.
+    start_paused:
+      type: boolean
+      description: Start the BitTorrent session in the paused state.
+    shutdown_timeout:
+      type: integer
+      format: int64
+      minimum: -1
+      maximum: 2147483647
+      description: Session shutdown timeout in seconds; -1 means unlimited.
