@@ -22,6 +22,14 @@ verifies the complete normalized map after writing and reports any mismatch.
 Use empty disposable directories when testing this setting: a watched
 directory may automatically import torrent files placed in it.
 
+The legacy API does not clear a watched folder's previous save path when its
+value changes to integer `1` (`default`). If an existing entry is in
+`watch_folder` or `custom` mode, Terraform reports this transition before
+sending a write. Remove that entry from the complete `folders` map in one
+apply (or use `folders = {}` to clear the collection), then add it again with
+`save_mode = "default"` in a later apply. The provider does not perform these
+two writes implicitly.
+
 ## Example Usage
 
 ```terraform

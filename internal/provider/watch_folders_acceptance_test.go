@@ -9,6 +9,9 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"reflect"
+	"regexp"
+	"sort"
 	"strings"
 	"testing"
 
@@ -40,6 +43,10 @@ func TestAccWatchFoldersSafeLifecycle(t *testing.T) {
 	if err := dockerExec("mkdir", "-m", "700", watchPath); err != nil {
 		t.Fatal(err)
 	}
+	torrentBaseline, err := accTorrentHashes(t)
+	if err != nil {
+		t.Fatal(err)
+	}
 	config := accProvider() + fmt.Sprintf(`
 resource "qbittorrent_watch_folders" "application" {
   folders = {
@@ -50,7 +57,7 @@ resource "qbittorrent_watch_folders" "application" {
 	withoutOwnership := accProvider() + `resource "qbittorrent_watch_folders" "application" {}`
 	clear := accProvider() + `resource "qbittorrent_watch_folders" "application" { folders = {} }`
 
-	checkWatch := func(expected client.WatchFolderMode) resource.TestCheckFunc {
+	checkWatch := func(expected client.WatchFolderMode, expectMarker bool) resource.TestCheckFunc {
 		return func(_ *terraform.State) error {
 			folders, err := c.WatchFolders(context.Background())
 			if err != nil {
@@ -59,7 +66,7 @@ resource "qbittorrent_watch_folders" "application" {
 			if len(folders) != 1 || folders[watchPath].SaveMode != expected {
 				return fmt.Errorf("server watched-folder map = %#v, want %q at disposable path", folders, expected)
 			}
-			return checkNoTorrentOrUnexpectedFiles(t, watchPath, marker, false)
+			return checkNoTorrentOrUnexpectedFiles(t, watchPath, marker, expectMarker, torrentBaseline)
 		}
 	}
 	checkCleared := func(_ *terraform.State) error {
@@ -70,7 +77,7 @@ resource "qbittorrent_watch_folders" "application" {
 		if len(folders) != 0 {
 			return fmt.Errorf("empty folders did not clear complete map: %#v", folders)
 		}
-		return checkNoTorrentOrUnexpectedFiles(t, watchPath, marker, true)
+		return checkNoTorrentOrUnexpectedFiles(t, watchPath, marker, true, torrentBaseline)
 	}
 
 	resource.Test(t, resource.TestCase{
@@ -80,18 +87,18 @@ resource "qbittorrent_watch_folders" "application" {
 			if err != nil {
 				return err
 			}
-			if len(folders) != 0 {
-				return fmt.Errorf("destroy changed server watches: %#v", folders)
+			if len(folders) != 1 || folders[watchPath].SaveMode != client.WatchFolderModeWatchFolder {
+				return fmt.Errorf("destroy changed non-empty server watches: %#v", folders)
 			}
-			return checkNoTorrentOrUnexpectedFiles(t, watchPath, marker, true)
+			return checkNoTorrentOrUnexpectedFiles(t, watchPath, marker, true, torrentBaseline)
 		},
 		Steps: []resource.TestStep{
-			{Config: config, Check: checkWatch(client.WatchFolderModeDefault)},
+			{Config: config, Check: checkWatch(client.WatchFolderModeDefault, false)},
 			{Config: config, PreConfig: func() {
-				if err := c.SetWatchFolders(context.Background(), map[string]client.WatchFolder{watchPath: {SaveMode: client.WatchFolderModeWatchFolder}}); err != nil {
+				if err := c.SetWatchFolders(context.Background(), map[string]client.WatchFolder{}); err != nil {
 					t.Fatal(err)
 				}
-			}, Check: checkWatch(client.WatchFolderModeDefault)},
+			}, Check: checkWatch(client.WatchFolderModeDefault, false)},
 			{ResourceName: "qbittorrent_watch_folders.application", ImportState: true, ImportStateId: "application", ImportStateVerify: true},
 			{Config: withoutOwnership, PreConfig: func() {
 				if err := dockerExec("touch", marker); err != nil {
@@ -100,27 +107,51 @@ resource "qbittorrent_watch_folders" "application" {
 				if err := c.SetWatchFolders(context.Background(), map[string]client.WatchFolder{watchPath: {SaveMode: client.WatchFolderModeWatchFolder}}); err != nil {
 					t.Fatal(err)
 				}
-			}, Check: checkWatch(client.WatchFolderModeWatchFolder)},
+			}, Check: checkWatch(client.WatchFolderModeWatchFolder, true)},
+			{Config: config, ExpectError: regexp.MustCompile("Cannot switch watched folder to default in one apply")},
 			{Config: clear, Check: checkCleared},
+			{Config: accProvider() + fmt.Sprintf(`resource "qbittorrent_watch_folders" "application" {
+  folders = { %q = { save_mode = "watch_folder" } }
+}
+`, watchPath), Check: checkWatch(client.WatchFolderModeWatchFolder, true)},
 		},
 	})
 }
 
-func checkNoTorrentOrUnexpectedFiles(t *testing.T, watchPath, marker string, expectMarker bool) error {
+func accTorrentHashes(t *testing.T) ([]string, error) {
 	t.Helper()
 	request, err := http.NewRequest(http.MethodGet, strings.TrimRight(os.Getenv("QBT_ACC_URL"), "/")+"/api/v2/torrents/info", nil)
 	if err != nil {
-		return fmt.Errorf("cannot verify disposable torrent list")
+		return nil, fmt.Errorf("cannot inspect disposable torrent list")
 	}
 	request.Header.Set("Authorization", "Bearer "+os.Getenv("QBT_ACC_API_KEY"))
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
-		return fmt.Errorf("cannot verify disposable torrent list")
+		return nil, fmt.Errorf("cannot inspect disposable torrent list")
 	}
 	defer response.Body.Close()
-	var torrents []json.RawMessage
-	if response.StatusCode != http.StatusOK || json.NewDecoder(response.Body).Decode(&torrents) != nil || len(torrents) != 0 {
-		return fmt.Errorf("watched-folder acceptance must not add torrents")
+	var torrents []struct {
+		Hash string `json:"hash"`
+	}
+	if response.StatusCode != http.StatusOK || json.NewDecoder(response.Body).Decode(&torrents) != nil {
+		return nil, fmt.Errorf("cannot inspect disposable torrent list")
+	}
+	hashes := make([]string, 0, len(torrents))
+	for _, torrent := range torrents {
+		hashes = append(hashes, torrent.Hash)
+	}
+	sort.Strings(hashes)
+	return hashes, nil
+}
+
+func checkNoTorrentOrUnexpectedFiles(t *testing.T, watchPath, marker string, expectMarker bool, baseline []string) error {
+	t.Helper()
+	hashes, err := accTorrentHashes(t)
+	if err != nil {
+		return err
+	}
+	if !reflect.DeepEqual(hashes, baseline) {
+		return fmt.Errorf("watched-folder acceptance changed the disposable server torrent list")
 	}
 	container := os.Getenv("QBT_ACC_CONTAINER")
 	cmd := exec.Command("docker", "exec", container, "sh", "-c", "test -d \"$1\" && if test \"$2\" = yes; then test -f \"$3\"; else test ! -e \"$3\"; fi && test \"$(find \"$1\" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')\" -eq \"$4\"", "watch-folder-check", watchPath, map[bool]string{true: "yes", false: "no"}[expectMarker], marker, map[bool]string{true: "1", false: "0"}[expectMarker])

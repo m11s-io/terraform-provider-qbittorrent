@@ -191,8 +191,118 @@ func TestWatchFoldersDetectsInvalidAndSilentlyIgnoredServerPaths(t *testing.T) {
 			if !create.Diagnostics.HasError() {
 				t.Fatalf("expected post-write verification diagnostic, remote=%#v", remote)
 			}
+			if tc.ignore {
+				var actual types.Map
+				create.State.GetAttribute(context.Background(), path.Root("folders"), &actual)
+				got, err := watchFoldersFromValue(actual)
+				if err != nil || len(got) != 0 {
+					t.Fatalf("failed apply must persist known normalized server map, got %#v: %v", got, err)
+				}
+			}
 		})
 	}
+}
+
+func TestWatchFoldersDefaultTransitionRequiresExplicitRemoval(t *testing.T) {
+	remote := map[string]any{"/watch": "/custom"}
+	writes := 0
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/app/setPreferences") {
+			writes++
+			_ = r.ParseForm()
+			var patch map[string]map[string]any
+			_ = json.Unmarshal([]byte(r.Form.Get("json")), &patch)
+			incoming := patch["scan_dirs"]
+			next := map[string]any{}
+			for key, value := range incoming {
+				switch v := value.(type) {
+				case float64:
+					if v == 0 {
+						next[key] = 0
+					} else if _, exists := remote[key]; exists {
+						next[key] = remote[key] // Native integer 1 preserves prior savePath.
+					} else {
+						next[key] = 1
+					}
+				case string:
+					next[key] = v
+				}
+			}
+			remote = next // Native scan_dirs setter replaces omitted entries.
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		b, _ := json.Marshal(map[string]any{"scan_dirs": remote})
+		_, _ = w.Write(b)
+	})
+	r := &watchFoldersResource{client: c}
+	s := watchFoldersSchema()
+	custom := watchFoldersTestState(t, s, configuredWatchFolders(t, map[string]client.WatchFolder{"/watch": {SaveMode: client.WatchFolderModeCustom, SavePath: "/custom"}}))
+	defaultMode := watchFoldersTestState(t, s, configuredWatchFolders(t, map[string]client.WatchFolder{"/watch": {SaveMode: client.WatchFolderModeDefault}}))
+	var transition resource.UpdateResponse
+	transition.State = tfsdk.State{Schema: s}
+	r.Update(context.Background(), resource.UpdateRequest{Plan: tfsdk.Plan{Schema: s, Raw: defaultMode.Raw}, State: custom}, &transition)
+	if !transition.Diagnostics.HasError() || writes != 0 || remote["/watch"] != "/custom" {
+		t.Fatalf("unsupported default transition must fail before writing: writes=%d remote=%#v diag=%v", writes, remote, transition.Diagnostics)
+	}
+	if !strings.Contains(strings.ToLower(transition.Diagnostics.Errors()[0].Detail()), "remove") {
+		t.Fatalf("transition diagnostic must explain the remove/re-add workflow: %v", transition.Diagnostics)
+	}
+
+	// First replace the collection without this watch, then add it with mode 1.
+	empty := watchFoldersTestState(t, s, configuredWatchFolders(t, map[string]client.WatchFolder{}))
+	var remove resource.UpdateResponse
+	remove.State = tfsdk.State{Schema: s}
+	r.Update(context.Background(), resource.UpdateRequest{Plan: tfsdk.Plan{Schema: s, Raw: empty.Raw}, State: custom}, &remove)
+	if remove.Diagnostics.HasError() || len(remote) != 0 {
+		t.Fatalf("explicit watch removal failed: remote=%#v diag=%v", remote, remove.Diagnostics)
+	}
+	var readd resource.UpdateResponse
+	readd.State = tfsdk.State{Schema: s}
+	r.Update(context.Background(), resource.UpdateRequest{Plan: tfsdk.Plan{Schema: s, Raw: defaultMode.Raw}, State: remove.State}, &readd)
+	if readd.Diagnostics.HasError() || remote["/watch"] != 1 || writes != 2 {
+		t.Fatalf("default mode did not converge after explicit removal: remote=%#v writes=%d diag=%v", remote, writes, readd.Diagnostics)
+	}
+}
+
+func TestWatchFoldersValidateConfigDefersUnknownNestedValues(t *testing.T) {
+	s := watchFoldersSchema()
+	cases := []struct {
+		name  string
+		value types.Map
+	}{
+		{name: "unknown folder object", value: mustMapValue(t, map[string]attr.Value{"/watch": types.ObjectUnknown(watchFolderAttrTypes)})},
+		{name: "unknown mode", value: mustMapValue(t, map[string]attr.Value{"/watch": mustFolderObject(t, types.StringUnknown(), types.StringNull())})},
+		{name: "unknown custom path", value: mustMapValue(t, map[string]attr.Value{"/watch": mustFolderObject(t, types.StringValue("custom"), types.StringUnknown())})},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			state := watchFoldersTestState(t, s, tc.value)
+			var response resource.ValidateConfigResponse
+			(&watchFoldersResource{}).ValidateConfig(context.Background(), resource.ValidateConfigRequest{Config: tfsdk.Config{Schema: s, Raw: state.Raw}}, &response)
+			if response.Diagnostics.HasError() {
+				t.Fatalf("unknown value should defer validation until apply: %v", response.Diagnostics)
+			}
+		})
+	}
+}
+
+func mustMapValue(t *testing.T, values map[string]attr.Value) types.Map {
+	t.Helper()
+	value, diagnostics := types.MapValue(watchFolderObjectType, values)
+	if diagnostics.HasError() {
+		t.Fatal(diagnostics)
+	}
+	return value
+}
+
+func mustFolderObject(t *testing.T, mode, savePath types.String) types.Object {
+	t.Helper()
+	value, diagnostics := types.ObjectValue(watchFolderAttrTypes, map[string]attr.Value{"save_mode": mode, "save_path": savePath})
+	if diagnostics.HasError() {
+		t.Fatal(diagnostics)
+	}
+	return value
 }
 
 func TestWatchFoldersReadDetectsDriftAndCanonicalizesEqualPaths(t *testing.T) {

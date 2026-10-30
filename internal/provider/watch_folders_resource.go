@@ -52,23 +52,36 @@ func (r *watchFoldersResource) ValidateConfig(ctx context.Context, req resource.
 			resp.Diagnostics.AddAttributeError(p, "Invalid watched folder path", "Watched-folder paths must not be empty.")
 		}
 		obj, ok := value.(types.Object)
-		if !ok || obj.IsNull() || obj.IsUnknown() {
+		if !ok {
 			resp.Diagnostics.AddAttributeError(p, "Invalid watched folder", "Each folder must be a known object.")
+			continue
+		}
+		if obj.IsNull() || obj.IsUnknown() {
 			continue
 		}
 		attrs := obj.Attributes()
 		mode, modeOK := attrs["save_mode"].(types.String)
 		savePath, pathOK := attrs["save_path"].(types.String)
-		if !modeOK || !pathOK || mode.IsNull() || mode.IsUnknown() || savePath.IsUnknown() {
-			resp.Diagnostics.AddAttributeError(p, "Invalid watched folder", "Each folder must have a known save_mode and a known or null save_path.")
+		if !modeOK || !pathOK {
+			resp.Diagnostics.AddAttributeError(p, "Invalid watched folder", "Each folder must contain save_mode and save_path attributes.")
+			continue
+		}
+		if mode.IsUnknown() {
+			continue
+		}
+		if mode.IsNull() {
+			resp.Diagnostics.AddAttributeError(p.AtName("save_mode"), "Missing save mode", "Configure save_mode as default, watch_folder, or custom.")
 			continue
 		}
 		switch client.WatchFolderMode(mode.ValueString()) {
 		case client.WatchFolderModeDefault, client.WatchFolderModeWatchFolder:
-			if !savePath.IsNull() && savePath.ValueString() != "" {
+			if !savePath.IsNull() && !savePath.IsUnknown() && savePath.ValueString() != "" {
 				resp.Diagnostics.AddAttributeError(p.AtName("save_path"), "Unexpected custom save path", "Configure save_path only when save_mode is custom.")
 			}
 		case client.WatchFolderModeCustom:
+			if savePath.IsUnknown() {
+				continue
+			}
 			if savePath.IsNull() || savePath.ValueString() == "" {
 				resp.Diagnostics.AddAttributeError(p.AtName("save_path"), "Missing custom save path", "Configure a non-empty save_path when save_mode is custom.")
 			}
@@ -124,6 +137,22 @@ func (r *watchFoldersResource) apply(ctx context.Context, planned types.Map, sta
 		d.AddAttributeError(path.Root("folders"), "Invalid watched folders", err.Error())
 		return
 	}
+	current, err := r.client.WatchFolders(ctx)
+	if err != nil {
+		d.AddError("Cannot verify current watched folders", "The existing scan_dirs value is missing or invalid. No update was sent.")
+		return
+	}
+	for watchedPath, desired := range folders {
+		prior, exists := current[watchedPath]
+		if exists && desired.SaveMode == client.WatchFolderModeDefault && prior.SaveMode != client.WatchFolderModeDefault {
+			observed, valueErr := watchFoldersValue(current)
+			if valueErr == nil {
+				d.Append(state.SetAttribute(ctx, path.Root("folders"), observed)...)
+			}
+			d.AddAttributeError(path.Root("folders").AtMapKey(watchedPath), "Cannot switch watched folder to default in one apply", "The legacy scan_dirs API preserves the previous save path for integer 1. Remove this folder from the authoritative map in one apply, then add it again with save_mode = default in a later apply. No update was sent.")
+			return
+		}
+	}
 	if err := r.client.SetWatchFolders(ctx, folders); err != nil {
 		d.AddError("Cannot replace watched folders", err.Error())
 		return
@@ -134,6 +163,10 @@ func (r *watchFoldersResource) apply(ctx context.Context, planned types.Map, sta
 		return
 	}
 	if !watchFoldersEquivalent(folders, actual) {
+		observed, valueErr := watchFoldersValue(actual)
+		if valueErr == nil {
+			d.Append(state.SetAttribute(ctx, path.Root("folders"), observed)...)
+		}
 		d.AddAttributeError(path.Root("folders"), "Watched folders rejected or normalized", "qBittorrent returned a different watched-folder map after replacement. Check server paths and retry with the server-normalized folders; the full map may have been partially ignored.")
 		return
 	}
