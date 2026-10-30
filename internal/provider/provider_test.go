@@ -174,6 +174,35 @@ func TestConfiguredUnsupportedCapabilityStopsBeforePatch(t *testing.T) {
 		t.Fatalf("unsupported field did not fail before write: writes=%d diagnostics=%v", writes.Load(), out.Diagnostics)
 	}
 }
+
+func TestReadOnlyPreferenceIsDataSourceOnly(t *testing.T) {
+	original := downloadsPreferenceFields
+	f := field("resolved_name", "Advanced", "string", "Resolved interface name")
+	f.readOnly = true
+	f.capability = "interface-name"
+	downloadsPreferenceFields = append(append([]preferenceField(nil), original...), f)
+	t.Cleanup(func() { downloadsPreferenceFields = original })
+
+	var resourceSchema resource.SchemaResponse
+	(&preferencesResource{}).Schema(ctx, resource.SchemaRequest{}, &resourceSchema)
+	if _, ok := resourceSchema.Schema.Attributes[f.name]; ok {
+		t.Fatalf("read-only preference %q must not be a resource attribute", f.name)
+	}
+
+	var dataSourceSchema datasource.SchemaResponse
+	(&preferencesDataSource{}).Schema(ctx, datasource.SchemaRequest{}, &dataSourceSchema)
+	attribute, ok := dataSourceSchema.Schema.Attributes[f.name]
+	if !ok {
+		t.Fatalf("read-only preference %q is missing from the data source", f.name)
+	}
+	computed, ok := attribute.(interface{ IsComputed() bool })
+	if !ok || !computed.IsComputed() {
+		t.Fatalf("data-source preference %q must be computed", f.name)
+	}
+	if _, _, include := preferencePatchEntry([]preferenceField{f}, f.name, "eth0"); include {
+		t.Fatalf("read-only preference %q entered a patch", f.name)
+	}
+}
 func TestPreferencesRejectedNormalization(t *testing.T) {
 	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "preferences") {

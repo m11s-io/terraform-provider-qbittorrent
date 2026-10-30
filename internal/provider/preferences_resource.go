@@ -32,35 +32,22 @@ func (r *preferencesResource) Metadata(_ context.Context, req resource.MetadataR
 func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	attrs := map[string]schema.Attribute{"id": schema.StringAttribute{Computed: true, MarkdownDescription: "Singleton ID: application.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}}}
 	for _, f := range r.fields() {
+		if f.readOnly {
+			continue
+		}
 		switch f.kind {
 		case "string":
-			if f.readOnly {
-				attrs[f.name] = schema.StringAttribute{Computed: true, MarkdownDescription: f.description}
-			} else {
-				validators := webUIStringValidators(f.name, r.webui)
-				if len(f.stringEnums) > 0 {
-					validators = append(validators, stringChoiceValidator{allowed: f.stringEnums})
-				}
-				attrs[f.name] = schema.StringAttribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: validators}
+			validators := webUIStringValidators(f.name, r.webui)
+			if len(f.stringEnums) > 0 {
+				validators = append(validators, stringChoiceValidator{allowed: f.stringEnums})
 			}
+			attrs[f.name] = schema.StringAttribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: validators}
 		case "bool":
-			if f.readOnly {
-				attrs[f.name] = schema.BoolAttribute{Computed: true, MarkdownDescription: f.description}
-			} else {
-				attrs[f.name] = schema.BoolAttribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description}
-			}
+			attrs[f.name] = schema.BoolAttribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description}
 		case "int":
-			if f.readOnly {
-				attrs[f.name] = schema.Int64Attribute{Computed: true, MarkdownDescription: f.description}
-			} else {
-				attrs[f.name] = schema.Int64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: preferenceResourceDescription(f), Validators: []validator.Int64{preferenceIntValidator{field: f}}}
-			}
+			attrs[f.name] = schema.Int64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: preferenceResourceDescription(f), Validators: []validator.Int64{preferenceIntValidator{field: f}}}
 		case "float":
-			if f.readOnly {
-				attrs[f.name] = schema.Float64Attribute{Computed: true, MarkdownDescription: f.description}
-			} else {
-				attrs[f.name] = schema.Float64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: []validator.Float64{preferenceFloatValidator{field: f}}}
-			}
+			attrs[f.name] = schema.Float64Attribute{Optional: true, Sensitive: f.sensitive, MarkdownDescription: f.description, Validators: []validator.Float64{preferenceFloatValidator{field: f}}}
 		}
 	}
 	resp.Schema = schema.Schema{MarkdownDescription: "Singleton partial ownership of application preferences. Configure only settings to manage. Removing an attribute relinquishes management without resetting it. Import ID: application; import reads the server without claiming unconfigured settings. Destroy removes state only. Use one instance per server; overlapping ownership is unsupported. Read-after-write reports normalized/rejected fields: use server-normalized paths.", Attributes: attrs}

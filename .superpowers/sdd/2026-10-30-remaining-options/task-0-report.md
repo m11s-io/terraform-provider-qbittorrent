@@ -37,3 +37,10 @@ The upstream baseline remains qBittorrent `5.3.0`, Web API `2.16.2`, commit `921
 - `make generate-check` after commit — passed with no generated drift.
 - `make docs-check` — passed after retaining the existing resource-only Speed rate-limit description text.
 - Disposable Terraform and OpenTofu acceptance — passed in the coordinator’s integration run.
+
+## Review follow-up: read-only ownership
+
+- Added `TestReadOnlyPreferenceIsDataSourceOnly`, which injects a read-only descriptor and asserts it is absent from the resource schema, present and computed in the data-source schema, and excluded from patch entries. The test failed before the fix because the descriptor appeared as a resource attribute.
+- Resource schema generation now omits every `readOnly` descriptor. The data source retains those fields as computed outputs; apply/patch read-only guards remain as defense in depth.
+- `go test ./...` — passed after the fix.
+- `go test -race ./...` — passed after the fix.
