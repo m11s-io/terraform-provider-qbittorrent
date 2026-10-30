@@ -165,6 +165,24 @@ func (e PreferencesResumeDataStorageType) Valid() bool {
 	}
 }
 
+// Defines values for PreferencesScanDirs0.
+const (
+	PreferencesScanDirs0N0 PreferencesScanDirs0 = 0
+	PreferencesScanDirs0N1 PreferencesScanDirs0 = 1
+)
+
+// Valid indicates whether the value is a known member of the PreferencesScanDirs0 enum.
+func (e PreferencesScanDirs0) Valid() bool {
+	switch e {
+	case PreferencesScanDirs0N0:
+		return true
+	case PreferencesScanDirs0N1:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PreferencesShareLimitsMode.
 const (
 	PreferencesShareLimitsModeMatchAll PreferencesShareLimitsMode = "MatchAll"
@@ -342,6 +360,24 @@ func (e PreferencesPatchResumeDataStorageType) Valid() bool {
 	case PreferencesPatchResumeDataStorageTypeLegacy:
 		return true
 	case PreferencesPatchResumeDataStorageTypeSQLite:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchScanDirs0.
+const (
+	PreferencesPatchScanDirs0N0 PreferencesPatchScanDirs0 = 0
+	PreferencesPatchScanDirs0N1 PreferencesPatchScanDirs0 = 1
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchScanDirs0 enum.
+func (e PreferencesPatchScanDirs0) Valid() bool {
+	switch e {
+	case PreferencesPatchScanDirs0N0:
+		return true
+	case PreferencesPatchScanDirs0N1:
 		return true
 	default:
 		return false
@@ -938,6 +974,9 @@ type Preferences struct {
 	// SaveStatisticsInterval Statistics save interval in minutes.
 	SaveStatisticsInterval *int64 `json:"save_statistics_interval,omitempty"`
 
+	// ScanDirs Complete qBittorrent watched-folder map. Values are integer 0 for the watched folder, integer 1 for the default save path, or a custom path.
+	ScanDirs *map[string]Preferences_ScanDirs_AdditionalProperties `json:"scan_dirs,omitempty"`
+
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
 
@@ -1100,6 +1139,17 @@ type PreferencesProxyType string
 
 // PreferencesResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
 type PreferencesResumeDataStorageType string
+
+// PreferencesScanDirs0 defines model for Preferences.ScanDirs.0.
+type PreferencesScanDirs0 int
+
+// PreferencesScanDirs1 defines model for Preferences.ScanDirs.1.
+type PreferencesScanDirs1 = string
+
+// Preferences_ScanDirs_AdditionalProperties defines model for Preferences.scan_dirs.AdditionalProperties.
+type Preferences_ScanDirs_AdditionalProperties struct {
+	union json.RawMessage
+}
 
 // PreferencesShareLimitsMode defines model for Preferences.ShareLimitsMode.
 type PreferencesShareLimitsMode string
@@ -1496,6 +1546,9 @@ type PreferencesPatch struct {
 	// SaveStatisticsInterval Statistics save interval in minutes.
 	SaveStatisticsInterval *int64 `json:"save_statistics_interval,omitempty"`
 
+	// ScanDirs Replaces the complete qBittorrent watched-folder map. An empty object clears all watched folders.
+	ScanDirs *map[string]PreferencesPatch_ScanDirs_AdditionalProperties `json:"scan_dirs,omitempty"`
+
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
 
@@ -1653,6 +1706,17 @@ type PreferencesPatchProxyType string
 // PreferencesPatchResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
 type PreferencesPatchResumeDataStorageType string
 
+// PreferencesPatchScanDirs0 defines model for PreferencesPatch.ScanDirs.0.
+type PreferencesPatchScanDirs0 int
+
+// PreferencesPatchScanDirs1 defines model for PreferencesPatch.ScanDirs.1.
+type PreferencesPatchScanDirs1 = string
+
+// PreferencesPatch_ScanDirs_AdditionalProperties defines model for PreferencesPatch.scan_dirs.AdditionalProperties.
+type PreferencesPatch_ScanDirs_AdditionalProperties struct {
+	union json.RawMessage
+}
+
 // PreferencesPatchShareLimitsMode defines model for PreferencesPatch.ShareLimitsMode.
 type PreferencesPatchShareLimitsMode string
 
@@ -1783,6 +1847,130 @@ type EditCategoryFormdataRequestBody EditCategoryFormdataBody
 
 // RemoveCategoriesFormdataRequestBody defines body for RemoveCategories for application/x-www-form-urlencoded ContentType.
 type RemoveCategoriesFormdataRequestBody RemoveCategoriesFormdataBody
+
+// AsPreferencesScanDirs0 returns the union data inside the Preferences_ScanDirs_AdditionalProperties as a PreferencesScanDirs0
+func (t Preferences_ScanDirs_AdditionalProperties) AsPreferencesScanDirs0() (PreferencesScanDirs0, error) {
+	var body PreferencesScanDirs0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesScanDirs0 overwrites any union data inside the Preferences_ScanDirs_AdditionalProperties as the provided PreferencesScanDirs0
+func (t *Preferences_ScanDirs_AdditionalProperties) FromPreferencesScanDirs0(v PreferencesScanDirs0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesScanDirs0 performs a merge with any union data inside the Preferences_ScanDirs_AdditionalProperties, using the provided PreferencesScanDirs0
+func (t *Preferences_ScanDirs_AdditionalProperties) MergePreferencesScanDirs0(v PreferencesScanDirs0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsPreferencesScanDirs1 returns the union data inside the Preferences_ScanDirs_AdditionalProperties as a PreferencesScanDirs1
+func (t Preferences_ScanDirs_AdditionalProperties) AsPreferencesScanDirs1() (PreferencesScanDirs1, error) {
+	var body PreferencesScanDirs1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesScanDirs1 overwrites any union data inside the Preferences_ScanDirs_AdditionalProperties as the provided PreferencesScanDirs1
+func (t *Preferences_ScanDirs_AdditionalProperties) FromPreferencesScanDirs1(v PreferencesScanDirs1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesScanDirs1 performs a merge with any union data inside the Preferences_ScanDirs_AdditionalProperties, using the provided PreferencesScanDirs1
+func (t *Preferences_ScanDirs_AdditionalProperties) MergePreferencesScanDirs1(v PreferencesScanDirs1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t Preferences_ScanDirs_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *Preferences_ScanDirs_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPreferencesPatchScanDirs0 returns the union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as a PreferencesPatchScanDirs0
+func (t PreferencesPatch_ScanDirs_AdditionalProperties) AsPreferencesPatchScanDirs0() (PreferencesPatchScanDirs0, error) {
+	var body PreferencesPatchScanDirs0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesPatchScanDirs0 overwrites any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as the provided PreferencesPatchScanDirs0
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) FromPreferencesPatchScanDirs0(v PreferencesPatchScanDirs0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesPatchScanDirs0 performs a merge with any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties, using the provided PreferencesPatchScanDirs0
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) MergePreferencesPatchScanDirs0(v PreferencesPatchScanDirs0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsPreferencesPatchScanDirs1 returns the union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as a PreferencesPatchScanDirs1
+func (t PreferencesPatch_ScanDirs_AdditionalProperties) AsPreferencesPatchScanDirs1() (PreferencesPatchScanDirs1, error) {
+	var body PreferencesPatchScanDirs1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesPatchScanDirs1 overwrites any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as the provided PreferencesPatchScanDirs1
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) FromPreferencesPatchScanDirs1(v PreferencesPatchScanDirs1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesPatchScanDirs1 performs a merge with any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties, using the provided PreferencesPatchScanDirs1
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) MergePreferencesPatchScanDirs1(v PreferencesPatchScanDirs1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t PreferencesPatch_ScanDirs_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // RequestEditorFn is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
