@@ -208,6 +208,51 @@ func TestRSSRuleRefreshPreservesNullOptionalTorrentParams(t *testing.T) {
 	}
 }
 
+func TestRSSRuleRefreshClearsConfiguredOptionalParamsWhenNativeOmitsThem(t *testing.T) {
+	attributes := map[string]attr.Value{}
+	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
+		if _, ok := typ.(types.ListType); ok {
+			attributes[key] = types.ListNull(types.StringType)
+			continue
+		}
+		switch typ {
+		case types.StringType:
+			attributes[key] = types.StringNull()
+		case types.BoolType:
+			attributes[key] = types.BoolNull()
+		case types.Int64Type:
+			attributes[key] = types.Int64Null()
+		case types.Float64Type:
+			attributes[key] = types.Float64Null()
+		}
+	}
+	attributes["stopped"] = types.BoolValue(true)
+	attributes["content_layout"] = types.StringValue("Subfolder")
+	attributes["auto_tmm"] = types.BoolValue(false)
+	attributes["use_download_path"] = types.BoolValue(false)
+	attributes["queue_top"] = types.BoolValue(true)
+	attributes["stop_condition"] = types.StringValue("FilesChecked")
+	params, diags := types.ObjectValue(rssRuleTorrentParamAttributeTypes(context.Background()), attributes)
+	if diags.HasError() {
+		t.Fatal(diags)
+	}
+	m := rssRuleModel{TorrentParams: params}
+	rssRefreshTorrentParams(&m, map[string]any{
+		"use_auto_tmm": nil, "use_download_path": nil, "stop_condition": nil,
+	})
+	got := m.TorrentParams.Attributes()
+	for _, name := range []string{"stopped", "content_layout", "auto_tmm", "use_download_path", "queue_top", "stop_condition"} {
+		if !got[name].IsNull() {
+			t.Errorf("configured optional field %s was silently retained after native omission/null: %v", name, got[name])
+		}
+	}
+	for _, name := range []string{"category", "tags", "save_path", "download_limit"} {
+		if !got[name].IsNull() {
+			t.Errorf("unconfigured optional field %s must remain null: %v", name, got[name])
+		}
+	}
+}
+
 func TestRSSRuleUpdateMergesCurrentNativeParamsAndConfiguredFieldsWin(t *testing.T) {
 	attributes := map[string]attr.Value{}
 	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {

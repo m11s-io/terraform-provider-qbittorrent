@@ -422,7 +422,8 @@ func rssRefreshTorrentParams(m *rssRuleModel, remote map[string]any) {
 		}
 		wire := rssTorrentParamWireName(key)
 		value, exists := remote[wire]
-		if !exists {
+		if !exists || value == nil {
+			attrs[key] = rssNullAttribute(raw)
 			continue
 		}
 		switch old := raw.(type) {
@@ -459,6 +460,23 @@ func rssRefreshTorrentParams(m *rssRuleModel, remote map[string]any) {
 	updated, err := types.ObjectValue(m.TorrentParams.AttributeTypes(context.Background()), attrs)
 	if err == nil {
 		m.TorrentParams = updated
+	}
+}
+
+func rssNullAttribute(value attr.Value) attr.Value {
+	switch value.(type) {
+	case types.String:
+		return types.StringNull()
+	case types.Bool:
+		return types.BoolNull()
+	case types.Int64:
+		return types.Int64Null()
+	case types.Float64:
+		return types.Float64Null()
+	case types.List:
+		return types.ListNull(types.StringType)
+	default:
+		return value
 	}
 }
 
