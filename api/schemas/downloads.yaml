@@ -1,6 +1,204 @@
 Read:
   type: object
-  properties: {}
+  properties:
+    torrent_content_layout:
+      type: string
+      enum: [Original, Subfolder, NoSubfolder]
+      description: Layout for the content directory when adding torrents.
+    add_to_top_of_queue:
+      type: boolean
+      description: Add new torrents to the top of the queue.
+    add_stopped_enabled:
+      type: boolean
+      description: Add new torrents in the stopped state.
+    torrent_stop_condition:
+      type: string
+      enum: [None, MetadataReceived, FilesChecked]
+      description: Condition at which a torrent stops automatically.
+    merge_trackers:
+      type: boolean
+      description: Merge trackers when adding a duplicate torrent.
+    auto_delete_mode:
+      type: integer
+      enum: [0, 1, 2]
+      minimum: 0
+      maximum: 2
+      description: Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+    preallocate_all:
+      type: boolean
+      description: Preallocate disk space for all files when adding a torrent.
+    incomplete_files_ext:
+      type: boolean
+      description: Append .!qB to incomplete files.
+    use_unwanted_folder:
+      type: boolean
+      description: Keep unselected files in the .unwanted folder.
+    torrent_changed_tmm_enabled:
+      type: boolean
+      description: Relocate torrents when their category changes.
+    save_path_changed_tmm_enabled:
+      type: boolean
+      description: Relocate affected torrents when the default save path changes.
+    category_changed_tmm_enabled:
+      type: boolean
+      description: Relocate affected torrents when a category save path changes.
+    use_category_paths_in_manual_mode:
+      type: boolean
+      description: Resolve relative save paths against the category path in Manual Mode.
+    torrent_files_backup_enabled:
+      type: boolean
+      description: Back up torrent files.
+    torrent_files_backup_dir:
+      type: string
+      description: Server directory for torrent file backups.
+    torrent_files_finished_backup_dir_enabled:
+      type: boolean
+      description: Move finished torrent file backups to a separate directory.
+    torrent_files_finished_backup_dir:
+      type: string
+      description: Server directory for finished torrent file backups.
+    remove_torrent_file_backup:
+      type: boolean
+      description: Remove a torrent file backup when removing its torrent.
+    excluded_file_names_enabled:
+      type: boolean
+      description: Exclude files matching the configured newline-delimited patterns.
+    excluded_file_names:
+      type: string
+      description: Newline-delimited file name exclusion patterns; blank lines are preserved.
+    mail_notification_enabled:
+      type: boolean
+      description: Send an email notification when a download completes.
+    mail_notification_sender:
+      type: string
+      description: Sender address for completion email notifications.
+    mail_notification_email:
+      type: string
+      description: Recipient addresses for completion email notifications.
+    mail_notification_smtp:
+      type: string
+      description: SMTP server host with an optional port.
+    mail_notification_encryption_type:
+      type: string
+      enum: [None, STARTTLS, SMTPS]
+      description: SMTP encryption mode.
+    mail_notification_auth_enabled:
+      type: boolean
+      description: Enable SMTP authentication.
+    mail_notification_username:
+      type: string
+      description: SMTP authentication username.
+    autorun_on_torrent_added_enabled:
+      type: boolean
+      description: Run a configured program when a torrent is added.
+    autorun_on_torrent_added_program:
+      type: string
+      description: Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+    autorun_enabled:
+      type: boolean
+      description: Run a configured program when a torrent finishes.
+    autorun_program:
+      type: string
+      description: Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
 Patch:
   type: object
-  properties: {}
+  properties:
+    torrent_content_layout:
+      type: string
+      enum: [Original, Subfolder, NoSubfolder]
+      description: Layout for the content directory when adding torrents.
+    add_to_top_of_queue:
+      type: boolean
+      description: Add new torrents to the top of the queue.
+    add_stopped_enabled:
+      type: boolean
+      description: Add new torrents in the stopped state.
+    torrent_stop_condition:
+      type: string
+      enum: [None, MetadataReceived, FilesChecked]
+      description: Condition at which a torrent stops automatically.
+    merge_trackers:
+      type: boolean
+      description: Merge trackers when adding a duplicate torrent.
+    auto_delete_mode:
+      type: integer
+      enum: [0, 1, 2]
+      minimum: 0
+      maximum: 2
+      description: Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+    preallocate_all:
+      type: boolean
+      description: Preallocate disk space for all files when adding a torrent.
+    incomplete_files_ext:
+      type: boolean
+      description: Append .!qB to incomplete files.
+    use_unwanted_folder:
+      type: boolean
+      description: Keep unselected files in the .unwanted folder.
+    torrent_changed_tmm_enabled:
+      type: boolean
+      description: Relocate torrents when their category changes.
+    save_path_changed_tmm_enabled:
+      type: boolean
+      description: Relocate affected torrents when the default save path changes.
+    category_changed_tmm_enabled:
+      type: boolean
+      description: Relocate affected torrents when a category save path changes.
+    use_category_paths_in_manual_mode:
+      type: boolean
+      description: Resolve relative save paths against the category path in Manual Mode.
+    torrent_files_backup_enabled:
+      type: boolean
+      description: Back up torrent files.
+    torrent_files_backup_dir:
+      type: string
+      description: Server directory for torrent file backups.
+    torrent_files_finished_backup_dir_enabled:
+      type: boolean
+      description: Move finished torrent file backups to a separate directory.
+    torrent_files_finished_backup_dir:
+      type: string
+      description: Server directory for finished torrent file backups.
+    remove_torrent_file_backup:
+      type: boolean
+      description: Remove a torrent file backup when removing its torrent.
+    excluded_file_names_enabled:
+      type: boolean
+      description: Exclude files matching the configured newline-delimited patterns.
+    excluded_file_names:
+      type: string
+      description: Newline-delimited file name exclusion patterns; blank lines are preserved.
+    mail_notification_enabled:
+      type: boolean
+      description: Send an email notification when a download completes.
+    mail_notification_sender:
+      type: string
+      description: Sender address for completion email notifications.
+    mail_notification_email:
+      type: string
+      description: Recipient addresses for completion email notifications.
+    mail_notification_smtp:
+      type: string
+      description: SMTP server host with an optional port.
+    mail_notification_encryption_type:
+      type: string
+      enum: [None, STARTTLS, SMTPS]
+      description: SMTP encryption mode.
+    mail_notification_auth_enabled:
+      type: boolean
+      description: Enable SMTP authentication.
+    mail_notification_username:
+      type: string
+      description: SMTP authentication username.
+    autorun_on_torrent_added_enabled:
+      type: boolean
+      description: Run a configured program when a torrent is added.
+    autorun_on_torrent_added_program:
+      type: string
+      description: Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+    autorun_enabled:
+      type: boolean
+      description: Run a configured program when a torrent finishes.
+    autorun_program:
+      type: string
+      description: Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
