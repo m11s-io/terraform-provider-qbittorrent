@@ -554,11 +554,28 @@ type Preferences struct {
 	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
 
 	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
-	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
-	AnonymousMode  *bool           `json:"anonymous_mode,omitempty"`
+	AltUploadLimit          *AltUploadLimit `json:"alt_up_limit,omitempty"`
+	AlternativeWebUIEnabled *bool           `json:"alternative_webui_enabled,omitempty"`
+	AlternativeWebUIPath    *string         `json:"alternative_webui_path,omitempty"`
+
+	// AnnounceIp IP address announced to trackers; empty uses the default. Changes require restart.
+	AnnounceIp *string `json:"announce_ip,omitempty"`
+
+	// AnnouncePort Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied.
+	AnnouncePort *int `json:"announce_port,omitempty"`
+
+	// AnnounceToAllTiers Announce to all tracker tiers.
+	AnnounceToAllTiers *bool `json:"announce_to_all_tiers,omitempty"`
+
+	// AnnounceToAllTrackers Announce to all trackers in each tier.
+	AnnounceToAllTrackers *bool `json:"announce_to_all_trackers,omitempty"`
+	AnonymousMode         *bool `json:"anonymous_mode,omitempty"`
 
 	// AppInstanceName Application instance name shown by qBittorrent.
 	AppInstanceName *string `json:"app_instance_name,omitempty"`
+
+	// AsyncIOThreads Asynchronous I/O thread count; sent as a signed 32-bit integer.
+	AsyncIOThreads *int `json:"async_io_threads,omitempty"`
 
 	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
 	AutoDeleteMode *PreferencesAutoDeleteMode `json:"auto_delete_mode,omitempty"`
@@ -579,11 +596,26 @@ type Preferences struct {
 	// BannedIPs Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
 	BannedIPs *string `json:"banned_IPs,omitempty"`
 
+	// BdecodeDepthLimit Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer.
+	BdecodeDepthLimit *int `json:"bdecode_depth_limit,omitempty"`
+
+	// BdecodeTokenLimit Libtorrent bdecode maximum token count; sent as a signed 32-bit integer.
+	BdecodeTokenLimit *int `json:"bdecode_token_limit,omitempty"`
+
 	// BittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
 	BittorrentProtocol *PreferencesBittorrentProtocol `json:"bittorrent_protocol,omitempty"`
 
+	// BlockPeersOnPrivilegedPorts Block peer connections to privileged destination ports.
+	BlockPeersOnPrivilegedPorts      *bool   `json:"block_peers_on_privileged_ports,omitempty"`
+	BypassAuthSubnetWhitelist        *string `json:"bypass_auth_subnet_whitelist,omitempty"`
+	BypassAuthSubnetWhitelistEnabled *bool   `json:"bypass_auth_subnet_whitelist_enabled,omitempty"`
+	BypassLocalAuth                  *bool   `json:"bypass_local_auth,omitempty"`
+
 	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
 	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
+
+	// CheckingMemoryUse Memory limit while checking torrents in MiB; sent as a signed 32-bit integer.
+	CheckingMemoryUse *int `json:"checking_memory_use,omitempty"`
 
 	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
 	ConfirmRemoveAllTags *bool `json:"confirm_remove_all_tags,omitempty"`
@@ -597,6 +629,9 @@ type Preferences struct {
 	// ConfirmTorrentRecheck Ask for confirmation before rechecking a torrent.
 	ConfirmTorrentRecheck *bool `json:"confirm_torrent_recheck,omitempty"`
 
+	// ConnectionSpeed Outgoing connection attempts per second.
+	ConnectionSpeed *int `json:"connection_speed,omitempty"`
+
 	// CurrentInterfaceAddress Optional IP address to bind on the selected server interface.
 	CurrentInterfaceAddress *string `json:"current_interface_address,omitempty"`
 
@@ -607,9 +642,34 @@ type Preferences struct {
 	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
 	DHT                     *bool   `json:"dht,omitempty"`
 
+	// DHTBootstrapNodes DHT bootstrap node list; empty resets to libtorrent defaults.
+	DHTBootstrapNodes *string `json:"dht_bootstrap_nodes,omitempty"`
+
+	// DiskCache Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value.
+	DiskCache *int `json:"disk_cache,omitempty"`
+
+	// DiskCacheTTL Disk cache expiry in seconds; sent as a signed 32-bit integer.
+	DiskCacheTTL *int `json:"disk_cache_ttl,omitempty"`
+
+	// DiskIOReadMode OS read cache: 0 disabled, 1 enabled.
+	DiskIOReadMode *int `json:"disk_io_read_mode,omitempty"`
+
+	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence.
+	DiskIOType *int `json:"disk_io_type,omitempty"`
+
+	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence.
+	DiskIOWriteMode *int `json:"disk_io_write_mode,omitempty"`
+
+	// DiskQueueSize Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
+	DiskQueueSize *int64 `json:"disk_queue_size,omitempty"`
+
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
 	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+	DynDNSDomain          *string        `json:"dyndns_domain,omitempty"`
+	DynDNSEnabled         *bool          `json:"dyndns_enabled,omitempty"`
+	DynDNSService         *int32         `json:"dyndns_service,omitempty"`
+	DynDNSUsername        *string        `json:"dyndns_username,omitempty"`
 
 	// EmbeddedTrackerPort Port used by the embedded tracker.
 	EmbeddedTrackerPort *int64 `json:"embedded_tracker_port,omitempty"`
@@ -617,8 +677,23 @@ type Preferences struct {
 	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
 	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
 
+	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; availability depends on the linked libtorrent build.
+	EnableCoalesceReadWrite *bool `json:"enable_coalesce_read_write,omitempty"`
+
 	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
 	EnableEmbeddedTracker *bool `json:"enable_embedded_tracker,omitempty"`
+
+	// EnableMultiConnectionsFromSameIp Allow multiple peer connections from one IP address.
+	EnableMultiConnectionsFromSameIp *bool `json:"enable_multi_connections_from_same_ip,omitempty"`
+
+	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build.
+	EnableMultiConnectionsFromSamePeerId *bool `json:"enable_multi_connections_from_same_peer_id,omitempty"`
+
+	// EnablePieceExtentAffinity Prefer allocating pieces near each other on disk.
+	EnablePieceExtentAffinity *bool `json:"enable_piece_extent_affinity,omitempty"`
+
+	// EnableUploadSuggestions Allow upload piece suggestions.
+	EnableUploadSuggestions *bool `json:"enable_upload_suggestions,omitempty"`
 
 	// Encryption Encryption mode: allow, require, or disable encryption.
 	Encryption *PreferencesEncryption `json:"encryption,omitempty"`
@@ -648,14 +723,44 @@ type Preferences struct {
 	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
 
 	// FileLogPath Server log directory.
-	FileLogPath  *string `json:"file_log_path,omitempty"`
-	I2PAddress   *string `json:"i2p_address,omitempty"`
-	I2PEnabled   *bool   `json:"i2p_enabled,omitempty"`
-	I2PMixedMode *bool   `json:"i2p_mixed_mode,omitempty"`
+	FileLogPath *string `json:"file_log_path,omitempty"`
+
+	// FilePoolSize Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
+	FilePoolSize *int `json:"file_pool_size,omitempty"`
+
+	// HashingThreads Hashing thread count; exposed conditionally by the server build.
+	HashingThreads *int `json:"hashing_threads,omitempty"`
+
+	// HostnameCacheTTL Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
+	HostnameCacheTTL *int    `json:"hostname_cache_ttl,omitempty"`
+	I2PAddress       *string `json:"i2p_address,omitempty"`
+	I2PEnabled       *bool   `json:"i2p_enabled,omitempty"`
+
+	// I2PInboundLength I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	I2PInboundLength *int `json:"i2p_inbound_length,omitempty"`
+
+	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	I2PInboundLengthVariance *int `json:"i2p_inbound_length_variance,omitempty"`
+
+	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	I2PInboundQuantity *int  `json:"i2p_inbound_quantity,omitempty"`
+	I2PMixedMode       *bool `json:"i2p_mixed_mode,omitempty"`
+
+	// I2POutboundLength I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	I2POutboundLength *int `json:"i2p_outbound_length,omitempty"`
+
+	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	I2POutboundLengthVariance *int `json:"i2p_outbound_length_variance,omitempty"`
+
+	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	I2POutboundQuantity *int `json:"i2p_outbound_quantity,omitempty"`
 
 	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
 	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
 	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IDNSupportEnabled Resolve internationalized domain names.
+	IDNSupportEnabled *bool `json:"idn_support_enabled,omitempty"`
 
 	// IgnoreSslErrors Ignore SSL certificate errors; enabling this weakens TLS verification.
 	IgnoreSslErrors *bool `json:"ignore_ssl_errors,omitempty"`
@@ -710,6 +815,9 @@ type Preferences struct {
 	MaxActiveTorrents         *int32 `json:"max_active_torrents,omitempty"`
 	MaxActiveUploads          *int32 `json:"max_active_uploads,omitempty"`
 
+	// MaxConcurrentHttpAnnounces Maximum concurrent HTTP tracker announces.
+	MaxConcurrentHttpAnnounces *int `json:"max_concurrent_http_announces,omitempty"`
+
 	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
 	MaxConnections *int64 `json:"max_connec,omitempty"`
 
@@ -719,6 +827,9 @@ type Preferences struct {
 	// MaxInactiveSeedingTime Maximum inactive seeding minutes; -1 disables the limit.
 	MaxInactiveSeedingTime        *int32 `json:"max_inactive_seeding_time,omitempty"`
 	MaxInactiveSeedingTimeEnabled *bool  `json:"max_inactive_seeding_time_enabled,omitempty"`
+
+	// MaxOutstandingBlockRequests Maximum outstanding block requests from one peer.
+	MaxOutstandingBlockRequests *int `json:"max_outstanding_block_requests,omitempty"`
 
 	// MaxRatio Share ratio; -1 disables the limit.
 	MaxRatio        *float64                `json:"max_ratio,omitempty"`
@@ -740,6 +851,24 @@ type Preferences struct {
 
 	// MergeTrackers Merge trackers when adding a duplicate torrent.
 	MergeTrackers *bool `json:"merge_trackers,omitempty"`
+
+	// OutgoingPortsMax Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range.
+	OutgoingPortsMax *int `json:"outgoing_ports_max,omitempty"`
+
+	// OutgoingPortsMin Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range.
+	OutgoingPortsMin *int `json:"outgoing_ports_min,omitempty"`
+
+	// PeerTos Peer connection DSCP/TOS value.
+	PeerTos *int `json:"peer_tos,omitempty"`
+
+	// PeerTurnover Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnover *int `json:"peer_turnover,omitempty"`
+
+	// PeerTurnoverCutoff Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverCutoff *int `json:"peer_turnover_cutoff,omitempty"`
+
+	// PeerTurnoverInterval Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverInterval *int `json:"peer_turnover_interval,omitempty"`
 
 	// PerformanceWarning Log performance warnings.
 	PerformanceWarning *bool `json:"performance_warning,omitempty"`
@@ -773,6 +902,9 @@ type Preferences struct {
 
 	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
 	RemoveTorrentFileBackup *bool `json:"remove_torrent_file_backup,omitempty"`
+
+	// RequestQueueSize Maximum outstanding requests to one peer.
+	RequestQueueSize *int `json:"request_queue_size,omitempty"`
 
 	// ResolvePeerCountries Resolve peer IP addresses to country names.
 	ResolvePeerCountries *bool `json:"resolve_peer_countries,omitempty"`
@@ -822,8 +954,20 @@ type Preferences struct {
 	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
 
 	// SchedulerEnabled Schedule alternative rate limits using the server local time.
-	SchedulerEnabled *bool                       `json:"scheduler_enabled,omitempty"`
-	ShareLimitsMode  *PreferencesShareLimitsMode `json:"share_limits_mode,omitempty"`
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// SeedingOutgoingConnections Allow outgoing connections while seeding.
+	SeedingOutgoingConnections *bool `json:"seeding_outgoing_connections,omitempty"`
+
+	// SendBufferLowWatermark Low send buffer watermark in KiB (wire units).
+	SendBufferLowWatermark *int `json:"send_buffer_low_watermark,omitempty"`
+
+	// SendBufferWatermark Send buffer watermark in KiB (wire units).
+	SendBufferWatermark *int `json:"send_buffer_watermark,omitempty"`
+
+	// SendBufferWatermarkFactor Send buffer watermark growth factor in percent.
+	SendBufferWatermarkFactor *int                        `json:"send_buffer_watermark_factor,omitempty"`
+	ShareLimitsMode           *PreferencesShareLimitsMode `json:"share_limits_mode,omitempty"`
 
 	// ShutdownTimeout Session shutdown timeout in seconds; -1 means unlimited.
 	ShutdownTimeout *int64 `json:"shutdown_timeout,omitempty"`
@@ -837,11 +981,26 @@ type Preferences struct {
 	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
 
+	// SocketBacklogSize Listen socket backlog size.
+	SocketBacklogSize *int `json:"socket_backlog_size,omitempty"`
+
+	// SocketReceiveBufferSize Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketReceiveBufferSize *int `json:"socket_receive_buffer_size,omitempty"`
+
+	// SocketSendBufferSize Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketSendBufferSize *int `json:"socket_send_buffer_size,omitempty"`
+
+	// SSRFMitigation Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy.
+	SSRFMitigation *bool `json:"ssrf_mitigation,omitempty"`
+
 	// StartPaused Start the BitTorrent session in the paused state.
 	StartPaused *bool `json:"start_paused,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StopTrackerTimeout Stop tracker announce timeout in seconds; 0 disables the timeout.
+	StopTrackerTimeout *int `json:"stop_tracker_timeout,omitempty"`
 
 	// StoreSearchJobResults Save search results with search tabs.
 	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
@@ -880,13 +1039,44 @@ type Preferences struct {
 
 	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
-	UPnP        *bool        `json:"upnp,omitempty"`
+
+	// UploadChokingAlgorithm Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech.
+	UploadChokingAlgorithm *int `json:"upload_choking_algorithm,omitempty"`
+
+	// UploadSlotsBehavior Upload slot behavior: 0 fixed slots, 1 upload-rate-based.
+	UploadSlotsBehavior *int  `json:"upload_slots_behavior,omitempty"`
+	UPnP                *bool `json:"upnp,omitempty"`
+
+	// UPnPLeaseDuration UPnP lease duration in seconds; 0 requests a permanent lease.
+	UPnPLeaseDuration *int `json:"upnp_lease_duration,omitempty"`
 
 	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
 	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
 
 	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
 	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
+
+	// UtpTcpMixedMode Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional.
+	UtpTcpMixedMode *int `json:"utp_tcp_mixed_mode,omitempty"`
+
+	// ValidateHttpsTrackerCertificate Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
+	ValidateHttpsTrackerCertificate    *bool   `json:"validate_https_tracker_certificate,omitempty"`
+	WebUIBanDuration                   *int32  `json:"web_ui_ban_duration,omitempty"`
+	WebUIClickjackingProtectionEnabled *bool   `json:"web_ui_clickjacking_protection_enabled,omitempty"`
+	WebUICSRFProtectionEnabled         *bool   `json:"web_ui_csrf_protection_enabled,omitempty"`
+	WebUICustomHTTPHeaders             *string `json:"web_ui_custom_http_headers,omitempty"`
+	WebUIDomainList                    *string `json:"web_ui_domain_list,omitempty"`
+	WebUIHostHeaderValidationEnabled   *bool   `json:"web_ui_host_header_validation_enabled,omitempty"`
+	WebUIMaxAuthFailCount              *int32  `json:"web_ui_max_auth_fail_count,omitempty"`
+	WebUIReverseProxiesList            *string `json:"web_ui_reverse_proxies_list,omitempty"`
+	WebUIReverseProxyEnabled           *bool   `json:"web_ui_reverse_proxy_enabled,omitempty"`
+	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
+	WebUISessionTimeout                *int32  `json:"web_ui_session_timeout,omitempty"`
+	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
+	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
+
+	// WebtorrentStunServer WebTorrent NAT traversal STUN server; exposed conditionally by the server build.
+	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
 }
 
 // PreferencesAutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
@@ -938,11 +1128,28 @@ type PreferencesPatch struct {
 	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
 
 	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
-	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
-	AnonymousMode  *bool           `json:"anonymous_mode,omitempty"`
+	AltUploadLimit          *AltUploadLimit `json:"alt_up_limit,omitempty"`
+	AlternativeWebUIEnabled *bool           `json:"alternative_webui_enabled,omitempty"`
+	AlternativeWebUIPath    *string         `json:"alternative_webui_path,omitempty"`
+
+	// AnnounceIp IP address announced to trackers; empty uses the default. Changes require restart.
+	AnnounceIp *string `json:"announce_ip,omitempty"`
+
+	// AnnouncePort Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied.
+	AnnouncePort *int `json:"announce_port,omitempty"`
+
+	// AnnounceToAllTiers Announce to all tracker tiers.
+	AnnounceToAllTiers *bool `json:"announce_to_all_tiers,omitempty"`
+
+	// AnnounceToAllTrackers Announce to all trackers in each tier.
+	AnnounceToAllTrackers *bool `json:"announce_to_all_trackers,omitempty"`
+	AnonymousMode         *bool `json:"anonymous_mode,omitempty"`
 
 	// AppInstanceName Application instance name shown by qBittorrent.
 	AppInstanceName *string `json:"app_instance_name,omitempty"`
+
+	// AsyncIOThreads Asynchronous I/O thread count; sent as a signed 32-bit integer.
+	AsyncIOThreads *int `json:"async_io_threads,omitempty"`
 
 	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
 	AutoDeleteMode *PreferencesPatchAutoDeleteMode `json:"auto_delete_mode,omitempty"`
@@ -963,11 +1170,26 @@ type PreferencesPatch struct {
 	// BannedIPs Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
 	BannedIPs *string `json:"banned_IPs,omitempty"`
 
+	// BdecodeDepthLimit Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer.
+	BdecodeDepthLimit *int `json:"bdecode_depth_limit,omitempty"`
+
+	// BdecodeTokenLimit Libtorrent bdecode maximum token count; sent as a signed 32-bit integer.
+	BdecodeTokenLimit *int `json:"bdecode_token_limit,omitempty"`
+
 	// BittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
 	BittorrentProtocol *PreferencesPatchBittorrentProtocol `json:"bittorrent_protocol,omitempty"`
 
+	// BlockPeersOnPrivilegedPorts Block peer connections to privileged destination ports.
+	BlockPeersOnPrivilegedPorts      *bool   `json:"block_peers_on_privileged_ports,omitempty"`
+	BypassAuthSubnetWhitelist        *string `json:"bypass_auth_subnet_whitelist,omitempty"`
+	BypassAuthSubnetWhitelistEnabled *bool   `json:"bypass_auth_subnet_whitelist_enabled,omitempty"`
+	BypassLocalAuth                  *bool   `json:"bypass_local_auth,omitempty"`
+
 	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
 	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
+
+	// CheckingMemoryUse Memory limit while checking torrents in MiB; sent as a signed 32-bit integer.
+	CheckingMemoryUse *int `json:"checking_memory_use,omitempty"`
 
 	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
 	ConfirmRemoveAllTags *bool `json:"confirm_remove_all_tags,omitempty"`
@@ -981,6 +1203,9 @@ type PreferencesPatch struct {
 	// ConfirmTorrentRecheck Ask for confirmation before rechecking a torrent.
 	ConfirmTorrentRecheck *bool `json:"confirm_torrent_recheck,omitempty"`
 
+	// ConnectionSpeed Outgoing connection attempts per second.
+	ConnectionSpeed *int `json:"connection_speed,omitempty"`
+
 	// CurrentInterfaceAddress Optional IP address to bind on the selected server interface.
 	CurrentInterfaceAddress *string `json:"current_interface_address,omitempty"`
 
@@ -988,9 +1213,35 @@ type PreferencesPatch struct {
 	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
 	DHT                     *bool   `json:"dht,omitempty"`
 
+	// DHTBootstrapNodes DHT bootstrap node list; empty resets to libtorrent defaults.
+	DHTBootstrapNodes *string `json:"dht_bootstrap_nodes,omitempty"`
+
+	// DiskCache Disk cache size in MiB; the qBittorrent setter caps the maximum and otherwise retains the supplied signed 32-bit value.
+	DiskCache *int `json:"disk_cache,omitempty"`
+
+	// DiskCacheTTL Disk cache expiry in seconds; sent as a signed 32-bit integer.
+	DiskCacheTTL *int `json:"disk_cache_ttl,omitempty"`
+
+	// DiskIOReadMode OS read cache: 0 disabled, 1 enabled.
+	DiskIOReadMode *int `json:"disk_io_read_mode,omitempty"`
+
+	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. The upstream 4 pread/pwrite option is compile-conditional and is not accepted without linked-build evidence.
+	DiskIOType *int `json:"disk_io_type,omitempty"`
+
+	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compile-conditional and is not accepted without linked-build evidence.
+	DiskIOWriteMode *int `json:"disk_io_write_mode,omitempty"`
+
+	// DiskQueueSize Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
+	DiskQueueSize *int64 `json:"disk_queue_size,omitempty"`
+
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
 	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+	DynDNSDomain          *string        `json:"dyndns_domain,omitempty"`
+	DynDNSEnabled         *bool          `json:"dyndns_enabled,omitempty"`
+	DynDNSPassword        *string        `json:"dyndns_password,omitempty"`
+	DynDNSService         *int32         `json:"dyndns_service,omitempty"`
+	DynDNSUsername        *string        `json:"dyndns_username,omitempty"`
 
 	// EmbeddedTrackerPort Port used by the embedded tracker.
 	EmbeddedTrackerPort *int64 `json:"embedded_tracker_port,omitempty"`
@@ -998,9 +1249,24 @@ type PreferencesPatch struct {
 	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
 	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
 
+	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; availability depends on the linked libtorrent build.
+	EnableCoalesceReadWrite *bool `json:"enable_coalesce_read_write,omitempty"`
+
 	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
-	EnableEmbeddedTracker *bool  `json:"enable_embedded_tracker,omitempty"`
-	Encryption            *int32 `json:"encryption,omitempty"`
+	EnableEmbeddedTracker *bool `json:"enable_embedded_tracker,omitempty"`
+
+	// EnableMultiConnectionsFromSameIp Allow multiple peer connections from one IP address.
+	EnableMultiConnectionsFromSameIp *bool `json:"enable_multi_connections_from_same_ip,omitempty"`
+
+	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; availability depends on the linked libtorrent build.
+	EnableMultiConnectionsFromSamePeerId *bool `json:"enable_multi_connections_from_same_peer_id,omitempty"`
+
+	// EnablePieceExtentAffinity Prefer allocating pieces near each other on disk.
+	EnablePieceExtentAffinity *bool `json:"enable_piece_extent_affinity,omitempty"`
+
+	// EnableUploadSuggestions Allow upload piece suggestions.
+	EnableUploadSuggestions *bool  `json:"enable_upload_suggestions,omitempty"`
+	Encryption              *int32 `json:"encryption,omitempty"`
 
 	// ExcludedFileNames Newline-delimited file name exclusion patterns; blank lines are preserved.
 	ExcludedFileNames *string `json:"excluded_file_names,omitempty"`
@@ -1027,14 +1293,44 @@ type PreferencesPatch struct {
 	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
 
 	// FileLogPath Server log directory.
-	FileLogPath  *string `json:"file_log_path,omitempty"`
-	I2PAddress   *string `json:"i2p_address,omitempty"`
-	I2PEnabled   *bool   `json:"i2p_enabled,omitempty"`
-	I2PMixedMode *bool   `json:"i2p_mixed_mode,omitempty"`
+	FileLogPath *string `json:"file_log_path,omitempty"`
+
+	// FilePoolSize Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
+	FilePoolSize *int `json:"file_pool_size,omitempty"`
+
+	// HashingThreads Hashing thread count; exposed conditionally by the server build.
+	HashingThreads *int `json:"hashing_threads,omitempty"`
+
+	// HostnameCacheTTL Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
+	HostnameCacheTTL *int    `json:"hostname_cache_ttl,omitempty"`
+	I2PAddress       *string `json:"i2p_address,omitempty"`
+	I2PEnabled       *bool   `json:"i2p_enabled,omitempty"`
+
+	// I2PInboundLength I2P inbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	I2PInboundLength *int `json:"i2p_inbound_length,omitempty"`
+
+	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	I2PInboundLengthVariance *int `json:"i2p_inbound_length_variance,omitempty"`
+
+	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	I2PInboundQuantity *int  `json:"i2p_inbound_quantity,omitempty"`
+	I2PMixedMode       *bool `json:"i2p_mixed_mode,omitempty"`
+
+	// I2POutboundLength I2P outbound tunnel length, 0..7; exposed conditionally by the linked libtorrent.
+	I2POutboundLength *int `json:"i2p_outbound_length,omitempty"`
+
+	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; exposed conditionally by the linked libtorrent.
+	I2POutboundLengthVariance *int `json:"i2p_outbound_length_variance,omitempty"`
+
+	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; exposed conditionally by the linked libtorrent.
+	I2POutboundQuantity *int `json:"i2p_outbound_quantity,omitempty"`
 
 	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
 	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
 	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IDNSupportEnabled Resolve internationalized domain names.
+	IDNSupportEnabled *bool `json:"idn_support_enabled,omitempty"`
 
 	// IgnoreSslErrors Ignore SSL certificate errors; enabling this weakens TLS verification.
 	IgnoreSslErrors *bool `json:"ignore_ssl_errors,omitempty"`
@@ -1070,6 +1366,7 @@ type PreferencesPatch struct {
 
 	// MailNotificationEncryptionType SMTP encryption mode.
 	MailNotificationEncryptionType *PreferencesPatchMailNotificationEncryptionType `json:"mail_notification_encryption_type,omitempty"`
+	MailNotificationPassword       *string                                         `json:"mail_notification_password,omitempty"`
 
 	// MailNotificationSender Sender address for completion email notifications.
 	MailNotificationSender *string `json:"mail_notification_sender,omitempty"`
@@ -1089,15 +1386,21 @@ type PreferencesPatch struct {
 	MaxActiveTorrents         *int32 `json:"max_active_torrents,omitempty"`
 	MaxActiveUploads          *int32 `json:"max_active_uploads,omitempty"`
 
+	// MaxConcurrentHttpAnnounces Maximum concurrent HTTP tracker announces.
+	MaxConcurrentHttpAnnounces *int `json:"max_concurrent_http_announces,omitempty"`
+
 	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
 	MaxConnections *int64 `json:"max_connec,omitempty"`
 
 	// MaxConnectionsPerTorrent Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
-	MaxConnectionsPerTorrent *int64   `json:"max_connec_per_torrent,omitempty"`
-	MaxInactiveSeedingTime   *int32   `json:"max_inactive_seeding_time,omitempty"`
-	MaxRatio                 *float64 `json:"max_ratio,omitempty"`
-	MaxRatioAct              *int32   `json:"max_ratio_act,omitempty"`
-	MaxSeedingTime           *int32   `json:"max_seeding_time,omitempty"`
+	MaxConnectionsPerTorrent *int64 `json:"max_connec_per_torrent,omitempty"`
+	MaxInactiveSeedingTime   *int32 `json:"max_inactive_seeding_time,omitempty"`
+
+	// MaxOutstandingBlockRequests Maximum outstanding block requests from one peer.
+	MaxOutstandingBlockRequests *int     `json:"max_outstanding_block_requests,omitempty"`
+	MaxRatio                    *float64 `json:"max_ratio,omitempty"`
+	MaxRatioAct                 *int32   `json:"max_ratio_act,omitempty"`
+	MaxSeedingTime              *int32   `json:"max_seeding_time,omitempty"`
 
 	// MaxUploads Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
 	MaxUploads *int64 `json:"max_uploads,omitempty"`
@@ -1111,6 +1414,24 @@ type PreferencesPatch struct {
 	// MergeTrackers Merge trackers when adding a duplicate torrent.
 	MergeTrackers *bool `json:"merge_trackers,omitempty"`
 
+	// OutgoingPortsMax Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range.
+	OutgoingPortsMax *int `json:"outgoing_ports_max,omitempty"`
+
+	// OutgoingPortsMin Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range.
+	OutgoingPortsMin *int `json:"outgoing_ports_min,omitempty"`
+
+	// PeerTos Peer connection DSCP/TOS value.
+	PeerTos *int `json:"peer_tos,omitempty"`
+
+	// PeerTurnover Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnover *int `json:"peer_turnover,omitempty"`
+
+	// PeerTurnoverCutoff Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverCutoff *int `json:"peer_turnover_cutoff,omitempty"`
+
+	// PeerTurnoverInterval Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverInterval *int `json:"peer_turnover_interval,omitempty"`
+
 	// PerformanceWarning Log performance warnings.
 	PerformanceWarning *bool `json:"performance_warning,omitempty"`
 	PeX                *bool `json:"pex,omitempty"`
@@ -1122,6 +1443,7 @@ type PreferencesPatch struct {
 	ProxyHostnameLookup  *bool                      `json:"proxy_hostname_lookup,omitempty"`
 	ProxyIP              *string                    `json:"proxy_ip,omitempty"`
 	ProxyMisc            *bool                      `json:"proxy_misc,omitempty"`
+	ProxyPassword        *string                    `json:"proxy_password,omitempty"`
 	ProxyPeerConnections *bool                      `json:"proxy_peer_connections,omitempty"`
 	ProxyPort            *int64                     `json:"proxy_port,omitempty"`
 	ProxyRSS             *bool                      `json:"proxy_rss,omitempty"`
@@ -1143,6 +1465,9 @@ type PreferencesPatch struct {
 
 	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
 	RemoveTorrentFileBackup *bool `json:"remove_torrent_file_backup,omitempty"`
+
+	// RequestQueueSize Maximum outstanding requests to one peer.
+	RequestQueueSize *int `json:"request_queue_size,omitempty"`
 
 	// ResolvePeerCountries Resolve peer IP addresses to country names.
 	ResolvePeerCountries *bool `json:"resolve_peer_countries,omitempty"`
@@ -1186,8 +1511,20 @@ type PreferencesPatch struct {
 	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
 
 	// SchedulerEnabled Schedule alternative rate limits using the server local time.
-	SchedulerEnabled *bool                            `json:"scheduler_enabled,omitempty"`
-	ShareLimitsMode  *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// SeedingOutgoingConnections Allow outgoing connections while seeding.
+	SeedingOutgoingConnections *bool `json:"seeding_outgoing_connections,omitempty"`
+
+	// SendBufferLowWatermark Low send buffer watermark in KiB (wire units).
+	SendBufferLowWatermark *int `json:"send_buffer_low_watermark,omitempty"`
+
+	// SendBufferWatermark Send buffer watermark in KiB (wire units).
+	SendBufferWatermark *int `json:"send_buffer_watermark,omitempty"`
+
+	// SendBufferWatermarkFactor Send buffer watermark growth factor in percent.
+	SendBufferWatermarkFactor *int                             `json:"send_buffer_watermark_factor,omitempty"`
+	ShareLimitsMode           *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
 
 	// ShutdownTimeout Session shutdown timeout in seconds; -1 means unlimited.
 	ShutdownTimeout *int64 `json:"shutdown_timeout,omitempty"`
@@ -1201,11 +1538,26 @@ type PreferencesPatch struct {
 	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
 
+	// SocketBacklogSize Listen socket backlog size.
+	SocketBacklogSize *int `json:"socket_backlog_size,omitempty"`
+
+	// SocketReceiveBufferSize Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketReceiveBufferSize *int `json:"socket_receive_buffer_size,omitempty"`
+
+	// SocketSendBufferSize Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketSendBufferSize *int `json:"socket_send_buffer_size,omitempty"`
+
+	// SSRFMitigation Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy.
+	SSRFMitigation *bool `json:"ssrf_mitigation,omitempty"`
+
 	// StartPaused Start the BitTorrent session in the paused state.
 	StartPaused *bool `json:"start_paused,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StopTrackerTimeout Stop tracker announce timeout in seconds; 0 disables the timeout.
+	StopTrackerTimeout *int `json:"stop_tracker_timeout,omitempty"`
 
 	// StoreSearchJobResults Save search results with search tabs.
 	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
@@ -1244,13 +1596,44 @@ type PreferencesPatch struct {
 
 	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
-	UPnP        *bool        `json:"upnp,omitempty"`
+
+	// UploadChokingAlgorithm Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech.
+	UploadChokingAlgorithm *int `json:"upload_choking_algorithm,omitempty"`
+
+	// UploadSlotsBehavior Upload slot behavior: 0 fixed slots, 1 upload-rate-based.
+	UploadSlotsBehavior *int  `json:"upload_slots_behavior,omitempty"`
+	UPnP                *bool `json:"upnp,omitempty"`
+
+	// UPnPLeaseDuration UPnP lease duration in seconds; 0 requests a permanent lease.
+	UPnPLeaseDuration *int `json:"upnp_lease_duration,omitempty"`
 
 	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
 	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
 
 	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
 	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
+
+	// UtpTcpMixedMode Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional.
+	UtpTcpMixedMode *int `json:"utp_tcp_mixed_mode,omitempty"`
+
+	// ValidateHttpsTrackerCertificate Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
+	ValidateHttpsTrackerCertificate    *bool   `json:"validate_https_tracker_certificate,omitempty"`
+	WebUIBanDuration                   *int32  `json:"web_ui_ban_duration,omitempty"`
+	WebUIClickjackingProtectionEnabled *bool   `json:"web_ui_clickjacking_protection_enabled,omitempty"`
+	WebUICSRFProtectionEnabled         *bool   `json:"web_ui_csrf_protection_enabled,omitempty"`
+	WebUICustomHTTPHeaders             *string `json:"web_ui_custom_http_headers,omitempty"`
+	WebUIDomainList                    *string `json:"web_ui_domain_list,omitempty"`
+	WebUIHostHeaderValidationEnabled   *bool   `json:"web_ui_host_header_validation_enabled,omitempty"`
+	WebUIMaxAuthFailCount              *int32  `json:"web_ui_max_auth_fail_count,omitempty"`
+	WebUIReverseProxiesList            *string `json:"web_ui_reverse_proxies_list,omitempty"`
+	WebUIReverseProxyEnabled           *bool   `json:"web_ui_reverse_proxy_enabled,omitempty"`
+	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
+	WebUISessionTimeout                *int32  `json:"web_ui_session_timeout,omitempty"`
+	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
+	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
+
+	// WebtorrentStunServer WebTorrent NAT traversal STUN server; exposed conditionally by the server build.
+	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
 }
 
 // PreferencesPatchAutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.

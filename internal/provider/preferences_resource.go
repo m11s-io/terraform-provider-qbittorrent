@@ -62,6 +62,7 @@ func (r *preferencesResource) ValidateConfig(ctx context.Context, req resource.V
 		return
 	}
 	validateSchedulePairs(obj.Attributes(), &resp.Diagnostics)
+	validateAdvancedLibtorrentOutgoingPorts(obj.Attributes(), &resp.Diagnostics)
 }
 
 // qBittorrent ignores an hour or minute update unless both keys are present.
@@ -101,6 +102,7 @@ func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, st
 		return
 	}
 	validateSchedulePairs(obj.Attributes(), d)
+	validateAdvancedLibtorrentOutgoingPorts(obj.Attributes(), d)
 	if d.HasError() {
 		return
 	}
