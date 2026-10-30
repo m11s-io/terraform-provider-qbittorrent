@@ -23,7 +23,7 @@ func TestDownloadsPreferencesPatchAndRefresh(t *testing.T) {
 		"incomplete_files_ext": false, "use_unwanted_folder": true,
 		"torrent_changed_tmm_enabled": false, "save_path_changed_tmm_enabled": true,
 		"category_changed_tmm_enabled": false, "use_category_paths_in_manual_mode": true,
-		"torrent_files_backup_enabled": false, "torrent_files_backup_dir": "",
+		"torrent_files_backup_enabled": false, "torrent_files_backup_dir": "/archive/backups",
 		"torrent_files_finished_backup_dir_enabled": true, "torrent_files_finished_backup_dir": "/archive/finished",
 		"remove_torrent_file_backup":  false,
 		"excluded_file_names_enabled": true, "excluded_file_names": "*.tmp\n*.part\n",
@@ -86,6 +86,43 @@ func TestDownloadsPreferencesPatchAndRefresh(t *testing.T) {
 		if got := obj.Attributes()[k]; !v.Equal(got) {
 			t.Errorf("state %s: got %v, want %v", k, got, v)
 		}
+	}
+}
+
+func TestDownloadsEmptyBackupPathReportsNativeDefault(t *testing.T) {
+	writes := 0
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "setPreferences") {
+			writes++
+			r.ParseForm()
+			var patch map[string]any
+			if err := json.Unmarshal([]byte(r.Form.Get("json")), &patch); err != nil {
+				t.Fatal(err)
+			}
+			if len(patch) != 1 || patch["torrent_files_backup_dir"] != "" {
+				t.Fatalf("empty path patch was not sent explicitly: %v", patch)
+			}
+			return
+		}
+		// qBittorrent's getter maps an empty stored path to its canonical default.
+		json.NewEncoder(w).Encode(map[string]any{"torrent_files_backup_dir": "backup"})
+	})
+	r := &preferencesResource{client: c}
+	s := testState(t, prefsSchema(), map[string]attr.Value{"torrent_files_backup_dir": types.StringValue("")})
+	var out resource.CreateResponse
+	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: s.Raw}}, &out)
+	if writes != 1 {
+		t.Fatalf("writes=%d, want one explicit empty-path patch", writes)
+	}
+	if !out.Diagnostics.HasError() || !strings.Contains(fmt.Sprint(out.Diagnostics), "Preference rejected or normalized") || !strings.Contains(fmt.Sprint(out.Diagnostics), "torrent_files_backup_dir") {
+		t.Fatalf("expected normalization diagnostic for empty path -> backup, got %v", out.Diagnostics)
+	}
+	var got types.String
+	if ds := out.State.GetAttribute(ctx, path.Root("torrent_files_backup_dir"), &got); ds.HasError() {
+		t.Fatal(ds)
+	}
+	if got.IsNull() || got.ValueString() != "backup" {
+		t.Fatalf("state should report the server default backup path, got %v", got)
 	}
 }
 

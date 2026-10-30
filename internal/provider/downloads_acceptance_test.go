@@ -24,7 +24,7 @@ resource "qbittorrent_preferences" "downloads" {
   category_changed_tmm_enabled = false
   use_category_paths_in_manual_mode = true
   torrent_files_backup_enabled = false
-  torrent_files_backup_dir = ""
+  torrent_files_backup_dir = "/config/provider-torrent-files"
   torrent_files_finished_backup_dir_enabled = false
   torrent_files_finished_backup_dir = "/config/provider-finished-torrent-files"
   remove_torrent_file_backup = false
@@ -50,7 +50,7 @@ data "qbittorrent_preferences" "downloads" {
 		{Config: config, Check: resource.ComposeTestCheckFunc(
 			resource.TestCheckResourceAttr("qbittorrent_preferences.downloads", "auto_delete_mode", "0"),
 			resource.TestCheckResourceAttr("qbittorrent_preferences.downloads", "add_to_top_of_queue", "false"),
-			resource.TestCheckResourceAttr("qbittorrent_preferences.downloads", "torrent_files_backup_dir", ""),
+			resource.TestCheckResourceAttr("qbittorrent_preferences.downloads", "torrent_files_backup_dir", "/config/provider-torrent-files"),
 			resource.TestCheckResourceAttr("qbittorrent_preferences.downloads", "excluded_file_names", "*.provider-test-tmp\n*.provider-test-part\n"),
 			resource.TestCheckResourceAttr("qbittorrent_preferences.downloads", "autorun_enabled", "false"),
 			resource.TestCheckResourceAttr("data.qbittorrent_preferences.downloads", "mail_notification_enabled", "false"),

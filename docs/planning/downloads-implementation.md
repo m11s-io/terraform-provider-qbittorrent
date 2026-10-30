@@ -13,7 +13,10 @@ settings except the password, and added/finished external-program templates.
 False, zero, and empty strings are explicit updates. Null values are omitted
 from a patch, which relinquishes ownership while retaining the server value.
 Paths are server paths and are not checked against the provider host's local
-filesystem. Excluded patterns remain a raw newline-delimited string.
+filesystem. qBittorrent returns `backup` for either torrent-file backup
+directory when its stored path is empty; configure a nonempty path when you
+need a stable explicit readback. Excluded patterns remain a raw
+newline-delimited string.
 
 The API trims surrounding whitespace from both external-program templates when
 it stores them. The resource marks these two inputs sensitive and the general
@@ -35,6 +38,9 @@ The mapping uses qBittorrent `release-5.3.0`, commit
 `9213075dd5f7b352208361c6a84c1c115efc898e`:
 
 - `src/webui/api/appcontroller.cpp:175-240` reads the preference keys.
+- `src/base/bittorrent/sessionimpl.cpp:970-1004` returns the canonical
+  `backup` path for empty torrent-file and finished-torrent backup directories;
+  `appcontroller.cpp:195-198` reads those effective paths.
 - `src/webui/api/appcontroller.cpp:600-734` applies keys independently and
   trims the two external-program templates before storing them.
 - `src/webui/www/private/views/preferences.html:169-472` defines the Downloads
