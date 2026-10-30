@@ -91,6 +91,9 @@ resource "qbittorrent_preferences" "safe" {
 }
 `
 	rotatedConfig := strings.Replace(config, "smtp_password_wo_version = 1", "smtp_password_wo_version = 2", 1)
+	relinquishedConfig := strings.Replace(rotatedConfig,
+		"smtp_password_wo = var.smtp_canary\n  smtp_password_wo_version = 2",
+		"smtp_password_wo = null\n  smtp_password_wo_version = null", 1)
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: factories,
 		CheckDestroy: func(_ *terraform.State) error {
@@ -127,6 +130,19 @@ resource "qbittorrent_preferences" "safe" {
 				PlanOnly:  true,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("qbittorrent_credentials.application", "smtp_password_wo_version", "2"),
+					checkNoCredentialCanaryInState(initial, rotated, unchangedVersion),
+					checkCredentialCanaries(rotatedExpected),
+				),
+			},
+			{
+				Config:    relinquishedConfig,
+				PreConfig: func() { setCredentialCanaries(unchangedVersion) },
+				ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{noCredentialCanaryPlanCheck{canaries: []string{
+					unchangedVersion["proxy"], unchangedVersion["dyndns"],
+				}}}},
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckNoResourceAttr("qbittorrent_credentials.application", "smtp_password_wo_version"),
+					resource.TestCheckResourceAttr("qbittorrent_credentials.application", "proxy_password_wo_version", "1"),
 					checkNoCredentialCanaryInState(initial, rotated, unchangedVersion),
 					checkCredentialCanaries(rotatedExpected),
 				),

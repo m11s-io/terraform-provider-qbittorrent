@@ -52,23 +52,26 @@ func TestWebUISettingsMetadataAndSensitiveHeaders(t *testing.T) {
 
 func TestWebUISettingsNativeIntegerBoundsAndEnums(t *testing.T) {
 	for _, tc := range []struct {
-		name string
-		good int64
-		bad  int64
+		name    string
+		minimum int64
+		maximum int64
 	}{
-		{"web_ui_max_auth_fail_count", 0, -1},
-		{"web_ui_ban_duration", 1, 0},
-		{"web_ui_session_timeout", 0, -1},
-		{"web_ui_sessions_count_limit", 0, -1},
+		{"web_ui_max_auth_fail_count", -1 << 31, 1<<31 - 1},
+		{"web_ui_ban_duration", -1 << 31, 1<<31 - 1},
+		{"web_ui_session_timeout", -1 << 31, 1<<31 - 1},
+		{"web_ui_sessions_count_limit", -1 << 31, 1<<31 - 1},
 	} {
 		f, ok := findPreferenceField(webUISettingsPreferenceFields, tc.name)
 		if !ok {
 			t.Fatalf("missing %s", tc.name)
 		}
+		if f.integerMin == nil || *f.integerMin != tc.minimum || f.integerMax == nil || *f.integerMax != tc.maximum {
+			t.Errorf("%s must accept native signed int32 range, metadata=%+v", tc.name, f)
+		}
 		for _, value := range []struct {
 			v     int64
 			valid bool
-		}{{tc.good, true}, {tc.bad, false}} {
+		}{{tc.minimum, true}, {-1, true}, {0, true}, {tc.maximum, true}, {tc.minimum - 1, false}, {tc.maximum + 1, false}} {
 			var resp validator.Int64Response
 			(preferenceIntValidator{field: f}).ValidateInt64(context.Background(), validator.Int64Request{Path: path.Root(tc.name), ConfigValue: types.Int64Value(value.v)}, &resp)
 			if got := !resp.Diagnostics.HasError(); got != value.valid {

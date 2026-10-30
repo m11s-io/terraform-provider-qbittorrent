@@ -1,4 +1,5 @@
-# Terraform 1.10+ ephemeral sensitive variables keep password inputs out of
+# Terraform 1.11+ supports the provider's write-only password inputs. Ephemeral
+# sensitive variables keep password values out of
 # plan and state values. Supply values with ephemeral variables at run time.
 variable "smtp_password" {
   type      = string

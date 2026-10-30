@@ -10,6 +10,8 @@ Use ephemeral sensitive variables or another ephemeral input source for password
 
 The DynDNS “Register” and email test controls are external actions and are not run during apply. This resource never sends email, registers a domain, rotates API keys, or performs account setup.
 
+The managed WebUI authentication-failure count, ban duration, session timeout, and session-count limit use the native signed 32-bit range (`-2147483648..2147483647`). qBittorrent's setters store these values without a narrower lower bound; nonpositive authentication-failure counts disable the counter and nonpositive session-count limits mean unlimited sessions.
+
 ## Example
 
 ```terraform
