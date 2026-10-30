@@ -594,11 +594,13 @@ type Preferences struct {
 	MailNotificationSmtp *string `json:"mail_notification_smtp,omitempty"`
 
 	// MailNotificationUsername SMTP authentication username.
-	MailNotificationUsername  *string `json:"mail_notification_username,omitempty"`
-	MaxActiveCheckingTorrents *int32  `json:"max_active_checking_torrents,omitempty"`
-	MaxActiveDownloads        *int32  `json:"max_active_downloads,omitempty"`
-	MaxActiveTorrents         *int32  `json:"max_active_torrents,omitempty"`
-	MaxActiveUploads          *int32  `json:"max_active_uploads,omitempty"`
+	MailNotificationUsername *string `json:"mail_notification_username,omitempty"`
+
+	// MaxActiveCheckingTorrents Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.
+	MaxActiveCheckingTorrents *int32 `json:"max_active_checking_torrents,omitempty"`
+	MaxActiveDownloads        *int32 `json:"max_active_downloads,omitempty"`
+	MaxActiveTorrents         *int32 `json:"max_active_torrents,omitempty"`
+	MaxActiveUploads          *int32 `json:"max_active_uploads,omitempty"`
 
 	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
 	MaxConnections *int64 `json:"max_connec,omitempty"`
@@ -685,13 +687,13 @@ type Preferences struct {
 	SchedulerEnabled *bool                       `json:"scheduler_enabled,omitempty"`
 	ShareLimitsMode  *PreferencesShareLimitsMode `json:"share_limits_mode,omitempty"`
 
-	// SlowTorrentDlRateThreshold Download threshold in KiB/s.
+	// SlowTorrentDlRateThreshold Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
 
-	// SlowTorrentInactiveTimer Inactivity threshold in seconds.
+	// SlowTorrentInactiveTimer Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.
 	SlowTorrentInactiveTimer *int32 `json:"slow_torrent_inactive_timer,omitempty"`
 
-	// SlowTorrentUlRateThreshold Upload threshold in KiB/s.
+	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
 	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
@@ -890,11 +892,13 @@ type PreferencesPatch struct {
 	MailNotificationSmtp *string `json:"mail_notification_smtp,omitempty"`
 
 	// MailNotificationUsername SMTP authentication username.
-	MailNotificationUsername  *string `json:"mail_notification_username,omitempty"`
-	MaxActiveCheckingTorrents *int32  `json:"max_active_checking_torrents,omitempty"`
-	MaxActiveDownloads        *int32  `json:"max_active_downloads,omitempty"`
-	MaxActiveTorrents         *int32  `json:"max_active_torrents,omitempty"`
-	MaxActiveUploads          *int32  `json:"max_active_uploads,omitempty"`
+	MailNotificationUsername *string `json:"mail_notification_username,omitempty"`
+
+	// MaxActiveCheckingTorrents Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.
+	MaxActiveCheckingTorrents *int32 `json:"max_active_checking_torrents,omitempty"`
+	MaxActiveDownloads        *int32 `json:"max_active_downloads,omitempty"`
+	MaxActiveTorrents         *int32 `json:"max_active_torrents,omitempty"`
+	MaxActiveUploads          *int32 `json:"max_active_uploads,omitempty"`
 
 	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
 	MaxConnections *int64 `json:"max_connec,omitempty"`
@@ -963,11 +967,17 @@ type PreferencesPatch struct {
 	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
 
 	// SchedulerEnabled Schedule alternative rate limits using the server local time.
-	SchedulerEnabled           *bool                            `json:"scheduler_enabled,omitempty"`
-	ShareLimitsMode            *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
-	SlowTorrentDlRateThreshold *int32                           `json:"slow_torrent_dl_rate_threshold,omitempty"`
-	SlowTorrentInactiveTimer   *int32                           `json:"slow_torrent_inactive_timer,omitempty"`
-	SlowTorrentUlRateThreshold *int32                           `json:"slow_torrent_ul_rate_threshold,omitempty"`
+	SchedulerEnabled *bool                            `json:"scheduler_enabled,omitempty"`
+	ShareLimitsMode  *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
+
+	// SlowTorrentDlRateThreshold Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.
+	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
+
+	// SlowTorrentInactiveTimer Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.
+	SlowTorrentInactiveTimer *int32 `json:"slow_torrent_inactive_timer,omitempty"`
+
+	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
+	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
 
 	// StatusBarExternalIP Show external IP in the status bar.
 	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
