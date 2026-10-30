@@ -361,7 +361,7 @@
       "source_line": 3040,
       "disposition": "special resource",
       "owner": "qbittorrent_watch_folders",
-      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "reason": "Authoritative map ownership. Legacy custom/watch-folder to default transition requires explicit remove/clear apply then re-add; diagnosed before mutation.",
       "test_reference": "internal/provider/watch_folders_resource_test.go"
     },
     {
@@ -1252,7 +1252,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_endpoint",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_endpoint_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
@@ -1262,7 +1262,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_endpoint",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_endpoint_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
@@ -1282,7 +1282,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_endpoint",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_endpoint_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
@@ -1292,7 +1292,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_endpoint",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_endpoint_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
@@ -1302,7 +1302,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_endpoint",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_endpoint_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
@@ -1312,7 +1312,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_auth",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_auth_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
@@ -1322,7 +1322,7 @@
       "disposition": "special resource",
       "owner": "qbittorrent_webui_auth",
       "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
-      "test_reference": "internal/provider/webui_auth_resource_test.go"
+      "test_reference": "internal/provider/webui_maintenance_test.go"
     },
     {
       "tab": "WebUI",
