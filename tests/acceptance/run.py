@@ -66,6 +66,7 @@ def main():
             for attempt in range(90):
                 try:
                     app, api = get('app/version'), get('app/webapiVersion')
+                    build_info = json.loads(get('app/buildInfo'))
                     break
                 except Exception as error:
                     if attempt in (5, 30, 60):
@@ -78,7 +79,8 @@ def main():
             preferences = json.loads(get('app/preferences'))
             if any(preferences.get(k) is not False for k in ('dht', 'pex', 'lsd', 'upnp')):
                 sys.exit('Disposable server discovery/port-forwarding flags must be disabled')
-            print('Image:', IMAGE, '\nApplication:', app, '\nWeb API:', api, flush=True)
+            print('Image:', IMAGE, '\nApplication:', app, '\nWeb API:', api,
+                  '\nBuild info:', json.dumps(build_info, sort_keys=True), flush=True)
             run(binary, 'version')
             env = os.environ.copy()
             for k in ('QBITTORRENT_URL', 'QBITTORRENT_API_KEY', 'QBITTORRENT_USERNAME', 'QBITTORRENT_PASSWORD'):
