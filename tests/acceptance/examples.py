@@ -25,12 +25,27 @@ def verify_examples(cli, environment, root, scratch):
     ]
     source = '\n'.join((root / p).read_text() for p in example_files)
     source = source.replace('https://qbittorrent.example.com', environment['QBT_ACC_URL'])
-    (work / 'main.tf').write_text(source)
     env = environment.copy()
     env.update(TF_CLI_CONFIG_FILE=str(config), QBITTORRENT_URL=env['QBT_ACC_URL'],
                QBITTORRENT_API_KEY=env['QBT_ACC_API_KEY'], QBITTORRENT_USERNAME='', QBITTORRENT_PASSWORD='',
                CHECKPOINT_DISABLE='1')
     env.pop('TF_REATTACH_PROVIDERS', None)
-    for args in [('init', '-backend=false', '-input=false', '-no-color'),
-                 ('validate', '-no-color'), ('plan', '-input=false', '-lock=false', '-no-color')]:
-        subprocess.run([cli, *args], cwd=work, env=env, check=True)
+    # Each coverage/maintenance example is independent partial ownership.
+    # Validate and plan it separately; never apply example maintenance changes.
+    groups = [("existing", source)]
+    baseline = {root / p for p in example_files}
+    additions = sorted(set((root / 'examples/coverage').glob('*.tf')) |
+                       set((root / 'examples/maintenance').glob('*.tf')) |
+                       (set((root / 'examples/resources').glob('*/*.tf')) - baseline))
+    provider = (root / 'examples/provider/provider.tf').read_text().replace(
+        'https://qbittorrent.example.com', environment['QBT_ACC_URL'])
+    for number, example in enumerate(additions):
+        groups.append((f"example-{number}", provider + "\n" + example.read_text()))
+    for name, contents in groups:
+        directory = work / name
+        directory.mkdir()
+        (directory / 'main.tf').write_text(contents)
+        print('Checking example:', name, flush=True)
+        for args in [('init', '-backend=false', '-input=false', '-no-color'),
+                     ('validate', '-no-color'), ('plan', '-input=false', '-lock=false', '-no-color')]:
+            subprocess.run([cli, *args], cwd=directory, env=env, check=True)
