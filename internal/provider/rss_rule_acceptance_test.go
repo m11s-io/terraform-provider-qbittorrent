@@ -24,11 +24,11 @@ func TestAccRSSRuleDoesNotFetchFeedsOrAddTorrents(t *testing.T) {
 	if err := c.SetPreferences(context.Background(), client.Preferences{RssProcessingEnabled: &no, RssAutoDownloadingEnabled: &no}); err != nil {
 		t.Fatal(err)
 	}
-	baselineTorrents := accTorrentHashes(t)
+	baselineTorrents := accRSSRuleTorrentHashes(t)
 	baselineFeeds := accRSSFeedInventory(t)
 	const ruleName = "provider-acceptance-no-fetch"
 	checkNoRSSSideEffects := func(*terraform.State) error {
-		if current := accTorrentHashes(t); !reflect.DeepEqual(baselineTorrents, current) {
+		if current := accRSSRuleTorrentHashes(t); !reflect.DeepEqual(baselineTorrents, current) {
 			return fmt.Errorf("RSS rule CRUD changed torrent hashes: before %v after %v", baselineTorrents, current)
 		}
 		if current := accRSSFeedInventory(t); baselineFeeds != current {
@@ -146,7 +146,7 @@ func accJSONGET(t *testing.T, endpoint string) []byte {
 	return body
 }
 
-func accTorrentHashes(t *testing.T) map[string]struct{} {
+func accRSSRuleTorrentHashes(t *testing.T) map[string]struct{} {
 	t.Helper()
 	var torrents []struct {
 		Hash string `json:"hash"`
