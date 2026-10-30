@@ -1,6 +1,54 @@
 Read:
   type: object
-  properties: {}
+  properties:
+    encryption:
+      type: integer
+      format: int32
+      enum: [0, 1, 2]
+      description: "Encryption mode: allow, require, or disable encryption."
+    anonymous_mode: {type: boolean}
+    max_active_checking_torrents: {type: integer, format: int32}
+    queueing_enabled: {type: boolean}
+    max_active_downloads: {type: integer, format: int32}
+    max_active_uploads: {type: integer, format: int32}
+    max_active_torrents: {type: integer, format: int32}
+    dont_count_slow_torrents: {type: boolean}
+    slow_torrent_dl_rate_threshold: {type: integer, format: int32, description: Download threshold in KiB/s.}
+    slow_torrent_ul_rate_threshold: {type: integer, format: int32, description: Upload threshold in KiB/s.}
+    slow_torrent_inactive_timer: {type: integer, format: int32, description: Inactivity threshold in seconds.}
+    max_ratio: {type: number, format: double, description: Share ratio; -1 disables the limit.}
+    max_ratio_enabled: {type: boolean, readOnly: true}
+    max_seeding_time: {type: integer, format: int32, description: Maximum seeding minutes; -1 disables the limit.}
+    max_seeding_time_enabled: {type: boolean, readOnly: true}
+    max_inactive_seeding_time: {type: integer, format: int32, description: Maximum inactive seeding minutes; -1 disables the limit.}
+    max_inactive_seeding_time_enabled: {type: boolean, readOnly: true}
+    share_limits_mode: {type: string, enum: [MatchAny, MatchAll]}
+    max_ratio_act: {type: integer, format: int32, enum: [0, 1, 2, 3]}
+    add_trackers_enabled: {type: boolean}
+    add_trackers: {type: string, description: Newline-delimited tracker URLs.}
+    add_trackers_from_url_enabled: {type: boolean}
+    add_trackers_url: {type: string}
+    add_trackers_url_list: {type: string, readOnly: true, description: Newline-delimited tracker list fetched by qBittorrent.}
 Patch:
   type: object
-  properties: {}
+  properties:
+    encryption: {type: integer, format: int32}
+    anonymous_mode: {type: boolean}
+    max_active_checking_torrents: {type: integer, format: int32}
+    queueing_enabled: {type: boolean}
+    max_active_downloads: {type: integer, format: int32}
+    max_active_uploads: {type: integer, format: int32}
+    max_active_torrents: {type: integer, format: int32}
+    dont_count_slow_torrents: {type: boolean}
+    slow_torrent_dl_rate_threshold: {type: integer, format: int32}
+    slow_torrent_ul_rate_threshold: {type: integer, format: int32}
+    slow_torrent_inactive_timer: {type: integer, format: int32}
+    max_ratio: {type: number, format: double}
+    max_seeding_time: {type: integer, format: int32}
+    max_inactive_seeding_time: {type: integer, format: int32}
+    share_limits_mode: {type: string, enum: [MatchAny, MatchAll]}
+    max_ratio_act: {type: integer, format: int32}
+    add_trackers_enabled: {type: boolean}
+    add_trackers: {type: string}
+    add_trackers_from_url_enabled: {type: boolean}
+    add_trackers_url: {type: string}

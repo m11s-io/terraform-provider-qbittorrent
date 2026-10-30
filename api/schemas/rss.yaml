@@ -1,6 +1,20 @@
 Read:
   type: object
-  properties: {}
+  properties:
+    rss_processing_enabled: {type: boolean}
+    rss_refresh_interval: {type: integer, format: int32, description: Refresh interval in minutes.}
+    rss_fetch_delay: {type: integer, format: int64, description: Same-host request delay in seconds.}
+    rss_max_articles_per_feed: {type: integer, format: int32}
+    rss_auto_downloading_enabled: {type: boolean}
+    rss_download_repack_proper_episodes: {type: boolean}
+    rss_smart_episode_filters: {type: string, description: Newline-delimited smart episode filters.}
 Patch:
   type: object
-  properties: {}
+  properties:
+    rss_processing_enabled: {type: boolean}
+    rss_refresh_interval: {type: integer, format: int32}
+    rss_fetch_delay: {type: integer, format: int64}
+    rss_max_articles_per_feed: {type: integer, format: int32}
+    rss_auto_downloading_enabled: {type: boolean}
+    rss_download_repack_proper_episodes: {type: boolean}
+    rss_smart_episode_filters: {type: string}
