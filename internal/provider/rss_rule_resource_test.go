@@ -95,7 +95,7 @@ func TestRSSRuleDefinitionPreservesHistoryAndOptionalNulls(t *testing.T) {
 	if got["enabled"] != false || got["priority"] != int64(4) || got["lastMatch"] != history["lastMatch"] {
 		t.Fatalf("wrong generated rule: %#v", got)
 	}
-	if got["addPaused"] != nil || got["contentLayout"] != nil {
+	if got["addPaused"] != nil || got["torrentContentLayout"] != nil {
 		t.Fatalf("null optional fields were not preserved: %#v", got)
 	}
 	if got["previouslyMatchedEpisodes"] == nil {
@@ -122,10 +122,10 @@ func TestRSSRuleDefinitionEncodesTypedNativeTorrentParams(t *testing.T) {
 		t.Fatal(err)
 	}
 	encoded := got["torrentParams"].(map[string]any)
-	if encoded["downloadLimit"] != int64(1048576) || encoded["ratioLimit"] != 1.75 || encoded["stopped"] != false || encoded["contentLayout"] != "Subfolder" {
+	if encoded["download_limit"] != int64(1048576) || encoded["ratio_limit"] != 1.75 || encoded["stopped"] != false || encoded["content_layout"] != "Subfolder" {
 		t.Fatalf("native AddTorrentParams not preserved: %#v", encoded)
 	}
-	if _, ok := encoded["downloadPath"]; ok {
+	if _, ok := encoded["download_path"]; ok {
 		t.Fatalf("null optional path should remain unset: %#v", encoded)
 	}
 }
@@ -148,6 +148,7 @@ func TestRSSRuleDeprecatedAliasesAreAppliedAlongsideNativeParams(t *testing.T) {
 			attributes[key] = types.Float64Null()
 		}
 	}
+	attributes["content_layout"] = types.StringValue("NoSubfolder")
 	params, diags := types.ObjectValue(rssRuleTorrentParamAttributeTypes(context.Background()), attributes)
 	if diags.HasError() {
 		t.Fatal(diags)
@@ -158,8 +159,98 @@ func TestRSSRuleDeprecatedAliasesAreAppliedAlongsideNativeParams(t *testing.T) {
 		t.Fatal(err)
 	}
 	encoded := got["torrentParams"].(map[string]any)
-	if encoded["category"] != "edge" || encoded["savePath"] != "/server/path" || encoded["stopped"] != false || encoded["contentLayout"] != "Subfolder" {
+	if encoded["category"] != "edge" || encoded["save_path"] != "/server/path" || encoded["stopped"] != false || encoded["content_layout"] != "NoSubfolder" {
 		t.Fatalf("deprecated aliases were ignored when native params were present: %#v", encoded)
+	}
+	if got["torrentContentLayout"] != "Subfolder" {
+		t.Fatalf("legacy layout alias used wrong native key: %#v", got)
+	}
+}
+
+func TestRSSRuleRefreshPreservesNullOptionalTorrentParams(t *testing.T) {
+	attributes := map[string]attr.Value{}
+	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
+		if _, ok := typ.(types.ListType); ok {
+			attributes[key] = types.ListNull(types.StringType)
+			continue
+		}
+		switch typ {
+		case types.StringType:
+			attributes[key] = types.StringNull()
+		case types.BoolType:
+			attributes[key] = types.BoolNull()
+		case types.Int64Type:
+			attributes[key] = types.Int64Null()
+		case types.Float64Type:
+			attributes[key] = types.Float64Null()
+		}
+	}
+	attributes["stopped"] = types.BoolValue(true)
+	attributes["content_layout"] = types.StringValue("Subfolder")
+	params, diags := types.ObjectValue(rssRuleTorrentParamAttributeTypes(context.Background()), attributes)
+	if diags.HasError() {
+		t.Fatal(diags)
+	}
+	m := rssRuleModel{TorrentParams: params}
+	rssRuleRefreshConfigured(&m, client.RSSRule{"torrentParams": map[string]any{
+		"category": "", "tags": []any{}, "save_path": "", "download_path": "", "operating_mode": "AutoManaged", "seed_mode": false,
+		"upload_limit": float64(-1), "download_limit": float64(-1), "ratio_limit": float64(0), "seeding_time_limit": float64(-1),
+		"inactive_seeding_time_limit": float64(-1), "share_limit_action": "Default", "share_limits_mode": "Default", "stopped": true, "content_layout": "Subfolder",
+	}})
+	got := m.TorrentParams.Attributes()
+	for _, name := range []string{"category", "tags", "save_path", "download_path", "operating_mode", "upload_limit", "download_limit"} {
+		if !got[name].IsNull() {
+			t.Errorf("unconfigured nested attribute %s became non-null: %v", name, got[name])
+		}
+	}
+	if got["stopped"].(types.Bool).ValueBool() != true || got["content_layout"].(types.String).ValueString() != "Subfolder" {
+		t.Fatalf("configured nested attributes changed: %#v", got)
+	}
+}
+
+func TestRSSRuleUpdateMergesCurrentNativeParamsAndConfiguredFieldsWin(t *testing.T) {
+	attributes := map[string]attr.Value{}
+	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
+		if _, ok := typ.(types.ListType); ok {
+			attributes[key] = types.ListNull(types.StringType)
+			continue
+		}
+		switch typ {
+		case types.StringType:
+			attributes[key] = types.StringNull()
+		case types.BoolType:
+			attributes[key] = types.BoolNull()
+		case types.Int64Type:
+			attributes[key] = types.Int64Null()
+		case types.Float64Type:
+			attributes[key] = types.Float64Null()
+		}
+	}
+	attributes["stopped"] = types.BoolValue(true)
+	attributes["content_layout"] = types.StringValue("NoSubfolder")
+	params, diags := types.ObjectValue(rssRuleTorrentParamAttributeTypes(context.Background()), attributes)
+	if diags.HasError() {
+		t.Fatal(diags)
+	}
+	m := rssRuleModel{RuleName: types.StringValue("Weekly"), TorrentParams: params, AddStopped: types.BoolValue(false), ContentLayout: types.StringValue("Subfolder"), SavePath: types.StringValue("/new/path")}
+	history := client.RSSRule{"torrentParams": map[string]any{
+		"category": "existing", "tags": []any{"keep"}, "save_path": "/old/path", "download_path": "/old/download", "operating_mode": "Forced", "seed_mode": true,
+		"upload_limit": float64(11), "download_limit": float64(22), "ratio_limit": 1.5, "seeding_time_limit": float64(33), "inactive_seeding_time_limit": float64(44),
+		"share_limit_action": "Remove", "share_limits_mode": "MatchAll", "add_to_top_of_queue": true, "stopped": false, "stop_condition": "FilesChecked", "content_layout": "Original", "use_auto_tmm": false,
+	}}
+	got, err := rssRuleDefinition(context.Background(), m, history)
+	if err != nil {
+		t.Fatal(err)
+	}
+	encoded := got["torrentParams"].(map[string]any)
+	if encoded["category"] != "existing" || encoded["tags"].([]any)[0] != "keep" || encoded["download_path"] != "/old/download" || encoded["operating_mode"] != "Forced" {
+		t.Fatalf("partial update dropped existing native params: %#v", encoded)
+	}
+	if encoded["save_path"] != "/new/path" || encoded["stopped"] != true || encoded["content_layout"] != "NoSubfolder" {
+		t.Fatalf("configured aliases/values not applied to native params: %#v", encoded)
+	}
+	if got["torrentContentLayout"] != "Subfolder" || got["addPaused"] != false {
+		t.Fatalf("legacy values not retained separately: %#v", got)
 	}
 }
 
@@ -206,7 +297,7 @@ func TestRSSRuleCreateWritesOnlyOneRuleAndDeleteRemovesOnlyThatRule(t *testing.T
 			if err := json.Unmarshal([]byte(r.Form.Get("ruleDef")), &definition); err != nil {
 				t.Fatal(err)
 			}
-			if definition["addPaused"] != nil || definition["contentLayout"] != nil {
+			if definition["addPaused"] != nil || definition["torrentContentLayout"] != nil {
 				t.Errorf("optional null aliases lost: %#v", definition)
 			}
 			if definition["mustContain"] != "S01" || definition["enabled"] != false {
@@ -266,7 +357,7 @@ func TestRSSRuleImportUsesExactRuleName(t *testing.T) {
 }
 
 func TestRSSRuleUpdateCarriesNativeHistoryAndRefreshRemovesMissingRule(t *testing.T) {
-	remote := map[string]any{"enabled": true, "priority": float64(1), "useRegex": false, "mustContain": "old", "mustNotContain": "", "episodeFilter": "", "affectedFeeds": []any{"https://feed.invalid/rss"}, "lastMatch": "Fri, 30 Oct 2026 10:00:00 +0000", "ignoreDays": float64(0), "smartFilter": false, "previouslyMatchedEpisodes": []any{"S01E01"}, "addPaused": nil, "contentLayout": nil, "savePath": "", "assignedCategory": "", "torrentParams": map[string]any{"category": "", "tags": []any{}, "savePath": "", "downloadPath": "", "operatingMode": "AutoManaged", "seedMode": false, "uploadLimit": float64(-1), "downloadLimit": float64(-1), "ratioLimit": float64(0), "seedingTimeLimit": float64(-1), "inactiveSeedingTimeLimit": float64(-1), "shareLimitAction": "Default", "shareLimitsMode": "Default"}}
+	remote := map[string]any{"enabled": true, "priority": float64(1), "useRegex": false, "mustContain": "old", "mustNotContain": "", "episodeFilter": "", "affectedFeeds": []any{"https://feed.invalid/rss"}, "lastMatch": "Fri, 30 Oct 2026 10:00:00 +0000", "ignoreDays": float64(0), "smartFilter": false, "previouslyMatchedEpisodes": []any{"S01E01"}, "addPaused": nil, "torrentContentLayout": nil, "savePath": "", "assignedCategory": "", "torrentParams": map[string]any{"category": "", "tags": []any{}, "save_path": "", "download_path": "", "operating_mode": "AutoManaged", "seed_mode": false, "upload_limit": float64(-1), "download_limit": float64(-1), "ratio_limit": float64(0), "seeding_time_limit": float64(-1), "inactive_seeding_time_limit": float64(-1), "share_limit_action": "Default", "share_limits_mode": "Default", "stopped": nil, "content_layout": nil, "use_auto_tmm": nil, "add_to_top_of_queue": nil}}
 	deleted := false
 	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
 		switch {

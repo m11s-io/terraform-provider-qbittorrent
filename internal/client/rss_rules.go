@@ -21,18 +21,18 @@ type RSSRules map[string]RSSRule
 var rssRuleFields = map[string]struct{}{
 	"enabled": {}, "priority": {}, "useRegex": {}, "mustContain": {}, "mustNotContain": {},
 	"episodeFilter": {}, "affectedFeeds": {}, "lastMatch": {}, "ignoreDays": {}, "smartFilter": {},
-	"previouslyMatchedEpisodes": {}, "addPaused": {}, "contentLayout": {}, "savePath": {},
+	"previouslyMatchedEpisodes": {}, "addPaused": {}, "torrentContentLayout": {}, "savePath": {},
 	"assignedCategory": {}, "torrentParams": {},
 }
 
 // These are the public nonsecret AddTorrentParams fields used by RSS rules.
 // SSL private-key material and API-only file selection fields are excluded.
 var rssTorrentParamFields = map[string]struct{}{
-	"category": {}, "tags": {}, "savePath": {}, "downloadPath": {}, "useDownloadPath": {},
-	"operatingMode": {}, "seedMode": {}, "uploadLimit": {}, "downloadLimit": {},
-	"ratioLimit": {}, "seedingTimeLimit": {}, "inactiveSeedingTimeLimit": {},
-	"shareLimitAction": {}, "shareLimitsMode": {}, "queueTop": {}, "stopped": {},
-	"stopCondition": {}, "contentLayout": {}, "autoTMM": {},
+	"category": {}, "tags": {}, "save_path": {}, "download_path": {}, "use_download_path": {},
+	"operating_mode": {}, "seed_mode": {}, "upload_limit": {}, "download_limit": {},
+	"ratio_limit": {}, "seeding_time_limit": {}, "inactive_seeding_time_limit": {},
+	"share_limit_action": {}, "share_limits_mode": {}, "add_to_top_of_queue": {}, "stopped": {},
+	"stop_condition": {}, "content_layout": {}, "use_auto_tmm": {},
 }
 
 func (c *Client) RSSRules(ctx context.Context) (RSSRules, error) {

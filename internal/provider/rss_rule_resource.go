@@ -46,7 +46,7 @@ func (r *rssRuleResource) Metadata(_ context.Context, req resource.MetadataReque
 
 func (r *rssRuleResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.",
+		MarkdownDescription: "Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.",
 		Attributes: map[string]schema.Attribute{
 			"id":                          schema.StringAttribute{Computed: true, MarkdownDescription: "RSS rule name.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 			"rule_name":                   schema.StringAttribute{Required: true, MarkdownDescription: "Exact qBittorrent rule name. Changing this replaces the resource.", Validators: []validator.String{rssRuleNameValidator{}}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}},
@@ -217,38 +217,52 @@ func rssRuleDefinition(ctx context.Context, m rssRuleModel, history client.RSSRu
 		{"enabled", m.Enabled}, {"priority", m.Priority}, {"useRegex", m.UseRegex}, {"mustContain", m.MustContain},
 		{"mustNotContain", m.MustNotContain}, {"episodeFilter", m.EpisodeFilter}, {"affectedFeeds", m.AffectedFeeds},
 		{"ignoreDays", m.IgnoreDays}, {"smartFilter", m.SmartFilter}, {"addPaused", m.AddStopped},
-		{"contentLayout", m.ContentLayout}, {"savePath", m.SavePath}, {"assignedCategory", m.Category},
+		{"torrentContentLayout", m.ContentLayout}, {"savePath", m.SavePath}, {"assignedCategory", m.Category},
 	} {
 		if err := put(pair.key, pair.value); err != nil {
 			return nil, err
 		}
 	}
+	configuredParams := map[string]any{}
 	if !m.TorrentParams.IsNull() && !m.TorrentParams.IsUnknown() {
-		params, err := rssObjectToMap(ctx, m.TorrentParams)
+		var err error
+		configuredParams, err = rssObjectToMap(ctx, m.TorrentParams)
 		if err != nil {
 			return nil, err
 		}
-		if _, exists := params["category"]; !exists && !m.Category.IsNull() && !m.Category.IsUnknown() {
+	}
+	remoteParams, hasRemoteParams := history["torrentParams"].(map[string]any)
+	if hasRemoteParams || !m.TorrentParams.IsNull() {
+		params := map[string]any{}
+		for key, value := range remoteParams {
+			params[key] = value
+		}
+		for key, value := range configuredParams {
+			params[key] = value
+		}
+		// Deprecated top-level aliases fill missing user-owned nested values.
+		// A configured native value wins when both forms are present.
+		if _, configured := configuredParams["category"]; !configured && !m.Category.IsNull() && !m.Category.IsUnknown() {
 			params["category"] = m.Category.ValueString()
 		}
-		if _, exists := params["savePath"]; !exists && !m.SavePath.IsNull() && !m.SavePath.IsUnknown() {
-			params["savePath"] = m.SavePath.ValueString()
+		if _, configured := configuredParams["save_path"]; !configured && !m.SavePath.IsNull() && !m.SavePath.IsUnknown() {
+			params["save_path"] = m.SavePath.ValueString()
 		}
-		if _, exists := params["stopped"]; !exists && !m.AddStopped.IsNull() && !m.AddStopped.IsUnknown() {
+		if _, configured := configuredParams["stopped"]; !configured && !m.AddStopped.IsNull() && !m.AddStopped.IsUnknown() {
 			params["stopped"] = m.AddStopped.ValueBool()
 		}
-		if _, exists := params["contentLayout"]; !exists && !m.ContentLayout.IsNull() && !m.ContentLayout.IsUnknown() {
-			params["contentLayout"] = m.ContentLayout.ValueString()
+		if _, configured := configuredParams["content_layout"]; !configured && !m.ContentLayout.IsNull() && !m.ContentLayout.IsUnknown() {
+			params["content_layout"] = m.ContentLayout.ValueString()
 		}
 		rule["torrentParams"] = params
 	}
 	// Alias fields are part of qBittorrent's read schema even when null. They
-	// must stay null to preserve the upstream optional addStopped/contentLayout.
+	// must stay null to preserve upstream optional addStopped/torrentContentLayout.
 	if m.AddStopped.IsNull() {
 		rule["addPaused"] = nil
 	}
 	if m.ContentLayout.IsNull() {
-		rule["contentLayout"] = nil
+		rule["torrentContentLayout"] = nil
 	}
 	if len(history) != 0 {
 		rule["lastMatch"] = history["lastMatch"]
@@ -300,7 +314,7 @@ func rssObjectToMap(ctx context.Context, object types.Object) (map[string]any, e
 }
 
 func rssTorrentParamWireName(terraform string) string {
-	for _, pair := range [][2]string{{"save_path", "savePath"}, {"download_path", "downloadPath"}, {"use_download_path", "useDownloadPath"}, {"operating_mode", "operatingMode"}, {"seed_mode", "seedMode"}, {"upload_limit", "uploadLimit"}, {"download_limit", "downloadLimit"}, {"ratio_limit", "ratioLimit"}, {"seeding_time_limit", "seedingTimeLimit"}, {"inactive_seeding_time_limit", "inactiveSeedingTimeLimit"}, {"share_limit_action", "shareLimitAction"}, {"share_limits_mode", "shareLimitsMode"}, {"queue_top", "queueTop"}, {"stop_condition", "stopCondition"}, {"content_layout", "contentLayout"}, {"auto_tmm", "autoTMM"}} {
+	for _, pair := range [][2]string{{"queue_top", "add_to_top_of_queue"}, {"auto_tmm", "use_auto_tmm"}} {
 		if terraform == pair[0] {
 			return pair[1]
 		}
@@ -349,22 +363,26 @@ func rssRuleRefreshConfigured(m *rssRuleModel, remote client.RSSRule) {
 			m.AffectedFeeds, _ = types.ListValueFrom(context.Background(), types.StringType, strings)
 		}
 	}
-	if !m.AddStopped.IsNull() {
+	if !m.AddStopped.IsNull() && !rssNativeAliasConfigured(*m, "stopped") {
 		if v, ok := remote["addPaused"].(bool); ok {
 			m.AddStopped = types.BoolValue(v)
 		} else {
 			m.AddStopped = types.BoolNull()
 		}
 	}
-	if !m.ContentLayout.IsNull() {
-		if v, ok := remote["contentLayout"].(string); ok {
+	if !m.ContentLayout.IsNull() && !rssNativeAliasConfigured(*m, "content_layout") {
+		if v, ok := remote["torrentContentLayout"].(string); ok {
 			m.ContentLayout = types.StringValue(v)
 		} else {
 			m.ContentLayout = types.StringNull()
 		}
 	}
-	set(&m.SavePath, "savePath")
-	set(&m.Category, "assignedCategory")
+	if !rssNativeAliasConfigured(*m, "save_path") {
+		set(&m.SavePath, "savePath")
+	}
+	if !rssNativeAliasConfigured(*m, "category") {
+		set(&m.Category, "assignedCategory")
+	}
 	if !m.TorrentParams.IsNull() {
 		if params, ok := remote["torrentParams"].(map[string]any); ok {
 			rssRefreshTorrentParams(m, params)
@@ -372,9 +390,36 @@ func rssRuleRefreshConfigured(m *rssRuleModel, remote client.RSSRule) {
 	}
 }
 
+// A configured native torrent_params value shadows its deprecated top-level
+// alias. Keep that shadowed input as planned so qBittorrent's native precedence
+// does not make Terraform report an inconsistent apply result.
+func rssNativeAliasConfigured(m rssRuleModel, wireKey string) bool {
+	if m.TorrentParams.IsNull() || m.TorrentParams.IsUnknown() {
+		return false
+	}
+	var attribute string
+	switch wireKey {
+	case "category":
+		attribute = "category"
+	case "save_path":
+		attribute = "save_path"
+	case "stopped":
+		attribute = "stopped"
+	case "content_layout":
+		attribute = "content_layout"
+	default:
+		return false
+	}
+	value, ok := m.TorrentParams.Attributes()[attribute]
+	return ok && !value.IsNull() && !value.IsUnknown()
+}
+
 func rssRefreshTorrentParams(m *rssRuleModel, remote map[string]any) {
 	attrs := m.TorrentParams.Attributes()
 	for key, raw := range attrs {
+		if raw.IsNull() || raw.IsUnknown() {
+			continue
+		}
 		wire := rssTorrentParamWireName(key)
 		value, exists := remote[wire]
 		if !exists {

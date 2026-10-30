@@ -23,7 +23,7 @@ Rule:
     addPaused:
       type: boolean
       nullable: true
-    contentLayout:
+    torrentContentLayout:
       type: string
       nullable: true
       enum: [Original, Subfolder, NoSubfolder]
@@ -44,7 +44,7 @@ Rule:
     - smartFilter
     - previouslyMatchedEpisodes
     - addPaused
-    - contentLayout
+    - torrentContentLayout
     - savePath
     - assignedCategory
     - torrentParams
@@ -56,23 +56,23 @@ TorrentParams:
     tags:
       type: array
       items: { type: string }
-    savePath: { type: string }
-    downloadPath: { type: string }
-    useDownloadPath: { type: boolean, nullable: true }
-    operatingMode: { type: string, enum: [AutoManaged, Forced] }
-    seedMode: { type: boolean }
-    uploadLimit: { type: integer, format: int64 }
-    downloadLimit: { type: integer, format: int64 }
-    ratioLimit: { type: number, format: double }
-    seedingTimeLimit: { type: integer, format: int32 }
-    inactiveSeedingTimeLimit: { type: integer, format: int32 }
-    shareLimitAction: { type: string }
-    shareLimitsMode: { type: string }
-    queueTop: { type: boolean, nullable: true }
+    save_path: { type: string }
+    download_path: { type: string }
+    use_download_path: { type: boolean, nullable: true }
+    operating_mode: { type: string, enum: [AutoManaged, Forced] }
+    seed_mode: { type: boolean }
+    upload_limit: { type: integer, format: int64 }
+    download_limit: { type: integer, format: int64 }
+    ratio_limit: { type: number, format: double }
+    seeding_time_limit: { type: integer, format: int32 }
+    inactive_seeding_time_limit: { type: integer, format: int32 }
+    share_limit_action: { type: string }
+    share_limits_mode: { type: string }
+    add_to_top_of_queue: { type: boolean, nullable: true }
     stopped: { type: boolean, nullable: true }
-    stopCondition: { type: string, nullable: true }
-    contentLayout: { type: string, nullable: true, enum: [Original, Subfolder, NoSubfolder] }
-    autoTMM: { type: boolean, nullable: true }
+    stop_condition: { type: string, nullable: true }
+    content_layout: { type: string, nullable: true, enum: [Original, Subfolder, NoSubfolder] }
+    use_auto_tmm: { type: boolean, nullable: true }
   description: Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
 Rules:
   type: object

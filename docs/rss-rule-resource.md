@@ -13,8 +13,11 @@ create those feeds. Match history (`last_match` and
 
 The add-stopped and content-layout fields are nullable to preserve qBittorrent's
 optional values. `torrent_params` exposes a typed subset of native
-`AddTorrentParams`. TLS certificate/private-key material and file-selection
-internals are not supported. The resource submits the exact upstream form
+`AddTorrentParams`; when a deprecated top-level alias and its corresponding
+native parameter are both configured, the native parameter takes precedence.
+TLS certificate/private-key material and file-selection internals are not
+supported. Omitted nested parameters are preserved from the current rule on
+update, and remain null in Terraform state. The resource submits the exact upstream form
 fields: `ruleName` and JSON-string `ruleDef` for create/update, and `ruleName`
 for removal.
 
