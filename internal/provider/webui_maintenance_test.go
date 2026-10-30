@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -92,11 +93,25 @@ func TestWebUIAuthValidationAndUnchangedPasswordNotReplayed(t *testing.T) {
 			t.Errorf("username %q accepted", value)
 		}
 	}
+	for _, value := range []string{"a😀", "ééé"} {
+		var r validator.StringResponse
+		u.ValidateString(context.Background(), validator.StringRequest{ConfigValue: types.StringValue(value), Path: path.Root("username")}, &r)
+		if r.Diagnostics.HasError() {
+			t.Errorf("native-valid username %q rejected: %v", value, r.Diagnostics)
+		}
+	}
 	p := webUIPasswordValidator{}
 	var pr validator.StringResponse
 	p.ValidateString(context.Background(), validator.StringRequest{ConfigValue: types.StringValue("short"), Path: path.Root("password_wo")}, &pr)
 	if !pr.Diagnostics.HasError() {
 		t.Fatal("short password accepted")
+	}
+	for _, value := range []string{"😀😀😀", "éééééé"} {
+		var r validator.StringResponse
+		p.ValidateString(context.Background(), validator.StringRequest{ConfigValue: types.StringValue(value), Path: path.Root("password_wo")}, &r)
+		if r.Diagnostics.HasError() {
+			t.Errorf("native-valid password rejected: %v", r.Diagnostics)
+		}
 	}
 	s := authSchema()
 	priorState := testState(t, s, map[string]attr.Value{"id": types.StringValue("application"), "username": types.StringValue("admin"), "password_wo_version": types.Int64Value(3)})
@@ -115,14 +130,21 @@ func TestWebUIAuthValidationAndUnchangedPasswordNotReplayed(t *testing.T) {
 
 func TestEndpointCreatePersistsUncertainPlanAfterLostResponse(t *testing.T) {
 	var writes atomic.Int32
+	var port atomic.Int32
+	port.Store(8080)
 	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "/app/setPreferences") {
 			writes.Add(1)
+			port.Store(18081)
 			conn, buf, err := w.(http.Hijacker).Hijack()
 			if err == nil {
 				_ = buf.Flush()
 				_ = conn.Close()
 			}
+			return
+		}
+		if strings.HasSuffix(r.URL.Path, "/app/preferences") {
+			_, _ = fmt.Fprintf(w, `{"web_ui_port":%d}`, port.Load())
 			return
 		}
 		http.NotFound(w, r)
@@ -141,8 +163,11 @@ func TestEndpointCreatePersistsUncertainPlanAfterLostResponse(t *testing.T) {
 		Config: tfsdk.Config{Schema: s, Raw: configState.Raw},
 		Plan:   tfsdk.Plan{Schema: s, Raw: planState.Raw},
 	}, resp)
-	if !resp.Diagnostics.HasError() {
-		t.Fatal("expected reconnect failure diagnostics")
+	if resp.Diagnostics.HasError() {
+		t.Fatalf("uncertain create must remain non-tainted: %v", resp.Diagnostics)
+	}
+	if resp.Diagnostics.WarningsCount() == 0 {
+		t.Fatal("expected sanitized reconnect warning")
 	}
 	if writes.Load() != 1 {
 		t.Fatalf("setPreferences writes = %d, want exactly one", writes.Load())
@@ -151,9 +176,93 @@ func TestEndpointCreatePersistsUncertainPlanAfterLostResponse(t *testing.T) {
 	if d := resp.State.GetAttribute(context.Background(), path.Root("id"), &id); d.HasError() || id.ValueString() != "application" {
 		t.Fatalf("uncertain resource id not retained: %v %s", d, id.ValueString())
 	}
-	var port types.Int64
-	if d := resp.State.GetAttribute(context.Background(), path.Root("web_ui_port"), &port); d.HasError() || port.ValueInt64() != 18081 {
-		t.Fatalf("uncertain target state not retained: %v %d", d, port.ValueInt64())
+	var observed types.Int64
+	if d := resp.State.GetAttribute(context.Background(), path.Root("web_ui_port"), &observed); d.HasError() || observed.ValueInt64() != 18081 {
+		t.Fatalf("planned endpoint state not retained after uncertain write: %v %d", d, observed.ValueInt64())
+	}
+	readResp := &resource.ReadResponse{}
+	r.Read(context.Background(), resource.ReadRequest{State: resp.State}, readResp)
+	if readResp.Diagnostics.HasError() {
+		t.Fatalf("read after recovery: %v", readResp.Diagnostics)
+	}
+	if d := readResp.State.GetAttribute(context.Background(), path.Root("web_ui_port"), &observed); d.HasError() || observed.ValueInt64() != 18081 {
+		t.Fatalf("refresh failed to adopt actual port: %v %d", d, observed.ValueInt64())
+	}
+	if writes.Load() != 1 {
+		t.Fatalf("refresh replayed endpoint write, count=%d", writes.Load())
+	}
+}
+
+func TestEndpointPartialRejectedWriteRefreshesBeforeExplicitRepair(t *testing.T) {
+	address, port := "*", int32(8080)
+	var patches []map[string]any
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/app/preferences") {
+			_, _ = fmt.Fprintf(w, `{"web_ui_address":%q,"web_ui_port":%d,"use_https":false,"web_ui_https_cert_path":"/tmp/cert","web_ui_https_key_path":"/tmp/key"}`, address, port)
+			return
+		}
+		if strings.HasSuffix(r.URL.Path, "/app/setPreferences") {
+			_ = r.ParseForm()
+			var patch map[string]any
+			if err := json.Unmarshal([]byte(r.Form.Get("json")), &patch); err != nil {
+				http.Error(w, "bad", 400)
+				return
+			}
+			patches = append(patches, patch)
+			if len(patches) == 1 {
+				if v, ok := patch["web_ui_address"].(string); ok {
+					address = v
+				}
+				http.Error(w, "partial rejection", http.StatusBadRequest)
+				return
+			}
+			if len(patch) != 1 || patch["web_ui_port"] == nil {
+				http.Error(w, "unexpected replay", 400)
+				return
+			}
+			port = int32(patch["web_ui_port"].(float64))
+			_, _ = io.WriteString(w, "Ok.")
+			return
+		}
+		http.NotFound(w, r)
+	}))
+	defer server.Close()
+	c, err := client.New(client.Config{URL: server.URL, APIKey: "fixture-key"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	s := endpointSchema()
+	configValues := map[string]attr.Value{"web_ui_address": types.StringValue("127.0.0.1"), "web_ui_port": types.Int64Value(18081), "post_update_url": types.StringValue(server.URL)}
+	configState := testState(t, s, configValues)
+	planState := testState(t, s, map[string]attr.Value{"id": types.StringValue("application"), "web_ui_address": types.StringValue("127.0.0.1"), "web_ui_port": types.Int64Value(18081), "post_update_url": types.StringValue(server.URL)})
+	r := &webuiEndpointResource{client: c}
+	created := &resource.CreateResponse{}
+	r.Create(context.Background(), resource.CreateRequest{Config: tfsdk.Config{Schema: s, Raw: configState.Raw}, Plan: tfsdk.Plan{Schema: s, Raw: planState.Raw}}, created)
+	if created.Diagnostics.HasError() || created.Diagnostics.WarningsCount() == 0 {
+		t.Fatalf("partial write should retain state with warning: %v", created.Diagnostics)
+	}
+	refreshed := &resource.ReadResponse{}
+	r.Read(context.Background(), resource.ReadRequest{State: created.State}, refreshed)
+	if refreshed.Diagnostics.HasError() {
+		t.Fatal(refreshed.Diagnostics)
+	}
+	var actualAddress types.String
+	var actualPort types.Int64
+	_ = refreshed.State.GetAttribute(context.Background(), path.Root("web_ui_address"), &actualAddress)
+	_ = refreshed.State.GetAttribute(context.Background(), path.Root("web_ui_port"), &actualPort)
+	if actualAddress.ValueString() != "127.0.0.1" || actualPort.ValueInt64() != 8080 {
+		t.Fatalf("refresh did not read partial server state: %s:%d", actualAddress.ValueString(), actualPort.ValueInt64())
+	}
+	updated := &resource.UpdateResponse{}
+	r.Update(context.Background(), resource.UpdateRequest{Config: tfsdk.Config{Schema: s, Raw: configState.Raw}, Plan: tfsdk.Plan{Schema: s, Raw: planState.Raw}, State: refreshed.State}, updated)
+	if updated.Diagnostics.HasError() {
+		t.Fatalf("explicit repair update: %v", updated.Diagnostics)
+	}
+	if len(patches) != 2 || len(patches[0]) != 2 || len(patches[1]) != 1 || patches[1]["web_ui_port"] == nil {
+		t.Fatalf("repair replayed already-applied fields: %#v", patches)
+	}
+	if port != 18081 {
+		t.Fatalf("repair port=%d, want 18081", port)
 	}
 }
 

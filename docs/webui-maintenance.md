@@ -8,18 +8,9 @@ verification and qBittorrent's authentication, CSRF, and host checks enabled.
 
 ## Change the listener
 
-```hcl
-resource "qbittorrent_webui_endpoint" "listener" {
-  web_ui_address        = "127.0.0.1"
-  web_ui_port           = 18081
-  use_https             = false
-  web_ui_https_cert_path = "/config/webui.crt"
-  web_ui_https_key_path  = "/config/webui.key"
-
-  # Address reachable by the provider after qBittorrent applies this update.
-  post_update_url = "http://127.0.0.1:18081"
-}
-```
+See [the standalone staged maintenance example](../examples/maintenance/webui.tf).
+It declares required provider and target credentials as variables and marks
+password variables ephemeral and sensitive.
 
 Apply only this maintenance resource:
 
@@ -27,10 +18,13 @@ Apply only this maintenance resource:
 terraform apply -target=qbittorrent_webui_endpoint.listener
 ```
 
-The provider sends the preference patch once, then uses a separate client to
-reconnect and verify the target settings. It never retries the mutation. If
-reconnect fails, verify the qBittorrent listener and set the provider URL to
-`post_update_url` manually before a targeted follow-up apply. Do not change a
+The provider checks current values before sending a patch, sends each mutation
+at most once per apply, and uses a separate client to verify the target
+settings. If reconnect fails, Terraform retains the planned state with a
+warning instead of tainting the resource. Set the provider URL to
+`post_update_url` and refresh. Refresh reads the actual listener values; review
+the resulting targeted plan and apply any remaining changes. It does not
+replay a successful or partially applied write automatically. Do not change a
 Kubernetes Service or publish a port automatically.
 
 ## Change WebUI credentials
@@ -45,5 +39,9 @@ resource "qbittorrent_webui_auth" "admin" {
 
 Apply only the auth resource. The password must be at least six characters;
 qBittorrent requires usernames to have at least three characters and no colon.
-After success, update the provider credentials before a later apply. Bearer
-API-key authentication cannot change its own WebUI username or password.
+After success, update the provider credentials before a later apply. If
+reauthentication fails, configure credentials that currently work and refresh;
+the resource reads the nonsecret username and never reads the password back.
+Increment the password version only for an intentional retry or rotation.
+Bearer API-key authentication cannot change its own WebUI username or
+password.

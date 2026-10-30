@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"unicode/utf16"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -91,6 +92,10 @@ func (r *webuiAuthResource) Update(ctx context.Context, req resource.UpdateReque
 func authPatch(cfg types.Object, prior *types.Object, plan types.Object, creating bool, d *diag.Diagnostics) map[string]any {
 	patch := map[string]any{}
 	username := cfg.Attributes()["username"].(types.String)
+	if username.IsUnknown() {
+		d.AddAttributeError(path.Root("username"), "Unknown WebUI username", "The target username must be known before an authentication update.")
+		return nil
+	}
 	if creating || prior == nil || !username.Equal(prior.Attributes()["username"].(types.String)) {
 		patch["web_ui_username"] = username.ValueString()
 	}
@@ -108,7 +113,7 @@ func authPatch(cfg types.Object, prior *types.Object, plan types.Object, creatin
 			d.AddAttributeError(path.Root("password_wo"), "Password required for authentication transition", "Configure password_wo and its version to reconnect with the target WebUI credentials.")
 			return nil
 		}
-		if pw.ValueString() == "" || len([]rune(pw.ValueString())) < 6 {
+		if pw.ValueString() == "" || nativeQStringLength(pw.ValueString()) < 6 {
 			d.AddAttributeError(path.Root("password_wo"), "Invalid WebUI password", "qBittorrent requires a password of at least six characters.")
 			return nil
 		}
@@ -117,15 +122,20 @@ func authPatch(cfg types.Object, prior *types.Object, plan types.Object, creatin
 }
 func (r *webuiAuthResource) apply(ctx context.Context, patch map[string]any, cfg, plan types.Object, d *diag.Diagnostics) bool {
 	if len(patch) == 0 {
-		return false
+		return true
 	}
 	if r.client.UsesBearerAuthentication() {
 		d.AddError("Unsupported WebUI authentication transition", "The active provider uses Bearer API-key authentication and cannot update its own username/password. Reconfigure the provider with session username/password first.")
 		return false
 	}
-	writeErr := r.client.SetWebUIMaintenancePatch(ctx, patch, true)
 	username := cfg.Attributes()["username"].(types.String).ValueString()
 	password := cfg.Attributes()["password_wo"].(types.String).ValueString()
+	if candidate, err := r.client.MaintenanceCandidate("", username, password); err == nil {
+		if current, readErr := candidate.Preferences(ctx); readErr == nil && current.WebUIUsername != nil && *current.WebUIUsername == username {
+			return true // Adopt a previously applied transition without resending it.
+		}
+	}
+	writeErr := r.client.SetWebUIMaintenancePatch(ctx, patch, true) // one mutation attempt only
 	candidate, err := r.client.MaintenanceCandidate("", username, password)
 	if err == nil {
 		err = candidate.VerifyWebUIEndpoint(ctx, map[string]any{})
@@ -135,15 +145,22 @@ func (r *webuiAuthResource) apply(ctx context.Context, patch map[string]any, cfg
 		if writeErr == nil {
 			outcome = "The authentication mutation was accepted but reconnect verification failed."
 		}
-		d.AddError("WebUI authentication reconnect failed", fmt.Sprintf("%s Configure the provider with the target username and password, verify the WebUI manually, then run a targeted maintenance apply. No mutation was replayed.", outcome))
+		d.AddWarning("WebUI authentication reconnect is unverified", fmt.Sprintf("%s Resource state is retained. Configure provider credentials that can authenticate, refresh the actual username, then review the targeted plan. The password will not be replayed unless its version changes.", outcome))
 	}
 	return true
 }
 func (r *webuiAuthResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	resp.State = req.State
-	if err := r.client.VerifyWebUIEndpoint(ctx, map[string]any{}); err != nil {
-		resp.Diagnostics.AddError("WebUI authentication state is unverified", "Connect the provider with the configured WebUI credentials, verify access manually, then refresh this resource. State was retained and no write was sent.")
+	p, err := r.client.Preferences(ctx)
+	if err != nil {
+		resp.Diagnostics.AddWarning("WebUI authentication refresh unavailable", "The configured provider credentials cannot authenticate to qBittorrent. State was retained; configure credentials that can access the WebUI and refresh again. No write was sent.")
+		return
 	}
+	if p.WebUIUsername == nil {
+		resp.Diagnostics.AddWarning("WebUI username unavailable", "The server did not return its nonsecret WebUI username; auth state was retained and no write was sent.")
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("username"), types.StringValue(*p.WebUIUsername))...)
 }
 func (r *webuiAuthResource) Delete(context.Context, resource.DeleteRequest, *resource.DeleteResponse) {
 }
@@ -168,7 +185,7 @@ func (webUIUsernameValidator) ValidateString(_ context.Context, req validator.St
 		return
 	}
 	v := req.ConfigValue.ValueString()
-	if len([]rune(v)) < 3 || strings.Contains(v, ":") {
+	if nativeQStringLength(v) < 3 || strings.Contains(v, ":") {
 		resp.Diagnostics.AddAttributeError(req.Path, "Invalid WebUI username", "qBittorrent requires at least three characters and does not allow a colon.")
 	}
 }
@@ -182,10 +199,12 @@ func (webUIPasswordValidator) MarkdownDescription(ctx context.Context) string {
 	return webUIPasswordValidator{}.Description(ctx)
 }
 func (webUIPasswordValidator) ValidateString(_ context.Context, req validator.StringRequest, resp *validator.StringResponse) {
-	if !req.ConfigValue.IsNull() && !req.ConfigValue.IsUnknown() && len([]rune(req.ConfigValue.ValueString())) < 6 {
+	if !req.ConfigValue.IsNull() && !req.ConfigValue.IsUnknown() && nativeQStringLength(req.ConfigValue.ValueString()) < 6 {
 		resp.Diagnostics.AddAttributeError(req.Path, "Invalid WebUI password", "qBittorrent requires a password of at least six characters.")
 	}
 }
+
+func nativeQStringLength(s string) int { return len(utf16.Encode([]rune(s))) }
 
 var _ resource.Resource = (*webuiAuthResource)(nil)
 var _ resource.ResourceWithImportState = (*webuiAuthResource)(nil)
