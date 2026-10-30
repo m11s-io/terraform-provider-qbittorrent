@@ -1,6 +1,272 @@
 Read:
   type: object
-  properties: {}
+  description: Nonsecret Connection preferences returned by qBittorrent.
+  properties:
+    bittorrent_protocol:
+      type: integer
+      format: int64
+      enum: [0, 1, 2]
+      description: 0 TCP and µTP, 1 TCP only, 2 µTP only.
+      x-go-name: BittorrentProtocol
+      x-ui-tab: Connection
+    max_connec:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxConnections
+      x-ui-tab: Connection
+    max_connec_per_torrent:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxConnectionsPerTorrent
+      x-ui-tab: Connection
+    max_uploads:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxUploads
+      x-ui-tab: Connection
+    max_uploads_per_torrent:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxUploadsPerTorrent
+      x-ui-tab: Connection
+    i2p_enabled:
+      type: boolean
+      x-go-name: I2PEnabled
+      x-ui-tab: Connection
+    i2p_address:
+      type: string
+      x-go-name: I2PAddress
+      x-ui-tab: Connection
+    i2p_port:
+      type: integer
+      format: int64
+      minimum: 0
+      maximum: 65535
+      x-go-name: I2PPort
+      x-ui-tab: Connection
+    i2p_mixed_mode:
+      type: boolean
+      x-go-name: I2PMixedMode
+      x-ui-tab: Connection
+    i2p_pex_enabled:
+      type: boolean
+      description: qBittorrent marks this setting as requiring a restart.
+      x-go-name: I2PPeXEnabled
+      x-ui-tab: Connection
+    proxy_type:
+      type: string
+      enum: [None, SOCKS4, SOCKS5, HTTP]
+      x-go-name: ProxyType
+      x-ui-tab: Connection
+    proxy_ip:
+      type: string
+      x-go-name: ProxyIP
+      x-ui-tab: Connection
+    proxy_port:
+      type: integer
+      format: int64
+      minimum: 0
+      maximum: 65535
+      x-go-name: ProxyPort
+      x-ui-tab: Connection
+    proxy_auth_enabled:
+      type: boolean
+      x-go-name: ProxyAuthEnabled
+      x-ui-tab: Connection
+    proxy_username:
+      type: string
+      x-go-name: ProxyUsername
+      x-ui-tab: Connection
+    proxy_hostname_lookup:
+      type: boolean
+      x-go-name: ProxyHostnameLookup
+      x-ui-tab: Connection
+    proxy_bittorrent:
+      type: boolean
+      x-go-name: ProxyBittorrent
+      x-ui-tab: Connection
+    proxy_peer_connections:
+      type: boolean
+      x-go-name: ProxyPeerConnections
+      x-ui-tab: Connection
+    proxy_rss:
+      type: boolean
+      x-go-name: ProxyRSS
+      x-ui-tab: Connection
+    proxy_misc:
+      type: boolean
+      x-go-name: ProxyMisc
+      x-ui-tab: Connection
+    ip_filter_enabled:
+      type: boolean
+      x-go-name: IPFilterEnabled
+      x-ui-tab: Connection
+    ip_filter_path:
+      type: string
+      x-go-name: IPFilterPath
+      x-ui-tab: Connection
+    ip_filter_trackers:
+      type: boolean
+      x-go-name: IPFilterTrackers
+      x-ui-tab: Connection
+    banned_IPs:
+      type: string
+      description: Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
+      x-go-name: BannedIPs
+      x-ui-tab: Connection
 Patch:
   type: object
-  properties: {}
+  description: Writable nonsecret Connection preference fields.
+  properties:
+    bittorrent_protocol:
+      type: integer
+      format: int64
+      enum: [0, 1, 2]
+      description: 0 TCP and µTP, 1 TCP only, 2 µTP only.
+      x-go-name: BittorrentProtocol
+      x-ui-tab: Connection
+    max_connec:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxConnections
+      x-ui-tab: Connection
+    max_connec_per_torrent:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxConnectionsPerTorrent
+      x-ui-tab: Connection
+    max_uploads:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxUploads
+      x-ui-tab: Connection
+    max_uploads_per_torrent:
+      type: integer
+      format: int64
+      anyOf:
+        - enum: [-1]
+        - minimum: 1
+          maximum: 2147483647
+      description: Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
+      x-go-name: MaxUploadsPerTorrent
+      x-ui-tab: Connection
+    i2p_enabled:
+      type: boolean
+      x-go-name: I2PEnabled
+      x-ui-tab: Connection
+    i2p_address:
+      type: string
+      x-go-name: I2PAddress
+      x-ui-tab: Connection
+    i2p_port:
+      type: integer
+      format: int64
+      minimum: 0
+      maximum: 65535
+      x-go-name: I2PPort
+      x-ui-tab: Connection
+    i2p_mixed_mode:
+      type: boolean
+      x-go-name: I2PMixedMode
+      x-ui-tab: Connection
+    i2p_pex_enabled:
+      type: boolean
+      description: qBittorrent marks this setting as requiring a restart.
+      x-go-name: I2PPeXEnabled
+      x-ui-tab: Connection
+    proxy_type:
+      type: string
+      enum: [None, SOCKS4, SOCKS5, HTTP]
+      x-go-name: ProxyType
+      x-ui-tab: Connection
+    proxy_ip:
+      type: string
+      x-go-name: ProxyIP
+      x-ui-tab: Connection
+    proxy_port:
+      type: integer
+      format: int64
+      minimum: 0
+      maximum: 65535
+      x-go-name: ProxyPort
+      x-ui-tab: Connection
+    proxy_auth_enabled:
+      type: boolean
+      x-go-name: ProxyAuthEnabled
+      x-ui-tab: Connection
+    proxy_username:
+      type: string
+      x-go-name: ProxyUsername
+      x-ui-tab: Connection
+    proxy_hostname_lookup:
+      type: boolean
+      x-go-name: ProxyHostnameLookup
+      x-ui-tab: Connection
+    proxy_bittorrent:
+      type: boolean
+      x-go-name: ProxyBittorrent
+      x-ui-tab: Connection
+    proxy_peer_connections:
+      type: boolean
+      x-go-name: ProxyPeerConnections
+      x-ui-tab: Connection
+    proxy_rss:
+      type: boolean
+      x-go-name: ProxyRSS
+      x-ui-tab: Connection
+    proxy_misc:
+      type: boolean
+      x-go-name: ProxyMisc
+      x-ui-tab: Connection
+    ip_filter_enabled:
+      type: boolean
+      x-go-name: IPFilterEnabled
+      x-ui-tab: Connection
+    ip_filter_path:
+      type: string
+      x-go-name: IPFilterPath
+      x-ui-tab: Connection
+    ip_filter_trackers:
+      type: boolean
+      x-go-name: IPFilterTrackers
+      x-ui-tab: Connection
+    banned_IPs:
+      type: string
+      description: Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
+      x-go-name: BannedIPs
+      x-ui-tab: Connection
