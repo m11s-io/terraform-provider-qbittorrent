@@ -58,7 +58,15 @@ func (v preferenceFloatValidator) ValidateFloat64(ctx context.Context, req valid
 }
 
 func validPreferenceFloat(f preferenceField, n float64) bool {
-	return !math.IsNaN(n) && !math.IsInf(n, 0) && (f.floatMin == nil || n >= *f.floatMin) && (f.floatMax == nil || n <= *f.floatMax)
+	if math.IsNaN(n) || math.IsInf(n, 0) {
+		return false
+	}
+	for _, sentinel := range f.floatSentinels {
+		if n == sentinel {
+			return true
+		}
+	}
+	return (f.floatMin == nil || n >= *f.floatMin) && (f.floatMax == nil || n <= *f.floatMax)
 }
 
 type rangeValidator struct{ min, max int64 }

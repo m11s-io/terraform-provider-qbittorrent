@@ -27,6 +27,7 @@ type preferenceField struct {
 	integerSentinels                           []int64
 	integerMultipleOf                          int64
 	floatMin, floatMax                         *float64
+	floatSentinels                             []float64
 	stringEnums                                []string
 	integerEnums                               []int64
 	sensitive, readOnly, excludeFromDataSource bool

@@ -11,6 +11,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func TestPreferenceFloatSentinelAndFiniteRange(t *testing.T) {
+	f := preferenceField{floatMin: float64ptr(0), floatSentinels: []float64{-1}}
+	for _, tc := range []struct {
+		value float64
+		valid bool
+	}{{-1, true}, {0, true}, {1.75, true}, {-0.5, false}, {-2, false}, {math.NaN(), false}, {math.Inf(1), false}} {
+		if got := validPreferenceFloat(f, tc.value); got != tc.valid {
+			t.Errorf("value %v: valid=%v, want %v", tc.value, got, tc.valid)
+		}
+	}
+}
+
 func TestPreferenceValuePreservesFractionalRatioAndZero(t *testing.T) {
 	for _, wire := range []string{"1.75", "0"} {
 		actual, err := preferenceValue(types.Float64Value(0), []byte(wire))
