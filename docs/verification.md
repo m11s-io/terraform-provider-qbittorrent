@@ -93,3 +93,21 @@ OpenTofu 1.13.2 and Terraform 1.15.9, including schedule activation, day changes
 data-source reads and no-op plans. Generated-client and documentation
 reproducibility checks passed. Independent review found no blocking or minor
 issues. No live application settings were changed and no release was published.
+
+## Behavior settings coverage
+
+Verified on **2026-10-30** against the same qBittorrent 5.3.0 / Web API 2.16.2
+baseline. Thirteen application Behavior fields are available in the preferences
+resource/data source. Eleven server-stored WebUI fields use the separate
+`qbittorrent_webui_preferences` resource and generated clientdata operations.
+
+- Unit/race tests, vet and build passed. Coverage includes partial patches,
+  false/zero values, logging ranges, WebUI choices, missing-key defaults,
+  Auto/Default reset semantics, drift and ownership relinquishment.
+- Complete disposable Terraform 1.15.9 and OpenTofu 1.13.2 acceptance suites
+  passed, including both WebUI authentication methods, create/update/import,
+  drift correction, no-op plans and destroy preserving settings. Terraform also
+  validated/planned the new shipped WebUI example against the disposable server.
+- Updated OpenAPI 3.2.1 passed official schema-base validation. Generation and
+  documentation reproducibility checks passed; formatting/diff checks are clean.
+- No live Arr preferences were modified and this branch does not publish a release.

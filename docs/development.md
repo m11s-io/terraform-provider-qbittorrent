@@ -17,8 +17,10 @@ Upstream API sources (all at the commit above):
 ## HTTP and authentication
 
 All paths below are relative to the configured WebUI base URL; `/api/v2/` is
-appended, preserving any reverse-proxy base path. Reads use GET; writes use POST
-with `application/x-www-form-urlencoded` bodies.
+appended, preserving any reverse-proxy base path. Application/category reads use
+GET; clientdata reads and all writes use POST with
+`application/x-www-form-urlencoded` bodies. `clientdata/load` is read-only and
+may reauthenticate once; `clientdata/store` is never automatically replayed.
 
 | Endpoint | Body / response |
 | --- | --- |
@@ -31,6 +33,8 @@ with `application/x-www-form-urlencoded` bodies.
 | `torrents/createCategory` | `category`, `savePath`; duplicate/invalid name: 409 |
 | `torrents/editCategory` | `category`, `savePath`; missing category: 404 |
 | `torrents/removeCategories` | `categories` newline-separated names; missing is a successful no-op |
+| `clientdata/load` | `keys` form string containing a JSON array of the eleven allowlisted `qbt_`-prefixed Behavior keys |
+| `clientdata/store` | `data` form string containing a partial JSON object; null removes a stored key |
 
 Category endpoints also support `downloadPathEnabled`/`downloadPath`. These are
 currently omitted: global incomplete-download path settings remain
@@ -119,7 +123,7 @@ credentials. See [acceptance test instructions](../tests/acceptance/README.md).
 ## Generated OpenAPI client
 
 `api/qbittorrent.yaml` is an OpenAPI **3.2.1** specification reviewed against the
-exact upstream commit listed above. It covers only the provider's nine existing
+exact upstream commit listed above. It covers only the provider's eleven supported
 operations and nonsecret preference/category models. It is a maintained subset,
 not an official upstream specification or an automated C++ extraction.
 
@@ -149,8 +153,9 @@ and must never be captured through generated additional-properties maps.
 
 For a new supported field/endpoint, review the corresponding upstream C++ at the
 baseline tag, update the specification and regenerate, then add the Terraform
-mapping and contract/acceptance coverage. This migration adds no Terraform fields
-or state schema changes.
+mapping and contract/acceptance coverage. Existing fields and IDs remain
+compatible. Current field coverage and the separate WebUI resource are documented
+in the [tab reference](preferences-by-tab.md).
 
 ## Publishing releases
 

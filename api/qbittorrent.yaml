@@ -16,10 +16,16 @@ servers:
 security:
   - bearerAuth: []
   - sessionCookie: []
+tags:
+  - name: Authentication
+  - name: Application
+  - name: Categories
+  - name: WebUI
 paths:
   /auth/login:
     post:
       operationId: login
+      tags: [Authentication]
       summary: Start a cookie session
       description: Credentials are form values. Successful login has an empty body, not legacy Ok. text.
       security: []
@@ -46,6 +52,7 @@ paths:
   /app/version:
     get:
       operationId: getVersion
+      tags: [Application]
       summary: Read the application version
       responses:
         '200':
@@ -60,6 +67,7 @@ paths:
   /app/webapiVersion:
     get:
       operationId: getWebAPIVersion
+      tags: [Application]
       summary: Read the Web API version
       responses:
         '200':
@@ -74,6 +82,7 @@ paths:
   /app/preferences:
     get:
       operationId: getPreferences
+      tags: [Application]
       summary: Read the supported nonsecret preferences
       description: The server returns additional keys, including secrets; these are deliberately not modeled.
       responses:
@@ -88,6 +97,7 @@ paths:
   /app/setPreferences:
     post:
       operationId: setPreferences
+      tags: [Application]
       summary: Patch explicitly supplied preferences
       description: Missing JSON keys remain unchanged; false and zero are explicit updates.
       requestBody:
@@ -112,6 +122,7 @@ paths:
   /torrents/categories:
     get:
       operationId: getCategories
+      tags: [Categories]
       summary: Read categories keyed by name
       responses:
         '200':
@@ -127,6 +138,7 @@ paths:
   /torrents/createCategory:
     post:
       operationId: createCategory
+      tags: [Categories]
       summary: Create a category
       description: Invalid or duplicate names return 409. Empty names return 400. Nested names can create ancestors.
       requestBody:
@@ -141,6 +153,7 @@ paths:
   /torrents/editCategory:
     post:
       operationId: editCategory
+      tags: [Categories]
       summary: Edit a category
       description: Missing categories return 404. Omitted savePath is unchanged; an empty string is an explicit path update.
       requestBody:
@@ -155,6 +168,7 @@ paths:
   /torrents/removeCategories:
     post:
       operationId: removeCategories
+      tags: [Categories]
       summary: Remove named categories and their descendants
       description: Missing categories are a successful no-op. Torrents are reassigned; automatic torrent management can relocate content.
       requestBody:
@@ -173,6 +187,54 @@ paths:
           description: Categories removed.
         '204':
           description: Categories removed.
+        default:
+          $ref: '#/components/responses/APIError'
+  /clientdata/load:
+    post:
+      operationId: loadClientData
+      tags: [WebUI]
+      summary: Load WebUI client data
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [keys]
+              properties:
+                keys:
+                  type: string
+                  description: JSON array of selected qbt_-prefixed keys.
+      responses:
+        '200':
+          description: Client data load succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebUIPreferences'
+        default:
+          $ref: '#/components/responses/APIError'
+  /clientdata/store:
+    post:
+      operationId: storeClientData
+      tags: [WebUI]
+      summary: Store WebUI client data
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  type: string
+                  description: Partial JSON object of qbt_-prefixed WebUI values. Null removes a stored key.
+      responses:
+        '200':
+          description: Client data store succeeded.
+        '204':
+          description: Client data stored.
         default:
           $ref: '#/components/responses/APIError'
 components:
@@ -225,31 +287,115 @@ components:
         are ignored, never captured in an additional-properties map. Every
         property is optional; absence must stay distinct from false or zero.
       properties:
+        locale:
+          type: string
+          x-go-name: Locale
+          x-ui-tab: Behavior
+          description: "User interface language (upstream locale identifier)."
+        confirm_torrent_deletion:
+          type: boolean
+          x-go-name: ConfirmTorrentDeletion
+          x-ui-tab: Behavior
+          description: "Confirm torrent deletion."
+        status_bar_external_ip:
+          type: boolean
+          x-go-name: StatusBarExternalIP
+          x-ui-tab: Behavior
+          description: "Show external IP in the status bar."
+        store_search_jobs:
+          type: boolean
+          x-go-name: StoreSearchJobs
+          x-ui-tab: Behavior
+          description: "Save search tabs."
+        store_search_job_results:
+          type: boolean
+          x-go-name: StoreSearchJobResults
+          x-ui-tab: Behavior
+          description: "Save search results with search tabs."
+        performance_warning:
+          type: boolean
+          x-go-name: PerformanceWarning
+          x-ui-tab: Behavior
+          description: "Log performance warnings."
+        file_log_enabled:
+          type: boolean
+          x-go-name: FileLogEnabled
+          x-ui-tab: Behavior
+          description: "Enable file logging."
+        file_log_path:
+          type: string
+          x-go-name: FileLogPath
+          x-ui-tab: Behavior
+          description: "Server log directory."
+        file_log_backup_enabled:
+          type: boolean
+          x-go-name: FileLogBackupEnabled
+          x-ui-tab: Behavior
+          description: "Rotate log files by size."
+        file_log_max_size:
+          type: integer
+          x-go-name: FileLogMaxSize
+          x-ui-tab: Behavior
+          description: "Log rotation size in KiB, 1..1024000."
+          format: int64
+          minimum: 1
+          maximum: 1024000
+        file_log_delete_old:
+          type: boolean
+          x-go-name: FileLogDeleteOld
+          x-ui-tab: Behavior
+          description: "Delete old backup logs."
+        file_log_age:
+          type: integer
+          x-go-name: FileLogAge
+          x-ui-tab: Behavior
+          description: "Backup log retention count, 1..365."
+          format: int64
+          minimum: 1
+          maximum: 365
+        file_log_age_type:
+          type: integer
+          x-go-name: FileLogAgeType
+          x-ui-tab: Behavior
+          description: "Retention unit: 0 days, 1 months, 2 years."
+          format: int64
+          minimum: 0
+          maximum: 2
         save_path:
+          x-ui-tab: Downloads
           type: string
           x-go-name: SavePath
         temp_path:
+          x-ui-tab: Downloads
           type: string
           x-go-name: TempPath
         temp_path_enabled:
+          x-ui-tab: Downloads
           type: boolean
           x-go-name: TempPathEnabled
         auto_tmm_enabled:
+          x-ui-tab: Downloads
           type: boolean
           x-go-name: AutoTMMEnabled
         dl_limit:
+          x-ui-tab: Speed
           $ref: '#/components/schemas/DownloadLimit'
         up_limit:
+          x-ui-tab: Speed
           $ref: '#/components/schemas/UploadLimit'
         alt_dl_limit:
+          x-ui-tab: Speed
           $ref: '#/components/schemas/AltDownloadLimit'
         alt_up_limit:
+          x-ui-tab: Speed
           $ref: '#/components/schemas/AltUploadLimit'
         scheduler_enabled:
+          x-ui-tab: Speed
           type: boolean
           x-go-name: SchedulerEnabled
           description: Schedule alternative rate limits using the server local time.
         schedule_from_hour:
+          x-ui-tab: Speed
           type: integer
           x-go-name: ScheduleFromHour
           description: Start hour; must be supplied together with schedule_from_min.
@@ -257,6 +403,7 @@ components:
           minimum: 0
           maximum: 23
         schedule_from_min:
+          x-ui-tab: Speed
           type: integer
           x-go-name: ScheduleFromMin
           description: Start minute; must be supplied together with schedule_from_hour.
@@ -264,6 +411,7 @@ components:
           minimum: 0
           maximum: 59
         schedule_to_hour:
+          x-ui-tab: Speed
           type: integer
           x-go-name: ScheduleToHour
           description: End hour; must be supplied together with schedule_to_min.
@@ -271,6 +419,7 @@ components:
           minimum: 0
           maximum: 23
         schedule_to_min:
+          x-ui-tab: Speed
           type: integer
           x-go-name: ScheduleToMin
           description: End minute; must be supplied together with schedule_to_hour.
@@ -278,6 +427,7 @@ components:
           minimum: 0
           maximum: 59
         scheduler_days:
+          x-ui-tab: Speed
           type: integer
           x-go-name: SchedulerDays
           description: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
@@ -285,33 +435,41 @@ components:
           minimum: 0
           maximum: 9
         limit_utp_rate:
+          x-ui-tab: Speed
           type: boolean
           x-go-name: LimitUTPRate
           description: Apply rate limits to the uTP protocol.
         limit_tcp_overhead:
+          x-ui-tab: Speed
           type: boolean
           x-go-name: LimitTCPOverhead
           description: Apply rate limits to transport overhead.
         limit_lan_peers:
+          x-ui-tab: Speed
           type: boolean
           x-go-name: LimitLANPeers
           description: Apply rate limits to peers on the LAN.
         dht:
+          x-ui-tab: BitTorrent
           type: boolean
           x-go-name: DHT
         pex:
+          x-ui-tab: BitTorrent
           type: boolean
           x-go-name: PeX
         lsd:
+          x-ui-tab: BitTorrent
           type: boolean
           x-go-name: LSD
         listen_port:
+          x-ui-tab: Connection
           type: integer
           format: int64
           minimum: 1
           maximum: 65535
           x-go-name: ListenPort
         upnp:
+          x-ui-tab: Connection
           type: boolean
           x-go-name: UPnP
     DownloadLimit:
@@ -334,3 +492,51 @@ components:
       format: int64
       description: Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
       x-go-name: AltUploadLimit
+    WebUIPreferences:
+      type: object
+      description: Allowlisted server-stored WebUI Behavior settings; unknown keys are discarded.
+      properties:
+        qbt_date_format:
+          type: string
+          x-go-name: DateFormat
+          x-ui-tab: Behavior
+        qbt_color_scheme:
+          type: string
+          x-go-name: ColorScheme
+          x-ui-tab: Behavior
+        qbt_display_density:
+          type: string
+          x-go-name: DisplayDensity
+          x-ui-tab: Behavior
+        qbt_use_alt_row_colors:
+          type: boolean
+          x-go-name: UseAltRowColors
+          x-ui-tab: Behavior
+        qbt_dblclick_download:
+          type: string
+          x-go-name: DblclickDownload
+          x-ui-tab: Behavior
+        qbt_dblclick_complete:
+          type: string
+          x-go-name: DblclickComplete
+          x-ui-tab: Behavior
+        qbt_dblclick_filter:
+          type: string
+          x-go-name: DblclickFilter
+          x-ui-tab: Behavior
+        qbt_hide_zero_status_filters:
+          type: boolean
+          x-go-name: HideZeroStatusFilters
+          x-ui-tab: Behavior
+        qbt_add_new_torrent_dialog_enabled:
+          type: boolean
+          x-go-name: AddNewTorrentDialogEnabled
+          x-ui-tab: Behavior
+        qbt_full_url_tracker_column:
+          type: boolean
+          x-go-name: FullURLTrackerColumn
+          x-ui-tab: Behavior
+        qbt_use_virtual_list:
+          type: boolean
+          x-go-name: UseVirtualList
+          x-ui-tab: Behavior

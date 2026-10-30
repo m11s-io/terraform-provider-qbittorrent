@@ -82,6 +82,13 @@ tab: normal/alternative limits, the schedule and day selection, and rate limits
 for uTP, transport overhead and LAN peers. See the
 [preferences example](examples/resources/qbittorrent_preferences/resource.tf).
 
+Behavior-tab application settings (language, confirmation, status, search and
+logging) are also available in `qbittorrent_preferences`. Server-stored WebUI
+appearance and interaction settings use `qbittorrent_webui_preferences`; they
+are shared across browsers and may require reloading existing pages. See the
+[tab-organized reference](docs/preferences-by-tab.md) and
+[WebUI example](examples/resources/qbittorrent_webui_preferences/resource.tf).
+
 ## Releases
 
 Release workflows produce platform ZIP archives and signed checksums. Registry

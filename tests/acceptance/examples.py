@@ -20,6 +20,7 @@ def verify_examples(cli, environment, root, scratch):
         'examples/provider/provider.tf',
         'examples/resources/qbittorrent_preferences/resource.tf',
         'examples/resources/qbittorrent_category/resource.tf',
+        'examples/resources/qbittorrent_webui_preferences/resource.tf',
         'examples/data-sources/qbittorrent_preferences/data-source.tf',
     ]
     source = '\n'.join((root / p).read_text() for p in example_files)

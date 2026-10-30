@@ -7,18 +7,18 @@ import (
 	"strings"
 )
 
-type rangeValidator struct{ max int64 }
+type rangeValidator struct{ min, max int64 }
 
 func (v rangeValidator) Description(context.Context) string {
-	return fmt.Sprintf("Value must be between 0 and %d.", v.max)
+	return fmt.Sprintf("Value must be between %d and %d.", v.min, v.max)
 }
 func (v rangeValidator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
 func (v rangeValidator) ValidateInt64(ctx context.Context, req validator.Int64Request, resp *validator.Int64Response) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
-	if n := req.ConfigValue.ValueInt64(); n < 0 || n > v.max {
-		resp.Diagnostics.AddAttributeError(req.Path, "Invalid schedule value", v.Description(ctx))
+	if n := req.ConfigValue.ValueInt64(); n < v.min || n > v.max {
+		resp.Diagnostics.AddAttributeError(req.Path, "Invalid numeric preference", v.Description(ctx))
 	}
 }
 

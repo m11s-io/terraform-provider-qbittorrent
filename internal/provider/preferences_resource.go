@@ -18,11 +18,30 @@ import (
 	"github.com/m11s-io/terraform-provider-qbittorrent/internal/client"
 )
 
-type preferencesResource struct{ client *client.Client }
+type preferencesResource struct {
+	client *client.Client
+	webui  bool
+}
+
+type preferenceField struct{ name, kind, description string }
 
 // The field table defines only public nonsecret attributes. All optional values
 // remain nullable: null relinquishes ownership, false/zero are managed values.
-var preferenceFields = []struct{ name, kind, description string }{
+var preferenceFields = []preferenceField{
+	{"locale", "string", "Behavior: user interface language (upstream locale identifier)."},
+	{"confirm_torrent_deletion", "bool", "Behavior: confirm torrent deletion."},
+	{"status_bar_external_ip", "bool", "Behavior: show external IP in the status bar."},
+	{"store_search_jobs", "bool", "Behavior: save search tabs."},
+	{"store_search_job_results", "bool", "Behavior: also save search results."},
+	{"performance_warning", "bool", "Behavior: log performance warnings."},
+	{"file_log_enabled", "bool", "Behavior: enable file logging."},
+	{"file_log_path", "string", "Behavior: log directory on the server."},
+	{"file_log_backup_enabled", "bool", "Behavior: rotate log files by size."},
+	{"file_log_max_size", "log_size", "Behavior: rotate logs after this size in KiB, 1..1024000."},
+	{"file_log_delete_old", "bool", "Behavior: delete old backup logs."},
+	{"file_log_age", "log_age", "Behavior: backup log retention count, 1..365."},
+	{"file_log_age_type", "log_unit", "Behavior: retention unit, 0 days, 1 months, 2 years."},
+
 	{"save_path", "string", "Default save path on the server. Use a normalized absolute path."},
 	{"temp_path", "string", "Incomplete-download path on the server. Use a normalized absolute path."},
 	{"temp_path_enabled", "bool", "Enable the incomplete-download path."},
@@ -47,18 +66,25 @@ var preferenceFields = []struct{ name, kind, description string }{
 
 func (r *preferencesResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_preferences"
+	if r.webui {
+		resp.TypeName = req.ProviderTypeName + "_webui_preferences"
+	}
 }
 func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	attrs := map[string]schema.Attribute{"id": schema.StringAttribute{Computed: true, MarkdownDescription: "Singleton ID: application.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}}}
-	for _, f := range preferenceFields {
+	for _, f := range r.fields() {
 		switch f.kind {
 		case "string":
-			attrs[f.name] = schema.StringAttribute{Optional: true, MarkdownDescription: f.description}
+			attrs[f.name] = schema.StringAttribute{Optional: true, MarkdownDescription: f.description, Validators: webUIStringValidators(f.name, r.webui)}
 		case "bool":
 			attrs[f.name] = schema.BoolAttribute{Optional: true, MarkdownDescription: f.description}
-		case "hour", "minute", "days":
-			max := map[string]int64{"hour": 23, "minute": 59, "days": 9}[f.kind]
-			attrs[f.name] = schema.Int64Attribute{Optional: true, MarkdownDescription: f.description, Validators: []validator.Int64{rangeValidator{max: max}}}
+		case "hour", "minute", "days", "log_size", "log_age", "log_unit":
+			max := map[string]int64{"hour": 23, "minute": 59, "days": 9, "log_size": 1024000, "log_age": 365, "log_unit": 2}[f.kind]
+			min := int64(0)
+			if f.kind == "log_size" || f.kind == "log_age" {
+				min = 1
+			}
+			attrs[f.name] = schema.Int64Attribute{Optional: true, MarkdownDescription: f.description, Validators: []validator.Int64{rangeValidator{min: min, max: max}}}
 		default:
 			description := f.description
 			if f.kind == "rate" {
@@ -68,6 +94,9 @@ func (r *preferencesResource) Schema(_ context.Context, _ resource.SchemaRequest
 		}
 	}
 	resp.Schema = schema.Schema{MarkdownDescription: "Singleton partial ownership of application preferences. Configure only settings to manage. Removing an attribute relinquishes management without resetting it. Import ID: application; import reads the server without claiming unconfigured settings. Destroy removes state only. Use one instance per server; overlapping ownership is unsupported. Read-after-write reports normalized/rejected fields: use server-normalized paths.", Attributes: attrs}
+	if r.webui {
+		resp.Schema.MarkdownDescription = "Singleton partial ownership of server-stored WebUI Behavior settings. Import ID: application. Unset attributes remain unmanaged; removing an attribute or destroying the resource preserves stored settings. color_scheme=auto and display_density=default explicitly reset their overrides. Changes may require a browser reload. Use one instance per server."
+	}
 }
 func (r *preferencesResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	var obj types.Object
@@ -145,14 +174,21 @@ func (r *preferencesResource) apply(ctx context.Context, planned tfsdk.State, st
 			d.AddError("Cannot encode preferences", err.Error())
 			return
 		}
-		var p client.Preferences
-		if err = json.Unmarshal(b, &p); err != nil {
-			d.AddError("Cannot encode preferences", "Preference types do not match the client contract.")
-			return
-		}
-		if err = r.client.SetPreferences(ctx, p); err != nil {
-			d.AddError("Cannot update preferences", err.Error())
-			return
+		if r.webui {
+			if err = r.client.SetWebUIPreferences(ctx, patch); err != nil {
+				d.AddError("Cannot update WebUI preferences", err.Error())
+				return
+			}
+		} else {
+			var p client.Preferences
+			if err = json.Unmarshal(b, &p); err != nil {
+				d.AddError("Cannot encode preferences", "Preference types do not match the client contract.")
+				return
+			}
+			if err = r.client.SetPreferences(ctx, p); err != nil {
+				d.AddError("Cannot update preferences", err.Error())
+				return
+			}
 		}
 	}
 	// Preserve the framework-provided null/prior response state on rejected writes.
@@ -165,7 +201,7 @@ func (r *preferencesResource) Read(ctx context.Context, req resource.ReadRequest
 	r.refresh(ctx, &resp.State, &resp.Diagnostics, false)
 }
 func (r *preferencesResource) refresh(ctx context.Context, state *tfsdk.State, d *diag.Diagnostics, compare bool) {
-	p, err := r.client.Preferences(ctx)
+	p, err := r.readPreferences(ctx)
 	if err != nil {
 		d.AddError("Cannot read preferences", err.Error())
 		return

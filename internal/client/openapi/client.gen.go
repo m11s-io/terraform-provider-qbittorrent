@@ -40,10 +40,34 @@ type Preferences struct {
 	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltUploadLimit *AltUploadLimit `json:"alt_up_limit,omitempty"`
 	AutoTMMEnabled *bool           `json:"auto_tmm_enabled,omitempty"`
-	DHT            *bool           `json:"dht,omitempty"`
+
+	// ConfirmTorrentDeletion Confirm torrent deletion.
+	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
+	DHT                    *bool `json:"dht,omitempty"`
 
 	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	DownloadLimit *DownloadLimit `json:"dl_limit,omitempty"`
+
+	// FileLogAge Backup log retention count, 1..365.
+	FileLogAge *int64 `json:"file_log_age,omitempty"`
+
+	// FileLogAgeType Retention unit: 0 days, 1 months, 2 years.
+	FileLogAgeType *int64 `json:"file_log_age_type,omitempty"`
+
+	// FileLogBackupEnabled Rotate log files by size.
+	FileLogBackupEnabled *bool `json:"file_log_backup_enabled,omitempty"`
+
+	// FileLogDeleteOld Delete old backup logs.
+	FileLogDeleteOld *bool `json:"file_log_delete_old,omitempty"`
+
+	// FileLogEnabled Enable file logging.
+	FileLogEnabled *bool `json:"file_log_enabled,omitempty"`
+
+	// FileLogMaxSize Log rotation size in KiB, 1..1024000.
+	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
+
+	// FileLogPath Server log directory.
+	FileLogPath *string `json:"file_log_path,omitempty"`
 
 	// LimitLANPeers Apply rate limits to peers on the LAN.
 	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
@@ -52,11 +76,17 @@ type Preferences struct {
 	LimitTCPOverhead *bool `json:"limit_tcp_overhead,omitempty"`
 
 	// LimitUTPRate Apply rate limits to the uTP protocol.
-	LimitUTPRate *bool   `json:"limit_utp_rate,omitempty"`
-	ListenPort   *int64  `json:"listen_port,omitempty"`
-	LSD          *bool   `json:"lsd,omitempty"`
-	PeX          *bool   `json:"pex,omitempty"`
-	SavePath     *string `json:"save_path,omitempty"`
+	LimitUTPRate *bool  `json:"limit_utp_rate,omitempty"`
+	ListenPort   *int64 `json:"listen_port,omitempty"`
+
+	// Locale User interface language (upstream locale identifier).
+	Locale *string `json:"locale,omitempty"`
+	LSD    *bool   `json:"lsd,omitempty"`
+
+	// PerformanceWarning Log performance warnings.
+	PerformanceWarning *bool   `json:"performance_warning,omitempty"`
+	PeX                *bool   `json:"pex,omitempty"`
+	SavePath           *string `json:"save_path,omitempty"`
 
 	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
 	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
@@ -74,9 +104,18 @@ type Preferences struct {
 	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
 
 	// SchedulerEnabled Schedule alternative rate limits using the server local time.
-	SchedulerEnabled *bool   `json:"scheduler_enabled,omitempty"`
-	TempPath         *string `json:"temp_path,omitempty"`
-	TempPathEnabled  *bool   `json:"temp_path_enabled,omitempty"`
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// StatusBarExternalIP Show external IP in the status bar.
+	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StoreSearchJobResults Save search results with search tabs.
+	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
+
+	// StoreSearchJobs Save search tabs.
+	StoreSearchJobs *bool   `json:"store_search_jobs,omitempty"`
+	TempPath        *string `json:"temp_path,omitempty"`
+	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
 
 	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
@@ -85,6 +124,21 @@ type Preferences struct {
 
 // UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 type UploadLimit = int64
+
+// WebUIPreferences Allowlisted server-stored WebUI Behavior settings; unknown keys are discarded.
+type WebUIPreferences struct {
+	AddNewTorrentDialogEnabled *bool   `json:"qbt_add_new_torrent_dialog_enabled,omitempty"`
+	ColorScheme                *string `json:"qbt_color_scheme,omitempty"`
+	DateFormat                 *string `json:"qbt_date_format,omitempty"`
+	DblclickComplete           *string `json:"qbt_dblclick_complete,omitempty"`
+	DblclickDownload           *string `json:"qbt_dblclick_download,omitempty"`
+	DblclickFilter             *string `json:"qbt_dblclick_filter,omitempty"`
+	DisplayDensity             *string `json:"qbt_display_density,omitempty"`
+	FullURLTrackerColumn       *bool   `json:"qbt_full_url_tracker_column,omitempty"`
+	HideZeroStatusFilters      *bool   `json:"qbt_hide_zero_status_filters,omitempty"`
+	UseAltRowColors            *bool   `json:"qbt_use_alt_row_colors,omitempty"`
+	UseVirtualList             *bool   `json:"qbt_use_virtual_list,omitempty"`
+}
 
 // SetPreferencesFormdataBody defines parameters for SetPreferences.
 type SetPreferencesFormdataBody struct {
@@ -96,6 +150,18 @@ type SetPreferencesFormdataBody struct {
 type LoginFormdataBody struct {
 	Password string `form:"password" json:"password"`
 	Username string `form:"username" json:"username"`
+}
+
+// LoadClientDataFormdataBody defines parameters for LoadClientData.
+type LoadClientDataFormdataBody struct {
+	// Keys JSON array of selected qbt_-prefixed keys.
+	Keys string `form:"keys" json:"keys"`
+}
+
+// StoreClientDataFormdataBody defines parameters for StoreClientData.
+type StoreClientDataFormdataBody struct {
+	// Data Partial JSON object of qbt_-prefixed WebUI values. Null removes a stored key.
+	Data string `form:"data" json:"data"`
 }
 
 // CreateCategoryFormdataBody defines parameters for CreateCategory.
@@ -125,6 +191,12 @@ type SetPreferencesFormdataRequestBody SetPreferencesFormdataBody
 
 // LoginFormdataRequestBody defines body for Login for application/x-www-form-urlencoded ContentType.
 type LoginFormdataRequestBody LoginFormdataBody
+
+// LoadClientDataFormdataRequestBody defines body for LoadClientData for application/x-www-form-urlencoded ContentType.
+type LoadClientDataFormdataRequestBody LoadClientDataFormdataBody
+
+// StoreClientDataFormdataRequestBody defines body for StoreClientData for application/x-www-form-urlencoded ContentType.
+type StoreClientDataFormdataRequestBody StoreClientDataFormdataBody
 
 // CreateCategoryFormdataRequestBody defines body for CreateCategory for application/x-www-form-urlencoded ContentType.
 type CreateCategoryFormdataRequestBody CreateCategoryFormdataBody
@@ -261,6 +333,34 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /auth/login (the `Login` operationId).
 	LoginWithFormdataBody(ctx context.Context, body LoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadClientDataWithBody Load WebUI client data
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+	LoadClientDataWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadClientDataWithFormdataBody Load WebUI client data
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+	LoadClientDataWithFormdataBody(ctx context.Context, body LoadClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StoreClientDataWithBody Store WebUI client data
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+	StoreClientDataWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StoreClientDataWithFormdataBody Store WebUI client data
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+	StoreClientDataWithFormdataBody(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetCategories Read categories keyed by name
 	//
@@ -435,6 +535,74 @@ func (c *Client) LoginWithBody(ctx context.Context, contentType string, body io.
 // Corresponds with POST /auth/login (the `Login` operationId).
 func (c *Client) LoginWithFormdataBody(ctx context.Context, body LoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewLoginRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadClientDataWithBody Load WebUI client data
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+func (c *Client) LoadClientDataWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadClientDataRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadClientDataWithFormdataBody Load WebUI client data
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+func (c *Client) LoadClientDataWithFormdataBody(ctx context.Context, body LoadClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadClientDataRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// StoreClientDataWithBody Store WebUI client data
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+func (c *Client) StoreClientDataWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStoreClientDataRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// StoreClientDataWithFormdataBody Store WebUI client data
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+func (c *Client) StoreClientDataWithFormdataBody(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStoreClientDataRequestWithFormdataBody(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -735,6 +903,86 @@ func NewLoginRequestWithBody(server string, contentType string, body io.Reader) 
 	return req, nil
 }
 
+// NewLoadClientDataRequestWithFormdataBody calls the generic LoadClientData builder with application/x-www-form-urlencoded body
+func NewLoadClientDataRequestWithFormdataBody(server string, body LoadClientDataFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewLoadClientDataRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewLoadClientDataRequestWithBody constructs an http.Request for the LoadClientData method, with any body, and a specified content type
+func NewLoadClientDataRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/clientdata/load")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewStoreClientDataRequestWithFormdataBody calls the generic StoreClientData builder with application/x-www-form-urlencoded body
+func NewStoreClientDataRequestWithFormdataBody(server string, body StoreClientDataFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewStoreClientDataRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewStoreClientDataRequestWithBody constructs an http.Request for the StoreClientData method, with any body, and a specified content type
+func NewStoreClientDataRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/clientdata/store")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetCategoriesRequest constructs an http.Request for the GetCategories method
 func NewGetCategoriesRequest(server string) (*http.Request, error) {
 	var err error
@@ -985,6 +1233,34 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /auth/login (the `Login` operationId).
 	LoginWithFormdataBodyWithResponse(ctx context.Context, body LoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*LoginResponse, error)
 
+	// LoadClientDataWithBodyWithResponse Load WebUI client data
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+	LoadClientDataWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadClientDataResponse, error)
+
+	// LoadClientDataWithFormdataBodyWithResponse Load WebUI client data
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+	LoadClientDataWithFormdataBodyWithResponse(ctx context.Context, body LoadClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*LoadClientDataResponse, error)
+
+	// StoreClientDataWithBodyWithResponse Store WebUI client data
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+	StoreClientDataWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StoreClientDataResponse, error)
+
+	// StoreClientDataWithFormdataBodyWithResponse Store WebUI client data
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+	StoreClientDataWithFormdataBodyWithResponse(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*StoreClientDataResponse, error)
+
 	// GetCategoriesWithResponse Read categories keyed by name
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -1218,6 +1494,81 @@ func (r LoginResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r LoginResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadClientDataResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *WebUIPreferences
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadClientDataResponse) GetJSON200() *WebUIPreferences {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadClientDataResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadClientDataResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadClientDataResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadClientDataResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type StoreClientDataResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r StoreClientDataResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r StoreClientDataResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StoreClientDataResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r StoreClientDataResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -1468,6 +1819,58 @@ func (c *ClientWithResponses) LoginWithFormdataBodyWithResponse(ctx context.Cont
 	return ParseLoginResponse(rsp)
 }
 
+// LoadClientDataWithBodyWithResponse Load WebUI client data
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+func (c *ClientWithResponses) LoadClientDataWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadClientDataResponse, error) {
+	rsp, err := c.LoadClientDataWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadClientDataResponse(rsp)
+}
+
+// LoadClientDataWithFormdataBodyWithResponse Load WebUI client data
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /clientdata/load (the `LoadClientData` operationId).
+func (c *ClientWithResponses) LoadClientDataWithFormdataBodyWithResponse(ctx context.Context, body LoadClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*LoadClientDataResponse, error) {
+	rsp, err := c.LoadClientDataWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadClientDataResponse(rsp)
+}
+
+// StoreClientDataWithBodyWithResponse Store WebUI client data
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+func (c *ClientWithResponses) StoreClientDataWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StoreClientDataResponse, error) {
+	rsp, err := c.StoreClientDataWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStoreClientDataResponse(rsp)
+}
+
+// StoreClientDataWithFormdataBodyWithResponse Store WebUI client data
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
+func (c *ClientWithResponses) StoreClientDataWithFormdataBodyWithResponse(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*StoreClientDataResponse, error) {
+	rsp, err := c.StoreClientDataWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStoreClientDataResponse(rsp)
+}
+
 // GetCategoriesWithResponse Read categories keyed by name
 //
 // Returns a wrapper object for the known response body format(s).
@@ -1654,6 +2057,48 @@ func ParseLoginResponse(rsp *http.Response) (*LoginResponse, error) {
 	}
 
 	response := &LoginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseLoadClientDataResponse parses an HTTP response from a LoadClientDataWithResponse call
+func ParseLoadClientDataResponse(rsp *http.Response) (*LoadClientDataResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadClientDataResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WebUIPreferences
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStoreClientDataResponse parses an HTTP response from a StoreClientDataWithResponse call
+func ParseStoreClientDataResponse(rsp *http.Response) (*StoreClientDataResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StoreClientDataResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -164,7 +164,7 @@ func TestPreferencesRejectedNormalization(t *testing.T) {
 }
 func TestPreferencesDataSourceExcludesCredentials(t *testing.T) {
 	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `{"save_path":"/data","temp_path":"/tmp","temp_path_enabled":false,"auto_tmm_enabled":false,"dl_limit":0,"up_limit":0,"alt_dl_limit":1024,"alt_up_limit":1024,"scheduler_enabled":false,"schedule_from_hour":8,"schedule_from_min":0,"schedule_to_hour":20,"schedule_to_min":0,"scheduler_days":0,"limit_utp_rate":true,"limit_tcp_overhead":false,"limit_lan_peers":true,"dht":true,"pex":true,"lsd":true,"listen_port":6881,"upnp":false,"web_ui_api_key":"secret"}`)
+		fmt.Fprint(w, `{"locale":"en","confirm_torrent_deletion":true,"status_bar_external_ip":false,"store_search_jobs":false,"store_search_job_results":false,"performance_warning":false,"file_log_enabled":false,"file_log_path":"/logs","file_log_backup_enabled":false,"file_log_max_size":65,"file_log_delete_old":false,"file_log_age":1,"file_log_age_type":1,"save_path":"/data","temp_path":"/tmp","temp_path_enabled":false,"auto_tmm_enabled":false,"dl_limit":0,"up_limit":0,"alt_dl_limit":1024,"alt_up_limit":1024,"scheduler_enabled":false,"schedule_from_hour":8,"schedule_from_min":0,"schedule_to_hour":20,"schedule_to_min":0,"scheduler_days":0,"limit_utp_rate":true,"limit_tcp_overhead":false,"limit_lan_peers":true,"dht":true,"pex":true,"lsd":true,"listen_port":6881,"upnp":false,"web_ui_api_key":"secret"}`)
 	})
 	d := &preferencesDataSource{client: c}
 	var schema datasource.SchemaResponse

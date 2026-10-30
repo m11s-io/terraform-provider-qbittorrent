@@ -28,14 +28,24 @@ output "current_save_path" {
 - `alt_dl_limit` (Number) Alternate download limit in bytes/s; 0 means unlimited.
 - `alt_up_limit` (Number) Alternate upload limit in bytes/s; 0 means unlimited.
 - `auto_tmm_enabled` (Boolean) Enable automatic torrent management by default. Changes may relocate files.
+- `confirm_torrent_deletion` (Boolean) Behavior: confirm torrent deletion.
 - `dht` (Boolean) Enable DHT.
 - `dl_limit` (Number) Global download limit in bytes/s; 0 means unlimited.
+- `file_log_age` (Number) Behavior: backup log retention count, 1..365.
+- `file_log_age_type` (Number) Behavior: retention unit, 0 days, 1 months, 2 years.
+- `file_log_backup_enabled` (Boolean) Behavior: rotate log files by size.
+- `file_log_delete_old` (Boolean) Behavior: delete old backup logs.
+- `file_log_enabled` (Boolean) Behavior: enable file logging.
+- `file_log_max_size` (Number) Behavior: rotate logs after this size in KiB, 1..1024000.
+- `file_log_path` (String) Behavior: log directory on the server.
 - `id` (String) Singleton ID: application.
 - `limit_lan_peers` (Boolean) Apply rate limits to peers on the LAN.
 - `limit_tcp_overhead` (Boolean) Apply rate limits to transport overhead.
 - `limit_utp_rate` (Boolean) Apply rate limits to the uTP protocol.
 - `listen_port` (Number) Incoming listen port, 1..65535. Disable random-port settings on the server before managing this field.
+- `locale` (String) Behavior: user interface language (upstream locale identifier).
 - `lsd` (Boolean) Enable local service discovery.
+- `performance_warning` (Boolean) Behavior: log performance warnings.
 - `pex` (Boolean) Enable peer exchange.
 - `save_path` (String) Default save path on the server. Use a normalized absolute path.
 - `schedule_from_hour` (Number) Schedule start hour, 0..23. Configure together with schedule_from_min.
@@ -44,6 +54,9 @@ output "current_save_path" {
 - `schedule_to_min` (Number) Schedule end minute, 0..59. Configure together with schedule_to_hour.
 - `scheduler_days` (Number) Schedule days: 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
 - `scheduler_enabled` (Boolean) Schedule the use of alternative rate limits using the server's local time.
+- `status_bar_external_ip` (Boolean) Behavior: show external IP in the status bar.
+- `store_search_job_results` (Boolean) Behavior: also save search results.
+- `store_search_jobs` (Boolean) Behavior: save search tabs.
 - `temp_path` (String) Incomplete-download path on the server. Use a normalized absolute path.
 - `temp_path_enabled` (Boolean) Enable the incomplete-download path.
 - `up_limit` (Number) Global upload limit in bytes/s; 0 means unlimited.

@@ -74,7 +74,7 @@ func (p *qbittorrentProvider) Configure(ctx context.Context, req provider.Config
 	resp.DataSourceData = c
 }
 func (p *qbittorrentProvider) Resources(context.Context) []func() resource.Resource {
-	return []func() resource.Resource{func() resource.Resource { return &preferencesResource{} }, func() resource.Resource { return &categoryResource{} }}
+	return []func() resource.Resource{func() resource.Resource { return &preferencesResource{} }, func() resource.Resource { return &categoryResource{} }, func() resource.Resource { return &preferencesResource{webui: true} }}
 }
 func (p *qbittorrentProvider) DataSources(context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{func() datasource.DataSource { return &preferencesDataSource{} }}
