@@ -10,6 +10,8 @@ description: |-
 
 Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.
 
+Tags in `torrent_params.tags` are an unordered set; duplicate values are removed. An update is rejected if the existing rule contains nonempty TLS certificate, private-key, or DH-parameter material, because this provider cannot preserve those unsupported values.
+
 ## Example Usage
 
 ```terraform
@@ -33,6 +35,7 @@ resource "qbittorrent_rss_rule" "example" {
 
   torrent_params = {
     category       = "tv"
+    tags           = ["weekly", "anime"]
     save_path      = "/srv/qbittorrent/downloads"
     stopped        = true
     content_layout = "Subfolder"
@@ -92,6 +95,6 @@ Optional:
 - `share_limits_mode` (String)
 - `stop_condition` (String)
 - `stopped` (Boolean)
-- `tags` (List of String)
+- `tags` (Set of String) Unordered qBittorrent tags; duplicate values are removed.
 - `upload_limit` (Number)
 - `use_download_path` (Boolean)

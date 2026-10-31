@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -46,7 +47,7 @@ func (r *rssRuleResource) Metadata(_ context.Context, req resource.MetadataReque
 
 func (r *rssRuleResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.",
+		MarkdownDescription: "Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. Tags are an unordered set and duplicate tags are removed. Updating a rule that already contains nonempty TLS certificate, private-key, or DH-parameter material is rejected because the provider cannot preserve that unsupported material. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.",
 		Attributes: map[string]schema.Attribute{
 			"id":                          schema.StringAttribute{Computed: true, MarkdownDescription: "RSS rule name.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 			"rule_name":                   schema.StringAttribute{Required: true, MarkdownDescription: "Exact qBittorrent rule name. Changing this replaces the resource.", Validators: []validator.String{rssRuleNameValidator{}}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}},
@@ -66,7 +67,7 @@ func (r *rssRuleResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"save_path":                   schema.StringAttribute{Optional: true, MarkdownDescription: "Deprecated qBittorrent save-path alias (server-side path)."},
 			"category":                    schema.StringAttribute{Optional: true, MarkdownDescription: "Deprecated qBittorrent category alias."},
 			"torrent_params": schema.SingleNestedAttribute{Optional: true, MarkdownDescription: "Typed, allowlisted qBittorrent AddTorrentParams values. Secret TLS material and file-selection internals are not supported.", Attributes: map[string]schema.Attribute{
-				"category": schema.StringAttribute{Optional: true}, "tags": schema.ListAttribute{Optional: true, ElementType: types.StringType},
+				"category": schema.StringAttribute{Optional: true}, "tags": schema.SetAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Unordered set of qBittorrent tags; duplicate values are removed."},
 				"save_path": schema.StringAttribute{Optional: true}, "download_path": schema.StringAttribute{Optional: true},
 				"use_download_path": schema.BoolAttribute{Optional: true}, "operating_mode": schema.StringAttribute{Optional: true, Validators: []validator.String{rssOperatingModeValidator{}}},
 				"seed_mode": schema.BoolAttribute{Optional: true}, "upload_limit": schema.Int64Attribute{Optional: true}, "download_limit": schema.Int64Attribute{Optional: true},
@@ -123,6 +124,10 @@ func (r *rssRuleResource) Update(ctx context.Context, req resource.UpdateRequest
 	history, exists := rules[m.RuleName.ValueString()]
 	if !exists {
 		resp.Diagnostics.AddError("RSS rule disappeared", "The configured rule is missing before update; refresh or import the rule again.")
+		return
+	}
+	if history.HasUnsupportedTLSMaterial() {
+		resp.Diagnostics.AddError("Cannot update RSS rule with unsupported TLS material", "This rule contains nonempty TLS certificate, private-key, or DH-parameter material that the provider cannot preserve. The update was not sent; remove or manage that material outside this resource before retrying.")
 		return
 	}
 	r.apply(ctx, m, history, &resp.State, &resp.Diagnostics)
@@ -291,6 +296,17 @@ func rssAttrToAny(ctx context.Context, v attr.Value) (any, error) {
 			return nil, fmt.Errorf("cannot encode RSS list attribute")
 		}
 		return strings, nil
+	case types.Set:
+		var values []string
+		if diags := x.ElementsAs(ctx, &values, false); diags.HasError() {
+			return nil, fmt.Errorf("cannot encode RSS set attribute")
+		}
+		values = rssUniqueSortedStrings(values)
+		items := make([]any, len(values))
+		for i, value := range values {
+			items[i] = value
+		}
+		return items, nil
 	case types.Object:
 		return rssObjectToMap(ctx, x)
 	default:
@@ -443,7 +459,7 @@ func rssRefreshTorrentParams(m *rssRuleModel, remote map[string]any) {
 			if v, ok := value.(float64); ok {
 				attrs[key] = types.Float64Value(v)
 			}
-		case types.List:
+		case types.List, types.Set:
 			if values, ok := value.([]any); ok {
 				strings := make([]string, 0, len(values))
 				for _, item := range values {
@@ -451,7 +467,17 @@ func rssRefreshTorrentParams(m *rssRuleModel, remote map[string]any) {
 						strings = append(strings, s)
 					}
 				}
-				attrs[key], _ = types.ListValueFrom(context.Background(), types.StringType, strings)
+				switch raw.(type) {
+				case types.List:
+					attrs[key], _ = types.ListValueFrom(context.Background(), types.StringType, strings)
+				case types.Set:
+					strings = rssUniqueSortedStrings(strings)
+					elements := make([]attr.Value, len(strings))
+					for i, value := range strings {
+						elements[i] = types.StringValue(value)
+					}
+					attrs[key], _ = types.SetValue(types.StringType, elements)
+				}
 			}
 		default:
 			_ = old
@@ -461,6 +487,17 @@ func rssRefreshTorrentParams(m *rssRuleModel, remote map[string]any) {
 	if err == nil {
 		m.TorrentParams = updated
 	}
+}
+
+func rssUniqueSortedStrings(values []string) []string {
+	sort.Strings(values)
+	unique := values[:0]
+	for _, value := range values {
+		if len(unique) == 0 || unique[len(unique)-1] != value {
+			unique = append(unique, value)
+		}
+	}
+	return unique
 }
 
 func rssNullAttribute(value attr.Value) attr.Value {
@@ -475,6 +512,8 @@ func rssNullAttribute(value attr.Value) attr.Value {
 		return types.Float64Null()
 	case types.List:
 		return types.ListNull(types.StringType)
+	case types.Set:
+		return types.SetNull(types.StringType)
 	default:
 		return value
 	}

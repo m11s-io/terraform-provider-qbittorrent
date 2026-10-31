@@ -36,6 +36,32 @@ func TestAccRSSRuleDoesNotFetchFeedsOrAddTorrents(t *testing.T) {
 		}
 		return nil
 	}
+	checkTagRoundTrip := func(*terraform.State) error {
+		rules, err := c.RSSRules(context.Background())
+		if err != nil {
+			return err
+		}
+		params, ok := rules[ruleName]["torrentParams"].(map[string]any)
+		if !ok {
+			return fmt.Errorf("RSS rule has no torrentParams after write")
+		}
+		tags, ok := params["tags"].([]any)
+		if !ok || len(tags) != 2 {
+			return fmt.Errorf("native tag round trip should contain two distinct tags, got %#v", params["tags"])
+		}
+		seen := map[string]bool{}
+		for _, raw := range tags {
+			tag, ok := raw.(string)
+			if !ok {
+				return fmt.Errorf("native tag is not a string: %#v", raw)
+			}
+			seen[tag] = true
+		}
+		if len(seen) != 2 || !seen["z"] || !seen["a"] {
+			return fmt.Errorf("native tag round trip lost a configured tag: %#v", tags)
+		}
+		return nil
+	}
 	config := accProvider() + `
 resource "qbittorrent_preferences" "rss_safety" {
   rss_processing_enabled = false
@@ -55,6 +81,7 @@ resource "qbittorrent_rss_rule" "test" {
   add_stopped = null
   content_layout = null
   torrent_params = {
+    tags = ["z", "a", "z"]
     stopped = true
     content_layout = "Subfolder"
   }
@@ -81,7 +108,7 @@ resource "qbittorrent_rss_rule" "test" {
 			return checkNoRSSSideEffects(nil)
 		},
 		Steps: []resource.TestStep{
-			{Config: config, Check: resource.ComposeTestCheckFunc(checkNoRSSSideEffects,
+			{Config: config, Check: resource.ComposeTestCheckFunc(checkNoRSSSideEffects, checkTagRoundTrip,
 				resource.TestCheckResourceAttr("qbittorrent_rss_rule.test", "id", ruleName),
 				resource.TestCheckResourceAttr("qbittorrent_rss_rule.test", "enabled", "false"),
 				resource.TestCheckResourceAttr("qbittorrent_rss_rule.test", "affected_feeds.#", "0"),

@@ -16,6 +16,30 @@ import (
 // rule from resetting its match history.
 type RSSRule map[string]any
 
+// rssRuleUnsupportedTLSKey is an internal presence-only marker. It is kept on
+// the decoded RSSRule map because the public rule shape is map-backed, but is
+// never accepted by the wire allowlist or serialized in JSON/state.
+const rssRuleUnsupportedTLSKey = "\x00qbittorrent-provider:unsupported-rss-tls-material"
+
+// HasUnsupportedTLSMaterial reports whether a GET response contained nonempty
+// SSL material that this provider cannot safely preserve in a rule update.
+func (rule RSSRule) HasUnsupportedTLSMaterial() bool {
+	marked, _ := rule[rssRuleUnsupportedTLSKey].(bool)
+	return marked
+}
+
+// MarshalJSON keeps the internal marker out of state and any accidental JSON
+// serialization of decoded rule values.
+func (rule RSSRule) MarshalJSON() ([]byte, error) {
+	filtered := make(map[string]any, len(rule))
+	for key, value := range rule {
+		if key != rssRuleUnsupportedTLSKey {
+			filtered[key] = value
+		}
+	}
+	return json.Marshal(map[string]any(filtered))
+}
+
 type RSSRules map[string]RSSRule
 
 var rssRuleFields = map[string]struct{}{
@@ -52,7 +76,11 @@ func (c *Client) RSSRules(ctx context.Context) (RSSRules, error) {
 		if err := json.Unmarshal(encoded, &rule); err != nil {
 			return nil, errors.New("qBittorrent RSS rule response is invalid")
 		}
-		rules[name] = filterRSSRule(rule)
+		filtered := filterRSSRule(rule)
+		if rssRuleHasTLSMaterial(rule) {
+			filtered[rssRuleUnsupportedTLSKey] = true
+		}
+		rules[name] = filtered
 	}
 	return rules, nil
 }
@@ -106,4 +134,17 @@ func filterRSSRule(rule RSSRule) RSSRule {
 		filtered[key] = value
 	}
 	return filtered
+}
+
+func rssRuleHasTLSMaterial(rule RSSRule) bool {
+	params, ok := rule["torrentParams"].(map[string]any)
+	if !ok {
+		return false
+	}
+	for _, key := range []string{"ssl_certificate", "ssl_private_key", "ssl_dh_params"} {
+		if value, ok := params[key].(string); ok && value != "" {
+			return true
+		}
+	}
+	return false
 }

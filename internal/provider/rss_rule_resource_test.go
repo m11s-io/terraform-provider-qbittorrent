@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -40,6 +41,8 @@ func rssRuleState(t *testing.T, s rs.Schema, values map[string]attr.Value) tfsdk
 		case basetypes.Float64Type:
 			v = tftypes.NewValue(tftypes.Number, nil)
 		case types.ListType:
+			v = tftypes.NewValue(typ.TerraformType(context.Background()), nil)
+		case types.SetType:
 			v = tftypes.NewValue(typ.TerraformType(context.Background()), nil)
 		case types.ObjectType:
 			v = tftypes.NewValue(typ.TerraformType(context.Background()), nil)
@@ -80,6 +83,58 @@ func TestRSSRuleSchemaHasComputedHistoryAndTypedFields(t *testing.T) {
 	if _, ok := s.Attributes["rule"].(rs.MapAttribute); ok {
 		t.Fatal("generic JSON rule escape hatch is not allowed")
 	}
+	nested := s.Attributes["torrent_params"].(rs.SingleNestedAttribute)
+	if _, ok := nested.Attributes["tags"].(rs.SetAttribute); !ok {
+		t.Fatalf("torrent_params.tags must have unordered set semantics, got %T", nested.Attributes["tags"])
+	}
+}
+
+func TestRSSRuleUpdateRefusesExistingTLSMaterialAndAllowsEmptyTLSFields(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		tls      map[string]any
+		wantPost bool
+	}{
+		{name: "certificate", tls: map[string]any{"ssl_certificate": "CERT_CANARY_91a5"}},
+		{name: "private key", tls: map[string]any{"ssl_private_key": "KEY_CANARY_52bf"}},
+		{name: "dh params", tls: map[string]any{"ssl_dh_params": "DH_CANARY_f131"}},
+		{name: "empty TLS fields", tls: map[string]any{"ssl_certificate": "", "ssl_private_key": "", "ssl_dh_params": ""}, wantPost: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			posts := 0
+			remote := map[string]any{"enabled": true, "mustContain": "old", "torrentParams": tc.tls}
+			c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+				switch {
+				case strings.HasSuffix(r.URL.Path, "/rss/rules"):
+					_ = json.NewEncoder(w).Encode(map[string]any{"Weekly": remote})
+				case strings.HasSuffix(r.URL.Path, "/rss/setRule"):
+					posts++
+				}
+			})
+			s := rssRuleSchema()
+			r := &rssRuleResource{client: c}
+			prior := rssRuleState(t, s, map[string]attr.Value{"id": types.StringValue("Weekly"), "rule_name": types.StringValue("Weekly"), "enabled": types.BoolValue(true), "must_contain": types.StringValue("old")})
+			plan := rssRuleState(t, s, map[string]attr.Value{"id": types.StringValue("Weekly"), "rule_name": types.StringValue("Weekly"), "enabled": types.BoolValue(true), "must_contain": types.StringValue("new")})
+			var update resource.UpdateResponse
+			update.State = prior
+			r.Update(context.Background(), resource.UpdateRequest{Plan: tfsdk.Plan{Schema: s, Raw: plan.Raw}, State: prior}, &update)
+			if (posts != 0) != tc.wantPost {
+				t.Fatalf("setRule POST count = %d, wantPost=%v", posts, tc.wantPost)
+			}
+			if tc.wantPost {
+				if update.Diagnostics.HasError() {
+					t.Fatalf("empty TLS fields should allow unrelated update: %v", update.Diagnostics)
+				}
+				return
+			}
+			if !update.Diagnostics.HasError() {
+				t.Fatal("update with unsupported TLS material should be rejected")
+			}
+			if strings.Contains(fmt.Sprint(update.Diagnostics), "CANARY") {
+				t.Fatalf("diagnostic exposed secret material: %v", update.Diagnostics)
+			}
+		})
+	}
 }
 
 func TestRSSRuleDefinitionPreservesHistoryAndOptionalNulls(t *testing.T) {
@@ -106,7 +161,7 @@ func TestRSSRuleDefinitionPreservesHistoryAndOptionalNulls(t *testing.T) {
 func TestRSSRuleDefinitionEncodesTypedNativeTorrentParams(t *testing.T) {
 	typesByName := rssRuleTorrentParamAttributeTypes(context.Background())
 	params, diags := types.ObjectValue(typesByName, map[string]attr.Value{
-		"category": types.StringValue("tv"), "tags": types.ListValueMust(types.StringType, []attr.Value{types.StringValue("weekly")}),
+		"category": types.StringValue("tv"), "tags": types.SetValueMust(types.StringType, []attr.Value{types.StringValue("weekly")}),
 		"save_path": types.StringValue("/srv/downloads"), "download_path": types.StringNull(), "use_download_path": types.BoolNull(),
 		"operating_mode": types.StringNull(), "seed_mode": types.BoolValue(false), "upload_limit": types.Int64Value(0), "download_limit": types.Int64Value(1048576),
 		"ratio_limit": types.Float64Value(1.75), "seeding_time_limit": types.Int64Value(-1), "inactive_seeding_time_limit": types.Int64Value(0),
@@ -130,11 +185,69 @@ func TestRSSRuleDefinitionEncodesTypedNativeTorrentParams(t *testing.T) {
 	}
 }
 
+func TestRSSRuleTagSetConversionAndRefreshUsesNativeSetSemantics(t *testing.T) {
+	attrs := map[string]attr.Value{}
+	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
+		switch typ {
+		case types.StringType:
+			attrs[key] = types.StringNull()
+		case types.BoolType:
+			attrs[key] = types.BoolNull()
+		case types.Int64Type:
+			attrs[key] = types.Int64Null()
+		case types.Float64Type:
+			attrs[key] = types.Float64Null()
+		default:
+			if key == "tags" {
+				attrs[key] = types.SetValueMust(types.StringType, []attr.Value{types.StringValue("z"), types.StringValue("a"), types.StringValue("z")})
+			} else {
+				t.Fatalf("unexpected torrent param type %s: %T", key, typ)
+			}
+		}
+	}
+	params, diags := types.ObjectValue(rssRuleTorrentParamAttributeTypes(context.Background()), attrs)
+	if diags.HasError() {
+		t.Fatal(diags)
+	}
+	m := rssRuleModel{RuleName: types.StringValue("Weekly"), TorrentParams: params}
+	definition, err := rssRuleDefinition(context.Background(), m, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	encoded := definition["torrentParams"].(map[string]any)["tags"].([]any)
+	if len(encoded) != 2 {
+		t.Fatalf("set conversion did not deduplicate tags: %#v", encoded)
+	}
+	gotSet := map[string]bool{}
+	for _, raw := range encoded {
+		gotSet[raw.(string)] = true
+	}
+	if !gotSet["z"] || !gotSet["a"] {
+		t.Fatalf("set conversion lost an unordered tag: %#v", encoded)
+	}
+	rssRuleRefreshConfigured(&m, client.RSSRule{"torrentParams": map[string]any{"tags": []any{"z", "a", "z"}}})
+	refreshed := m.TorrentParams.Attributes()["tags"].(types.Set)
+	var tags []string
+	if d := refreshed.ElementsAs(context.Background(), &tags, false); d.HasError() {
+		t.Fatal(d)
+	}
+	if len(tags) != 2 {
+		t.Fatalf("native response was not normalized to two distinct tags: %#v", tags)
+	}
+	refreshedSet := map[string]bool{}
+	for _, tag := range tags {
+		refreshedSet[tag] = true
+	}
+	if !refreshedSet["z"] || !refreshedSet["a"] {
+		t.Fatalf("native response lost a tag during refresh: %#v", tags)
+	}
+}
+
 func TestRSSRuleDeprecatedAliasesAreAppliedAlongsideNativeParams(t *testing.T) {
 	attributes := map[string]attr.Value{}
 	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
-		if _, ok := typ.(types.ListType); ok {
-			attributes[key] = types.ListNull(types.StringType)
+		if key == "tags" {
+			attributes[key] = types.SetNull(types.StringType)
 			continue
 		}
 		switch typ {
@@ -170,8 +283,8 @@ func TestRSSRuleDeprecatedAliasesAreAppliedAlongsideNativeParams(t *testing.T) {
 func TestRSSRuleRefreshPreservesNullOptionalTorrentParams(t *testing.T) {
 	attributes := map[string]attr.Value{}
 	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
-		if _, ok := typ.(types.ListType); ok {
-			attributes[key] = types.ListNull(types.StringType)
+		if key == "tags" {
+			attributes[key] = types.SetNull(types.StringType)
 			continue
 		}
 		switch typ {
@@ -211,8 +324,8 @@ func TestRSSRuleRefreshPreservesNullOptionalTorrentParams(t *testing.T) {
 func TestRSSRuleRefreshClearsConfiguredOptionalParamsWhenNativeOmitsThem(t *testing.T) {
 	attributes := map[string]attr.Value{}
 	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
-		if _, ok := typ.(types.ListType); ok {
-			attributes[key] = types.ListNull(types.StringType)
+		if key == "tags" {
+			attributes[key] = types.SetNull(types.StringType)
 			continue
 		}
 		switch typ {
@@ -256,8 +369,8 @@ func TestRSSRuleRefreshClearsConfiguredOptionalParamsWhenNativeOmitsThem(t *test
 func TestRSSRuleUpdateMergesCurrentNativeParamsAndConfiguredFieldsWin(t *testing.T) {
 	attributes := map[string]attr.Value{}
 	for key, typ := range rssRuleTorrentParamAttributeTypes(context.Background()) {
-		if _, ok := typ.(types.ListType); ok {
-			attributes[key] = types.ListNull(types.StringType)
+		if key == "tags" {
+			attributes[key] = types.SetNull(types.StringType)
 			continue
 		}
 		switch typ {

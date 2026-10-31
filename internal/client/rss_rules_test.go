@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -70,5 +71,47 @@ func TestRSSRulesUseNamedFormFieldsAndTypedRuleAllowlist(t *testing.T) {
 	}
 	if err := c.RemoveRSSRule(context.Background(), "Weekly"); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestRSSRulesTrackTLSMaterialWithoutReplayingOrExposingIt(t *testing.T) {
+	const certificate = "CERT_CANARY_91a5"
+	const privateKey = "KEY_CANARY_52bf"
+	const dhParams = "DH_CANARY_f131"
+	posts := 0
+	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/proxy/api/v2/rss/rules":
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write([]byte(`{"TLS rule":{"enabled":true,"torrentParams":{"ssl_certificate":"` + certificate + `","ssl_private_key":"` + privateKey + `","ssl_dh_params":"` + dhParams + `"}}}`))
+		case "/proxy/api/v2/rss/setRule":
+			posts++
+			body := make([]byte, r.ContentLength)
+			_, _ = r.Body.Read(body)
+			if strings.Contains(string(body), "CANARY") || strings.Contains(string(body), "unsupportedTLS") {
+				t.Errorf("secret or internal marker was replayed: %s", body)
+			}
+		}
+	}, false)
+	rules, err := c.RSSRules(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	rule := rules["TLS rule"]
+	if !rule.HasUnsupportedTLSMaterial() {
+		t.Fatal("nonempty unsupported TLS material was not marked")
+	}
+	encoded, err := json.Marshal(rule)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(encoded), "CANARY") || strings.Contains(string(encoded), "unsupportedTLS") {
+		t.Fatalf("decoded rule exposed secret material or internal marker: %s", encoded)
+	}
+	if err := c.SetRSSRule(context.Background(), "TLS rule", rule); err != nil {
+		t.Fatal(err)
+	}
+	if posts != 1 {
+		t.Fatalf("SetRSSRule POST count = %d, want 1 for direct client call", posts)
 	}
 }
