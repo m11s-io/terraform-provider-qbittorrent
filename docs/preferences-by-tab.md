@@ -68,7 +68,7 @@ Separate resources cover settings with different ownership or update semantics:
 | `qbittorrent_rss_rule` | One named RSS rule, preserving runtime match history |
 
 Use separate targeted maintenance applies for WebUI endpoint/auth transitions,
-then update the provider connection. See the manual maintenance guide. Commands
+then update the provider connection. See the [maintenance guide](webui-maintenance.md). Commands
 and custom HTTP headers are sensitive but can remain in sensitive resource state
 and machine-readable plans; the general data source excludes them. Password
 inputs are write-only and should come from ephemeral sensitive variables.
