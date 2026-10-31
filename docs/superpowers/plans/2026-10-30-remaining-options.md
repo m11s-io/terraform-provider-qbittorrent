@@ -1,6 +1,6 @@
 # Remaining qBittorrent Options Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans. Implement the approved plan task-by-task; use the explicitly requested model `gpt-6-luna`, reasoning effort `high`, for implementation workers. Steps use checkbox (`- [ ]`) tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans. Implement the approved plan task-by-task; use the explicitly requested model `gpt-6-luna`, reasoning effort `high`, for implementation workers. Steps use checkbox (`- [x]`) tracking.
 
 **Goal:** Cover all persistent configuration represented by the supplied Options screenshots without changing current production values.
 
@@ -102,12 +102,12 @@ and registers the resource in the same integration commit. New unforeseen
 endpoint requirements are returned as explicit wiring instructions, not silently
 added to root by a worker.
 
-- [ ] Add tests first: existing HCL/import fixture remains valid; 1.75 ratio and zero round-trip; int64 `torrent_file_size_limit = 104857600` stays exact; secret GET canaries are absent; read-only keys never enter patches; duplicate wire ownership fails; new unsupported data-source fields can be null while existing missing required keys still diagnose.
-- [ ] Watch the new cases fail, then implement metadata/type/model separation and generic lifecycle extensions. `preferenceValue`, schema creation, apply and refresh must all support Float64.
-- [ ] Preserve 4 MiB bounded reads, cookie/Bearer auth, base paths, TLS checks, CSRF headers, read-only retry and no write replay. Add a filtered client fixture containing every upstream secret key.
-- [ ] Run `go test -race ./...`, `go vet ./...`, `make generate-check`, `make docs-check`, both disposable acceptance runners. Root generation may change code layout but cannot change existing behavior.
-- [ ] Add `scripts/validate_openapi.py` for official 3.2 schema-base validation, with pinned `jsonschema==4.25.1` and `PyYAML==6.0.3` tool dependencies and the dated schema reference used by current verification. Document a reproducible invocation; do not add these Python libraries to provider runtime dependencies.
-- [ ] Commit foundation; record SHA and worker interfaces before dispatching wave A.
+- [x] Add tests first: existing HCL/import fixture remains valid; 1.75 ratio and zero round-trip; int64 `torrent_file_size_limit = 104857600` stays exact; secret GET canaries are absent; read-only keys never enter patches; duplicate wire ownership fails; new unsupported data-source fields can be null while existing missing required keys still diagnose.
+- [x] Watch the new cases fail, then implement metadata/type/model separation and generic lifecycle extensions. `preferenceValue`, schema creation, apply and refresh must all support Float64.
+- [x] Preserve 4 MiB bounded reads, cookie/Bearer auth, base paths, TLS checks, CSRF headers, read-only retry and no write replay. Add a filtered client fixture containing every upstream secret key.
+- [x] Run `go test -race ./...`, `go vet ./...`, `make generate-check`, `make docs-check`, both disposable acceptance runners. Root generation may change code layout but cannot change existing behavior.
+- [x] Add `scripts/validate_openapi.py` for official 3.2 schema-base validation, with pinned `jsonschema==4.25.1` and `PyYAML==6.0.3` tool dependencies and the dated schema reference used by current verification. Document a reproducible invocation; do not add these Python libraries to provider runtime dependencies.
+- [x] Commit foundation; record SHA and worker interfaces before dispatching wave A.
 
 ## Task 1: Downloads scalars
 
@@ -115,11 +115,11 @@ added to root by a worker.
 
 **Consumes:** task 0 field metadata and patch/read composition. **Produces:** `downloadsPreferenceFields` containing missing public Downloads scalars from the inventory. Do not duplicate four existing mapped fields. Exclude `scan_dirs` (task 7) and password (task 5).
 
-- [ ] Write table-driven wire/state cases for layout/stop enums, auto-delete mode 0/1/2, backup flags/paths, TMM policies, excluded-name text, SMTP nonsecret fields and external-program hooks. Assert only managed keys are sent.
-- [ ] Verify failing tests; add exact schema fields and native enum/bound validation. Preserve command trim semantics and mark command templates sensitive; no hook execution or email delivery in tests.
-- [ ] Test false, zero, empty path/text, multiline patterns, normalization diagnostics, unrelated settings unchanged and null relinquishment.
-- [ ] Run targeted and full unit tests; disposable acceptance keeps hooks/mail disabled while verifying stored templates/settings.
-- [ ] Commit owned files and hand off source evidence, test results and wiring instructions.
+- [x] Write table-driven wire/state cases for layout/stop enums, auto-delete mode 0/1/2, backup flags/paths, TMM policies, excluded-name text, SMTP nonsecret fields and external-program hooks. Assert only managed keys are sent.
+- [x] Verify failing tests; add exact schema fields and native enum/bound validation. Preserve command trim semantics and mark command templates sensitive; no hook execution or email delivery in tests.
+- [x] Test false, zero, empty path/text, multiline patterns, normalization diagnostics, unrelated settings unchanged and null relinquishment.
+- [x] Run targeted and full unit tests; disposable acceptance keeps hooks/mail disabled while verifying stored templates/settings.
+- [x] Commit owned files and hand off source evidence, test results and wiring instructions.
 
 ## Task 2: Connection controls
 
@@ -127,11 +127,11 @@ added to root by a worker.
 
 **Produces:** `connectionPreferenceFields`. Cover protocol enum, four connection/upload limit fields, I2P enable/host/port/mixed/PeX, proxy nonsecret fields and routing flags, filtering and `banned_IPs`. Existing listen_port/upnp remain in legacy module. Password belongs to task 5.
 
-- [ ] Test protocol values and `-1`/positive limits with explicit rejection of zero (native normalizes it); use wire-key `banned_IPs` exactly, despite mixed case.
-- [ ] Test proxy enum `None`/`SOCKS4`/`SOCKS5`/`HTTP`, auth-enabled false, configured disabled dependents, proxy ports and IP-filter paths. Preserve raw newline text and native normalization errors.
-- [ ] Implement fragments/metadata after RED. Native port bounds must come from the relevant setter rather than reusing listen-port validation everywhere.
-- [ ] Acceptance leaves proxy/I2P/filter/UPnP features disabled or uses local fixture files; never route test internet traffic or enable router forwarding. Assert secret response filtering.
-- [ ] Document restart requirements for I2P PeX and the Random-port action boundary; commit owned files.
+- [x] Test protocol values and `-1`/positive limits with explicit rejection of zero (native normalizes it); use wire-key `banned_IPs` exactly, despite mixed case.
+- [x] Test proxy enum `None`/`SOCKS4`/`SOCKS5`/`HTTP`, auth-enabled false, configured disabled dependents, proxy ports and IP-filter paths. Preserve raw newline text and native normalization errors.
+- [x] Implement fragments/metadata after RED. Native port bounds must come from the relevant setter rather than reusing listen-port validation everywhere.
+- [x] Acceptance leaves proxy/I2P/filter/UPnP features disabled or uses local fixture files; never route test internet traffic or enable router forwarding. Assert secret response filtering.
+- [x] Document restart requirements for I2P PeX and the Random-port action boundary; commit owned files.
 
 ## Task 3: BitTorrent and RSS preferences
 
@@ -139,11 +139,11 @@ added to root by a worker.
 
 **Produces:** `bittorrentPreferenceFields`, `rssPreferenceFields`. Includes privacy, checking concurrency, queue/slow limits, ratio/duration/mode/action, tracker text/URL, RSS reader/timing/article/autodownload/smart filters. Existing dht/pex/lsd stay compatible.
 
-- [ ] Write failing cases: encryption enum 0/1/2, queue maxima -1/0/positive as actually supported, slow thresholds KiB/s, timer seconds, ratio 1.75 and -1, seeding minutes -1/0, MatchAny/MatchAll and actions 0..3.
-- [ ] Implement numeric canonical fields for share limits; three enabled flags and fetched tracker text are read-only data-source outputs. Never send derived flags or `add_trackers_url_list` in a patch. Source-check sentinel normalization before choosing validation.
-- [ ] Test RSS units separately (refresh minutes, delay seconds), zero/minimum behavior established by native setters, blank/multiline filter strings and explicitly false enable flags.
-- [ ] Acceptance uses no tracker/feed network and no active torrents; keep RSS fetching and auto-download disabled. Seeding removal actions are tested on stopped disposable fixture data only, never user content.
-- [ ] Document every removal action's consequence and separate RSS rule resource ownership; commit owned files.
+- [x] Write failing cases: encryption enum 0/1/2, queue maxima -1/0/positive as actually supported, slow thresholds KiB/s, timer seconds, ratio 1.75 and -1, seeding minutes -1/0, MatchAny/MatchAll and actions 0..3.
+- [x] Implement numeric canonical fields for share limits; three enabled flags and fetched tracker text are read-only data-source outputs. Never send derived flags or `add_trackers_url_list` in a patch. Source-check sentinel normalization before choosing validation.
+- [x] Test RSS units separately (refresh minutes, delay seconds), zero/minimum behavior established by native setters, blank/multiline filter strings and explicitly false enable flags.
+- [x] Acceptance uses no tracker/feed network and no active torrents; keep RSS fetching and auto-download disabled. Seeding removal actions are tested on stopped disposable fixture data only, never user content.
+- [x] Document every removal action's consequence and separate RSS rule resource ownership; commit owned files.
 
 ## Task 4: Advanced qBittorrent session controls
 
@@ -151,11 +151,11 @@ added to root by a worker.
 
 **Produces:** `advancedSessionPreferenceFields` for the Advanced qBittorrent section in the inventory. Do not take libtorrent controls from task 6 or WebUI listener controls from task 8.
 
-- [ ] Test storage/removal enums, interface/address writes and resolved-name read-only output, save intervals, file-size bytes, recheck/instance/display/peer/tag controls, embedded tracker/Python/start-paused/shutdown settings.
-- [ ] Literal unit fixture: UI 100 MiB maps to `torrent_file_size_limit = 104857600`, not 100. `shutdown_timeout = -1` is valid; values below -1 are rejected.
-- [ ] Implement supported public fields with restart/capability metadata. Interface validation uses server knowledge or reports native normalization, never runner NICs. Discovery endpoints can be typed read-only helpers if needed; no imperative connection changes.
-- [ ] Acceptance avoids moving content, switching resume backend, enabling trackers or changing bind interfaces. A dedicated disposable restart test validates persistence of explicitly restart-required options; no production restart.
-- [ ] Commit owned files with exact enum/native-setter evidence.
+- [x] Test storage/removal enums, interface/address writes and resolved-name read-only output, save intervals, file-size bytes, recheck/instance/display/peer/tag controls, embedded tracker/Python/start-paused/shutdown settings.
+- [x] Literal unit fixture: UI 100 MiB maps to `torrent_file_size_limit = 104857600`, not 100. `shutdown_timeout = -1` is valid; values below -1 are rejected.
+- [x] Implement supported public fields with restart/capability metadata. Interface validation uses server knowledge or reports native normalization, never runner NICs. Discovery endpoints can be typed read-only helpers if needed; no imperative connection changes.
+- [x] Acceptance avoids moving content, switching resume backend, enabling trackers or changing bind interfaces. A dedicated disposable restart test validates persistence of explicitly restart-required options; no production restart.
+- [x] Commit owned files with exact enum/native-setter evidence.
 
 ## Task 5: WebUI non-listener settings and password writes
 
@@ -163,11 +163,11 @@ added to root by a worker.
 
 **Produces:** `webUISettingsPreferenceFields`; `credentialsResource` implementing resource.Resource, registered by integrator as `qbittorrent_credentials`. General preferences own auth bypass/whitelists/ban/session limits, alternative UI, security/domain/header/reverse-proxy settings and nonsecret DynDNS settings. Task 8 owns listener, username/password.
 
-- [ ] Write secret canary tests before implementation: passwords never appear in GET models, data sources, state/plan JSON or diagnostics; only the requested changed version emits the secret; unrelated changes and destroy emit no secret writes.
-- [ ] Resource fields: `smtp_password_wo`, `smtp_password_wo_version`, `proxy_password_wo`, `proxy_password_wo_version`, `dyndns_password_wo`, `dyndns_password_wo_version`; singleton/import ID `application`. Require matching value/version when changing a secret. Read write-only values from Config; retain only version counters in state. Clearing an upstream-supported password uses explicit empty input plus version change.
-- [ ] Add public WebUI settings with exact native delimiters/ranges. Custom headers are sensitive; keep secret-containing text out of public data sources. Never expose computed plaintext API keys.
-- [ ] Verify initial create, versioned rotation, unchanged-version no-replay, null relinquishment, import and destroy-state-only behavior under Terraform and OpenTofu. Password fixtures are random and masked; no external SMTP/proxy/DynDNS requests.
-- [ ] Unit/fixture tests cover security flags without disabling real test-server protections. Commit owned files; supply root registration and secret-patch composition instructions.
+- [x] Write secret canary tests before implementation: passwords never appear in GET models, data sources, state/plan JSON or diagnostics; only the requested changed version emits the secret; unrelated changes and destroy emit no secret writes.
+- [x] Resource fields: `smtp_password_wo`, `smtp_password_wo_version`, `proxy_password_wo`, `proxy_password_wo_version`, `dyndns_password_wo`, `dyndns_password_wo_version`; singleton/import ID `application`. Require matching value/version when changing a secret. Read write-only values from Config; retain only version counters in state. Clearing an upstream-supported password uses explicit empty input plus version change.
+- [x] Add public WebUI settings with exact native delimiters/ranges. Custom headers are sensitive; keep secret-containing text out of public data sources. Never expose computed plaintext API keys.
+- [x] Verify initial create, versioned rotation, unchanged-version no-replay, null relinquishment, import and destroy-state-only behavior under Terraform and OpenTofu. Password fixtures are random and masked; no external SMTP/proxy/DynDNS requests.
+- [x] Unit/fixture tests cover security flags without disabling real test-server protections. Commit owned files; supply root registration and secret-patch composition instructions.
 
 ## Task 6: Advanced libtorrent controls
 
@@ -175,11 +175,11 @@ added to root by a worker.
 
 **Produces:** `advancedLibtorrentPreferenceFields` covering the entire libtorrent section, including decode/threads/cache/I/O, buffers/ports/resolver/security, choking/announcing, turnover/request/DHT/STUN/I2P controls. Inventory includes version/platform-conditional rows.
 
-- [ ] Write literal tests for wire bytes (`disk_queue_size=104857600` for UI 102400 KiB; socket buffers bytes) versus KiB watermarks, percent values, seconds, 0 defaults and permitted negative sentinels.
-- [ ] Add enum validators from pinned native enum definitions: disk I/O/read/write, mixed mode, slots behavior and choking. Record exact linked-library feature assumptions; do not blindly accept every option shown in another build.
-- [ ] Add every control to the fragment/metadata and fixtures. Enforce cross-field outgoing port min/max constraints only when known; preserve unknown values until apply validation.
-- [ ] Acceptance changes safe representative values only. Conditional features use supported/unsupported fixtures plus pinned build info; restart-required settings get stored-value and controlled restart coverage. No performance/network benchmark is required to prove persistence.
-- [ ] Commit owned files and list any capability not exercised by the pinned image explicitly.
+- [x] Write literal tests for wire bytes (`disk_queue_size=104857600` for UI 102400 KiB; socket buffers bytes) versus KiB watermarks, percent values, seconds, 0 defaults and permitted negative sentinels.
+- [x] Add enum validators from pinned native enum definitions: disk I/O/read/write, mixed mode, slots behavior and choking. Record exact linked-library feature assumptions; do not blindly accept every option shown in another build.
+- [x] Add every control to the fragment/metadata and fixtures. Enforce cross-field outgoing port min/max constraints only when known; preserve unknown values until apply validation.
+- [x] Acceptance changes safe representative values only. Conditional features use supported/unsupported fixtures plus pinned build info; restart-required settings get stored-value and controlled restart coverage. No performance/network benchmark is required to prove persistence.
+- [x] Commit owned files and list any capability not exercised by the pinned image explicitly.
 
 ## Task 7: Watched-folder collection
 
@@ -187,11 +187,11 @@ added to root by a worker.
 
 **Produces:** typed `watchFoldersResource` registered by integrator as `qbittorrent_watch_folders`; client conversion helpers around the existing app endpoints. Resource owns only `scan_dirs`; exclude this key from normal writable preferences.
 
-- [ ] RED tests for map union 0/1/custom string, omitted versus empty collection, custom path equal to watched path normalization, invalid server values, and full-map replacement removing omitted entries.
-- [ ] Terraform shape: `folders = { "/watch" = { save_mode = "default" } }`; modes `default`, `watch_folder`, `custom`, with `save_path` required only for custom. ID/import `application`; document authoritative whole-map ownership. Destroy preserves server watches; explicit empty `folders = {}` clears them.
-- [ ] Implement exact legacy `scan_dirs` union conversion. Source says map replacement and invalid paths can be silently ignored: validate server-normalized round trips and fail useful diagnostics, rather than treating HTTP 200 as success.
-- [ ] Acceptance uses empty disposable directories and verifies no torrents/files are imported or removed. Test drift, import, empty map, deletion/relinquishment semantics.
-- [ ] Commit owned files and root registration instructions.
+- [x] RED tests for map union 0/1/custom string, omitted versus empty collection, custom path equal to watched path normalization, invalid server values, and full-map replacement removing omitted entries.
+- [x] Terraform shape: `folders = { "/watch" = { save_mode = "default" } }`; modes `default`, `watch_folder`, `custom`, with `save_path` required only for custom. ID/import `application`; document authoritative whole-map ownership. Destroy preserves server watches; explicit empty `folders = {}` clears them.
+- [x] Implement exact legacy `scan_dirs` union conversion. Source says map replacement and invalid paths can be silently ignored: validate server-normalized round trips and fail useful diagnostics, rather than treating HTTP 200 as success.
+- [x] Acceptance uses empty disposable directories and verifies no torrents/files are imported or removed. Test drift, import, empty map, deletion/relinquishment semantics.
+- [x] Commit owned files and root registration instructions.
 
 ## Task 8: Explicit WebUI endpoint and authentication maintenance
 
@@ -199,11 +199,11 @@ added to root by a worker.
 
 **Consumes:** task 5 secret/version helpers and existing `client.Config` / `client.New`. **Produces:** two resource constructors registered by integrator and an isolated candidate-client helper in its owned client file; listener/auth fields excluded from ordinary preferences ownership.
 
-- [ ] Write a real local fixture test that changes the listener port and deliberately loses the initial connection, then reconnects at `post_update_url` exactly once without replaying the mutation. A failure case reports applied/uncertain state and manual reconnect guidance without secrets.
-- [ ] Endpoint owns bind/port/HTTPS/cert-path/key-path and required target URL when endpoint changes. Auth owns `username`, `password_wo`, `password_wo_version`; enforce native username/password rules. Reauthenticate with candidate target credentials; never mutate the client used concurrently by other resources.
-- [ ] Test session and Bearer operation modes, unsupported self-credential transitions, candidate TLS validation failure, invalid bind/port, unchanged credentials not replayed, password absent from state, no-op plan and follow-up apply using the new provider URL/credentials.
-- [ ] Use staged targeted maintenance in examples. Do not weaken TLS, CSRF, hostname checks or auth to reconnect; do not edit a Kubernetes Service or publish a port automatically. Restart behavior stays explicit and confined to disposable fixtures.
-- [ ] Commit owned files and root registration instructions. A failure to verify safe reconnect blocks this task, not unrelated scalar coverage.
+- [x] Write a real local fixture test that changes the listener port and deliberately loses the initial connection, then reconnects at `post_update_url` exactly once without replaying the mutation. A failure case reports applied/uncertain state and manual reconnect guidance without secrets.
+- [x] Endpoint owns bind/port/HTTPS/cert-path/key-path and required target URL when endpoint changes. Auth owns `username`, `password_wo`, `password_wo_version`; enforce native username/password rules. Reauthenticate with candidate target credentials; never mutate the client used concurrently by other resources.
+- [x] Test session and Bearer operation modes, unsupported self-credential transitions, candidate TLS validation failure, invalid bind/port, unchanged credentials not replayed, password absent from state, no-op plan and follow-up apply using the new provider URL/credentials.
+- [x] Use staged targeted maintenance in examples. Do not weaken TLS, CSRF, hostname checks or auth to reconnect; do not edit a Kubernetes Service or publish a port automatically. Restart behavior stays explicit and confined to disposable fixtures.
+- [x] Commit owned files and root registration instructions. A failure to verify safe reconnect blocks this task, not unrelated scalar coverage.
 
 ## Task 9: RSS auto-download rules
 
@@ -211,22 +211,22 @@ added to root by a worker.
 
 **Produces:** `rssRuleResource`, registered as `qbittorrent_rss_rule`. Resource ID is rule name; rename replaces unless an explicit native rename workflow is separately justified.
 
-- [ ] Read pinned `rsscontroller.cpp::{rulesAction,setRuleAction,removeRuleAction}` and `rss_autodownloadrule.cpp::{toJsonObject,fromJsonObject}` first. Required form keys: `setRule` uses `ruleName` plus JSON-string `ruleDef`; removal uses `ruleName`; reads use rules collection with the pinned optional filters.
-- [ ] Write tests for enabled/priority, regex/contain/not-contain/episode fields, `affectedFeeds` array, ignore days/smart filter, category/path/add-stopped/content-layout and native `torrentParams`. `lastMatch` and `previouslyMatchedEpisodes` are runtime history: expose computed where appropriate and preserve them on edits; never reset them because Terraform changed a pattern.
-- [ ] Implement typed, allowlisted rule definition and per-rule ownership. Test missing rule refresh, duplicate/adopt behavior, rule replacement semantics, null add-stopped/content-layout, drift, import and safe removal without deleting feeds or content.
-- [ ] Acceptance keeps RSS fetching/auto-downloading disabled and uses no external feed; rule CRUD alone must not add torrents. No bulk import/export or auto-discovery of unrelated rules.
-- [ ] Commit owned files and root schema/path/registration instructions.
+- [x] Read pinned `rsscontroller.cpp::{rulesAction,setRuleAction,removeRuleAction}` and `rss_autodownloadrule.cpp::{toJsonObject,fromJsonObject}` first. Required form keys: `setRule` uses `ruleName` plus JSON-string `ruleDef`; removal uses `ruleName`; reads use rules collection with the pinned optional filters.
+- [x] Write tests for enabled/priority, regex/contain/not-contain/episode fields, `affectedFeeds` array, ignore days/smart filter, category/path/add-stopped/content-layout and native `torrentParams`. `lastMatch` and `previouslyMatchedEpisodes` are runtime history: expose computed where appropriate and preserve them on edits; never reset them because Terraform changed a pattern.
+- [x] Implement typed, allowlisted rule definition and per-rule ownership. Test missing rule refresh, duplicate/adopt behavior, rule replacement semantics, null add-stopped/content-layout, drift, import and safe removal without deleting feeds or content.
+- [x] Acceptance keeps RSS fetching/auto-downloading disabled and uses no external feed; rule CRUD alone must not add torrents. No bulk import/export or auto-discovery of unrelated rules.
+- [x] Commit owned files and root schema/path/registration instructions.
 
 ## Task 10: Integration, final acceptance and release handoff (serial)
 
 **Owner:** coordinator. **Files:** root composition/registration, generated client/docs, aggregate tests, acceptance runner, coverage matrix and verification record.
 
-- [ ] Merge handoffs by file ownership; reject duplicate keys/resource ownership. Regenerate after each wave and run the complete unit/race suite before advancing.
-- [ ] Replace the mechanical source index with a reviewed disposition matrix: every screenshot control is `existing`, `new preference`, `special resource`, `computed-only`, `action/non-config`, or `capability-limited` with reason/test reference. No blank/unaccounted rows. Existing Behavior/Speed coverage must remain green.
-- [ ] Run `make generate-check`, official OpenAPI 3.2 schema validation, `go test -race ./...`, `go vet ./...`, `make build`, both CLI disposable suites (new examples included), `make docs-check`, workflow lint and snapshot release checks. Verify clean generation/module/docs diffs.
-- [ ] Run state/plan/log canary scans for all supplied/generated write-only credentials. Sensitive configured templates/headers may exist in sensitive resource state and machine-readable plan JSON (document this), but never in ordinary display/diagnostics or general data-source outputs. Preserve native security checks and verify credential/endpoint transitions are never bundled into routine settings acceptance.
-- [ ] Fresh independent reviewer checks the final commit range and the five Review Focus items. Fix concrete critical/important findings with failing-then-passing tests; document unsupported runtime build cases honestly.
-- [ ] Commit completed implementation and verification. Publishing a provider tag and changing `infra/arr` are a later explicit step; no broad live apply is part of this plan.
+- [x] Merge handoffs by file ownership; reject duplicate keys/resource ownership. Regenerate after each wave and run the complete unit/race suite before advancing.
+- [x] Replace the mechanical source index with a reviewed disposition matrix: every screenshot control is `existing`, `new preference`, `special resource`, `computed-only`, `action/non-config`, or `capability-limited` with reason/test reference. No blank/unaccounted rows. Existing Behavior/Speed coverage must remain green.
+- [x] Run `make generate-check`, official OpenAPI 3.2 schema validation, `go test -race ./...`, `go vet ./...`, `make build`, both CLI disposable suites (new examples included), `make docs-check`, workflow lint and snapshot release checks. Verify clean generation/module/docs diffs.
+- [x] Run state/plan/log canary scans for all supplied/generated write-only credentials. Sensitive configured templates/headers may exist in sensitive resource state and machine-readable plan JSON (document this), but never in ordinary display/diagnostics or general data-source outputs. Preserve native security checks and verify credential/endpoint transitions are never bundled into routine settings acceptance.
+- [x] Fresh independent reviewer checks the final commit range and the five Review Focus items. Fix concrete critical/important findings with failing-then-passing tests; document unsupported runtime build cases honestly.
+- [x] Commit completed implementation and verification. Publishing a provider tag and changing `infra/arr` are a later explicit step; no broad live apply is part of this plan.
 
 ## Worker dispatch template
 
@@ -252,3 +252,11 @@ remain implementation evidence rather than permission for live changes. The plan
 was checked for shared-file conflicts, endpoint/action distinction, credentials,
 typed values, dependent setters and already-supported keys. No implementation or
 runtime test is claimed by this planning deliverable.
+
+## Implementation handoff
+
+Implemented on `feat/remaining-options` in the isolated integration worktree.
+See [verification and limitations](../../planning/remaining-options-verification.md)
+and the reviewed save-key disposition matrix. All task and final reviews are
+resolved; final native/CLI checks are recorded there. No provider tag, live
+application configuration or infrastructure was changed.

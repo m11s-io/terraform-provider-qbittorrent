@@ -3,14 +3,12 @@
 page_title: "qbittorrent_rss_rule Resource - qbittorrent"
 subcategory: ""
 description: |-
-  Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.
+  Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. Tags are an unordered set and duplicate tags are removed. Updating a rule that already contains nonempty TLS certificate, private-key, or DH-parameter material is rejected because the provider cannot preserve that unsupported material. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.
 ---
 
 # qbittorrent_rss_rule (Resource)
 
-Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.
-
-Tags in `torrent_params.tags` are an unordered set; duplicate values are removed. An update is rejected if the existing rule contains nonempty TLS certificate, private-key, or DH-parameter material, because this provider cannot preserve those unsupported values.
+Manage one qBittorrent RSS auto-download rule by name. Import ID is the exact rule name. Changing the name replaces the rule. Match history is computed and carried across updates. When both a deprecated top-level alias and its equivalent torrent_params field are configured, the native torrent_params value takes precedence. Tags are an unordered set and duplicate tags are removed. Updating a rule that already contains nonempty TLS certificate, private-key, or DH-parameter material is rejected because the provider cannot preserve that unsupported material. The resource manages only the rule definition; it does not create or refresh feeds, import/export other rules, or add torrents. Keep RSS fetching and auto-downloading disabled while managing rule configuration if you do not want RSS processing.
 
 ## Example Usage
 
@@ -95,6 +93,6 @@ Optional:
 - `share_limits_mode` (String)
 - `stop_condition` (String)
 - `stopped` (Boolean)
-- `tags` (Set of String) Unordered qBittorrent tags; duplicate values are removed.
+- `tags` (Set of String) Unordered set of qBittorrent tags; duplicate values are removed.
 - `upload_limit` (Number)
 - `use_download_path` (Boolean)

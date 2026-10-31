@@ -18,6 +18,7 @@ resource "qbittorrent_rss_rule" "example" {
 
   torrent_params = {
     category       = "tv"
+    tags           = ["weekly", "anime"]
     save_path      = "/srv/qbittorrent/downloads"
     stopped        = true
     content_layout = "Subfolder"

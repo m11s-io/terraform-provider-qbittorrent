@@ -154,7 +154,7 @@ and decodes generated models directly instead of using the generated response
 helpers, which buffer raw response bodies. Unknown preference keys are discarded
 and must never be captured through generated additional-properties maps.
 
-Validate with `uv run --with-requirements scripts/requirements-openapi.txt python scripts/validate_openapi.py`. For a new supported field/endpoint, review the corresponding upstream C++ at the
+Validate with `uv run --python 3.14 --with-requirements scripts/requirements-openapi.txt python scripts/validate_openapi.py`. For a new supported field/endpoint, review the corresponding upstream C++ at the
 baseline tag, update the specification and regenerate, then add the Terraform
 mapping and contract/acceptance coverage. Existing fields and IDs remain
 compatible. Current field coverage and the separate WebUI resource are documented

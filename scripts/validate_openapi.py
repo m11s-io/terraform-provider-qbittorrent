@@ -2,6 +2,7 @@
 """Validate the provider subset against the official OpenAPI 3.2 schema."""
 
 import json
+import socket
 import subprocess
 import tempfile
 import urllib.request
@@ -11,6 +12,8 @@ import yaml
 import jsonschema
 
 SCHEMA_URL = "https://spec.openapis.org/oas/3.2/schema-base/2026-08-30"
+# Bound both the initial fetch and jsonschema's referenced-schema retrieval.
+socket.setdefaulttimeout(30)
 
 spec = yaml.safe_load(Path("api/qbittorrent.yaml").read_text())
 with tempfile.NamedTemporaryFile(suffix=".yaml") as bundled_file:
@@ -27,7 +30,7 @@ with tempfile.NamedTemporaryFile(suffix=".yaml") as bundled_file:
         check=True,
     )
     bundled = yaml.safe_load(Path(bundled_file.name).read_text())
-with urllib.request.urlopen(SCHEMA_URL) as response:
+with urllib.request.urlopen(SCHEMA_URL, timeout=30) as response:
     schema = json.load(response)
 validator = jsonschema.validators.validator_for(schema)(schema)
 errors = []
