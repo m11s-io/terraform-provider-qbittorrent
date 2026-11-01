@@ -1,6 +1,5 @@
 {
   "upstream_commit": "9213075dd5f7b352208361c6a84c1c115efc898e",
-  "provider_base": "a73a3a1",
   "source": "src/webui/www/private/views/preferences.html",
   "note": "Reviewed disposition matrix of all literal Options save keys and additional controls. Capability limits are explicit; raw counts are not a completion assertion.",
   "preferences": [
@@ -2452,42 +2451,42 @@
       "disposition": "action/non-config",
       "owner": "none",
       "reason": "Explicit action boundary, never a normal apply side effect.",
-      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+      "test_reference": "docs/coverage.md"
     },
     {
       "control": "Send test email",
       "disposition": "action/non-config",
       "owner": "none",
       "reason": "Explicit action boundary, never a normal apply side effect.",
-      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+      "test_reference": "docs/coverage.md"
     },
     {
       "control": "API key rotate",
       "disposition": "action/non-config",
       "owner": "none",
       "reason": "Explicit action boundary, never a normal apply side effect.",
-      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+      "test_reference": "docs/coverage.md"
     },
     {
       "control": "API key delete",
       "disposition": "action/non-config",
       "owner": "none",
       "reason": "Explicit action boundary, never a normal apply side effect.",
-      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+      "test_reference": "docs/coverage.md"
     },
     {
       "control": "API key copy",
       "disposition": "action/non-config",
       "owner": "none",
       "reason": "Explicit action boundary, never a normal apply side effect.",
-      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+      "test_reference": "docs/coverage.md"
     },
     {
       "control": "DynDNS Register",
       "disposition": "action/non-config",
       "owner": "none",
       "reason": "Explicit action boundary, never a normal apply side effect.",
-      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+      "test_reference": "docs/coverage.md"
     },
     {
       "control": "WebUI API key display",

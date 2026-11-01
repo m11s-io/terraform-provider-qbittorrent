@@ -13,13 +13,13 @@ def verify_examples(cli, environment, root, scratch):
     mirror = Path(scratch) / 'mirror'
     # OpenTofu normalizes shorthand sources to registry.opentofu.org.
     host = 'registry.opentofu.org' if Path(cli).name == 'tofu' else 'registry.terraform.io'
-    package = mirror / (host + '/m11s-io/qbittorrent/0.1.0') / (goos + '_' + goarch)
+    package = mirror / (host + '/m11s-io/qbittorrent/0.3.0') / (goos + '_' + goarch)
     package.mkdir(parents=True)
-    subprocess.run(['go', 'build', '-o', str(package / 'terraform-provider-qbittorrent_v0.1.0'), '.'], cwd=root, check=True)
+    subprocess.run(['go', 'build', '-o', str(package / 'terraform-provider-qbittorrent_v0.3.0'), '.'], cwd=root, check=True)
     alternate_host = 'registry.terraform.io' if host == 'registry.opentofu.org' else 'registry.opentofu.org'
-    alternate = mirror / (alternate_host + '/m11s-io/qbittorrent/0.1.0') / (goos + '_' + goarch)
+    alternate = mirror / (alternate_host + '/m11s-io/qbittorrent/0.3.0') / (goos + '_' + goarch)
     alternate.mkdir(parents=True)
-    shutil.copy2(package / 'terraform-provider-qbittorrent_v0.1.0', alternate)
+    shutil.copy2(package / 'terraform-provider-qbittorrent_v0.3.0', alternate)
     config = Path(scratch) / 'cli.tfrc'
     config.write_text('provider_installation { filesystem_mirror { path = "' + str(mirror) + '" } }\n')
     example_files = [

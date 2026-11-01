@@ -16,7 +16,7 @@ terraform {
   required_providers {
     qbittorrent = {
       source  = "m11s-io/qbittorrent"
-      version = "~> 0.1"
+      version = "~> 0.3"
     }
   }
 }

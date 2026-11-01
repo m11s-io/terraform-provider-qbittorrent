@@ -6,3 +6,19 @@
 .superpowers/
 __pycache__/
 *.pyc
+
+# Local development and sensitive runtime files
+.env
+.env.*
+!.env.example
+*.tfvars
+*.tfvars.json
+!*.example.tfvars
+!*.example.tfvars.json
+*.tfplan
+*.log
+/coverage.out
+/.agents/
+/.codex/
+/docs/planning/
+/docs/superpowers/

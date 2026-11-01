@@ -21,7 +21,7 @@ func TestOptionsDispositionMatrixHasVerifiedOwnership(t *testing.T) {
 		Preferences []entry `json:"preferences"`
 		Additional  []entry `json:"additional_controls"`
 	}
-	raw, err := os.ReadFile("../../docs/planning/2026-10-30-options-save-keys.json")
+	raw, err := os.ReadFile("../../api/options-coverage.json")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,18 +1,28 @@
-# Terraform / OpenTofu provider for qBittorrent
+# Terraform provider for qBittorrent
 
-Manage application preferences, watched folders, RSS rules, write-only service
-passwords, explicit WebUI maintenance, and download categories on **qBittorrent
-5.3.0**, Web API **2.16.2**, using the Terraform Plugin Framework. Other versions
-are rejected. This provider does not bootstrap credentials or manage torrents.
+Manage qBittorrent settings with Terraform: application preferences, categories,
+watched folders, RSS rules, and explicit WebUI maintenance.
 
-Available on the [Terraform Registry](https://registry.terraform.io/providers/m11s-io/qbittorrent/latest).
+[Terraform Registry](https://registry.terraform.io/providers/m11s-io/qbittorrent/latest)
+· [Provider documentation](docs/index.md)
+· [Examples](examples)
+
+## Requirements
+
+- qBittorrent **5.3.0**, Web API **2.16.2**. Other versions are rejected.
+- A reachable WebUI with an existing API key or username and password.
+- Terraform **1.11 or later** for resources with write-only password inputs.
+
+OpenTofu is also tested for compatibility.
+
+## Quick start
 
 ```hcl
 terraform {
   required_providers {
     qbittorrent = {
       source  = "m11s-io/qbittorrent"
-      version = "~> 0.1"
+      version = "~> 0.3"
     }
   }
 }
@@ -22,76 +32,69 @@ provider "qbittorrent" {
 }
 
 resource "qbittorrent_preferences" "application" {
-  dht      = false
-  up_limit = 1048576 # bytes/s; multiples of 1024, 0 is unlimited
+  save_path = "/downloads"
+  up_limit  = 1048576 # bytes per second; 0 means unlimited
 }
 
-resource "qbittorrent_category" "datasets" {
-  name      = "datasets"
-  save_path = "/downloads/datasets"
+resource "qbittorrent_category" "movies" {
+  name      = "movies"
+  save_path = "/downloads/movies"
 }
 ```
 
-Set `QBITTORRENT_API_KEY` for Bearer authentication, or both
-`QBITTORRENT_USERNAME` and `QBITTORRENT_PASSWORD` for cookie sessions. Do not mix
-auth methods, including environment variables. `QBITTORRENT_URL` can supply the
-URL. Explicit configuration takes precedence over the corresponding environment
-variable, including explicit empty strings. Sensitive provider inputs are marked
-sensitive; prefer environment variables to avoid writing credentials into HCL.
-Cookies are isolated per provider instance and never stored in Terraform state.
-TLS verification, server Host validation and CSRF protection remain enabled.
+Provide credentials through the environment, then run `terraform init` and
+`terraform plan`:
 
-Only configured preferences are managed. Unset fields, including imported
-settings, remain unowned; false and zero are explicit values. Removing an
-attribute relinquishes ownership and does not reset it. Destroying preferences
-only removes Terraform state. Use one preferences resource per server; overlapping
-ownership across states is unsupported. The read-only data source exposes only
-the supported nonsecret fields, never API keys, password hashes or cookies.
+- `QBITTORRENT_API_KEY` for Bearer authentication; or
+- `QBITTORRENT_USERNAME` and `QBITTORRENT_PASSWORD` for a session.
 
-Category names are resource IDs; renaming requires replacement. Nested category
-ancestors must already exist. Reference the parent resource name in the child name
-to order creation and leaf-first deletion. Empty save paths append the category
-basename beneath the parent effective path; nonempty relative paths resolve
-beneath the global default save path. Destroy reassigns
-torrents to the parent category (empty for top-level names). It preserves torrents
-and files, although automatic torrent management may relocate content. Upstream
-also removes subcategories, so the provider refuses deletion while descendants
-exist. Delete descendants first; avoid concurrent hierarchy changes.
+Do not configure both authentication methods. `QBITTORRENT_URL` can provide the
+WebUI URL instead of `url`. Explicit provider attributes override the corresponding
+environment variables. TLS certificates are verified.
 
-Paths refer to the **server** filesystem. Use normalized paths. If the server
-normalizes or rejects a configured field, apply reports the affected attribute;
-correct configuration to match the server. HTTP operations have a 15-second
-timeout. Reads may reauthenticate once on an expired session; writes are never
-replayed automatically. Rerun apply after an expired-session write failure.
+## Resources
 
-```sh
-terraform import qbittorrent_preferences.application application
-terraform import qbittorrent_category.datasets datasets
-```
+| Resource | Purpose |
+| --- | --- |
+| [qbittorrent_preferences](docs/resources/preferences.md) | Application settings with partial ownership |
+| [qbittorrent_webui_preferences](docs/resources/webui_preferences.md) | Server-stored WebUI appearance and interaction settings |
+| [qbittorrent_category](docs/resources/category.md) | Download categories |
+| [qbittorrent_watch_folders](docs/resources/watch_folders.md) | The complete watched-folder collection |
+| [qbittorrent_rss_rule](docs/resources/rss_rule.md) | One named RSS auto-download rule |
+| [qbittorrent_credentials](docs/resources/credentials.md) | Write-only SMTP, proxy, and DynDNS passwords |
+| [qbittorrent_webui_endpoint](docs/resources/webui_endpoint.md) | Explicit listener and HTTPS maintenance |
+| [qbittorrent_webui_auth](docs/resources/webui_auth.md) | Explicit WebUI credential maintenance |
 
-See [generated provider/resource docs](docs/index.md), [development contract](docs/development.md),
-and [disposable acceptance tests](tests/acceptance/README.md). Build with Go 1.27.3:
-`make test race vet build docs`.
+Use the [preferences data source](docs/data-sources/preferences.md) to read
+supported nonsecret settings. See [settings by tab](docs/preferences-by-tab.md)
+for coverage and [examples](examples) for complete configurations.
 
-The HTTP operations and API models are generated from the provider's
-[OpenAPI 3.2.1 specification](api/qbittorrent.yaml). Run `make generate` after
-editing it; `make generate-check` verifies the checked-in output. See the
-[generation workflow](docs/development.md#generated-openapi-client).
+## Ownership and sensitive values
 
-The preferences resource and data source cover every control in the WebUI Speed
-tab: normal/alternative limits, the schedule and day selection, and rate limits
-for uTP, transport overhead and LAN peers. See the
-[preferences example](examples/resources/qbittorrent_preferences/resource.tf).
+Only configured preferences are managed. Omitted or `null` attributes are left
+unchanged; `false`, `0`, and empty strings are explicit values. Removing an
+attribute relinquishes ownership. Destroying a preferences resource removes its
+state without resetting the server. Use one owner per server setting.
 
-Behavior-tab application settings (language, confirmation, status, search and
-logging) are also available in `qbittorrent_preferences`. Server-stored WebUI
-appearance and interaction settings use `qbittorrent_webui_preferences`; they
-are shared across browsers and may require reloading existing pages. See the
-[tab-organized reference](docs/preferences-by-tab.md) and
-[WebUI example](examples/resources/qbittorrent_webui_preferences/resource.tf).
+Watched folders use whole-map ownership, and RSS rules are managed individually.
+Category deletion preserves torrents and files, but automatic torrent management
+may relocate content. Paths always refer to the server's filesystem.
 
-## Releases
+Use ephemeral sensitive inputs for write-only passwords. Custom commands and
+HTTP headers may contain secrets and remain in sensitive resource state and
+machine-readable plans; protect your state accordingly. The general preferences
+data source excludes them.
 
-Release workflows produce platform ZIP archives and signed checksums. Registry
-publication requires a registered signing key and a versioned GitHub release.
-Development and acceptance workflows do not publish releases.
+Run WebUI endpoint and authentication changes as separate targeted operations,
+then update the provider connection. Read the [maintenance guide](docs/webui-maintenance.md)
+before changing connection settings.
+
+## Contributing
+
+See [development and testing](docs/development.md),
+[disposable acceptance tests](tests/acceptance/README.md), and the
+[OpenAPI specification](api/qbittorrent.yaml).
+
+## License
+
+[Mozilla Public License 2.0](LICENSE).

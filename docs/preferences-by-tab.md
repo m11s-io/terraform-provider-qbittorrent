@@ -77,5 +77,5 @@ Conditional Advanced settings have stored/readback coverage; runtime effect
 still depends on the linked library, platform and restart requirements. See
 [Advanced libtorrent limitations](advanced-libtorrent.md). API-key operations,
 test email, random-port selection and DynDNS registration remain explicit action
-boundaries. The [reviewed disposition matrix](planning/2026-10-30-options-save-keys.json)
+boundaries. The [coverage reference](../api/options-coverage.json)
 records each inventoried control and its test reference.
