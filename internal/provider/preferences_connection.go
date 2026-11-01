@@ -1,0 +1,28 @@
+package provider
+
+var connectionPreferenceFields = []preferenceField{
+	{name: "bittorrent_protocol", wireKey: "bittorrent_protocol", kind: preferenceInt, tab: "Connection", description: "Peer protocol: 0 TCP and µTP, 1 TCP only, or 2 µTP only.", integerMin: int64ptr(0), integerMax: int64ptr(2), integerEnums: []int64{0, 1, 2}},
+	{name: "max_connec", wireKey: "max_connec", kind: preferenceInt, tab: "Connection", description: "Global peer connection limit. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.", integerMin: int64ptr(1), integerMax: int64ptr(2147483647), integerSentinels: []int64{-1}},
+	{name: "max_connec_per_torrent", wireKey: "max_connec_per_torrent", kind: preferenceInt, tab: "Connection", description: "Peer connection limit per torrent. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.", integerMin: int64ptr(1), integerMax: int64ptr(2147483647), integerSentinels: []int64{-1}},
+	{name: "max_uploads", wireKey: "max_uploads", kind: preferenceInt, tab: "Connection", description: "Global upload slot limit. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.", integerMin: int64ptr(1), integerMax: int64ptr(2147483647), integerSentinels: []int64{-1}},
+	{name: "max_uploads_per_torrent", wireKey: "max_uploads_per_torrent", kind: preferenceInt, tab: "Connection", description: "Upload slot limit per torrent. Use -1 to disable the limit; zero is normalized to -1 by qBittorrent.", integerMin: int64ptr(1), integerMax: int64ptr(2147483647), integerSentinels: []int64{-1}},
+	field("i2p_enabled", "Connection", "bool", "Enable the experimental I2P network settings."),
+	field("i2p_address", "Connection", "string", "I2P router host address. Configure independently of i2p_enabled; the server stores it while I2P is disabled."),
+	{name: "i2p_port", wireKey: "i2p_port", kind: preferenceInt, tab: "Connection", description: "I2P router port, 0..65535. Configure independently of i2p_enabled.", integerMin: int64ptr(0), integerMax: int64ptr(65535)},
+	field("i2p_mixed_mode", "Connection", "bool", "Allow I2P torrents to connect to regular IP peers as well as I2P peers. Configure independently of i2p_enabled."),
+	field("i2p_pex_enabled", "Connection", "bool", "Enable I2P peer exchange. qBittorrent indicates this setting requires a restart."),
+	{name: "proxy_type", wireKey: "proxy_type", kind: preferenceString, tab: "Connection", description: "Proxy type: None, SOCKS4, SOCKS5, or HTTP.", stringEnums: []string{"None", "SOCKS4", "SOCKS5", "HTTP"}},
+	field("proxy_ip", "Connection", "string", "Proxy host or IP address. This server-side setting is retained while proxy_type is None."),
+	{name: "proxy_port", wireKey: "proxy_port", kind: preferenceInt, tab: "Connection", description: "Proxy port, 0..65535. This server-side setting is retained while proxy_type is None.", integerMin: int64ptr(0), integerMax: int64ptr(65535)},
+	field("proxy_auth_enabled", "Connection", "bool", "Enable proxy authentication. Password configuration is managed by qbittorrent_credentials."),
+	field("proxy_username", "Connection", "string", "Proxy authentication username. Configure independently of proxy type and authentication enablement."),
+	field("proxy_hostname_lookup", "Connection", "bool", "Resolve hostnames through the proxy. Configure independently of proxy type."),
+	field("proxy_bittorrent", "Connection", "bool", "Use the configured proxy for BitTorrent purposes."),
+	field("proxy_peer_connections", "Connection", "bool", "Use the configured proxy for peer connections."),
+	field("proxy_rss", "Connection", "bool", "Use the configured proxy for RSS purposes."),
+	field("proxy_misc", "Connection", "bool", "Use the configured proxy for general purposes."),
+	field("ip_filter_enabled", "Connection", "bool", "Enable the server-side IP filter file."),
+	field("ip_filter_path", "Connection", "string", "IP filter file path on the qBittorrent server, not the Terraform runner. Stored while filtering is disabled."),
+	field("ip_filter_trackers", "Connection", "bool", "Apply the IP filter to trackers."),
+	{name: "banned_ips", wireKey: "banned_IPs", kind: preferenceString, tab: "Connection", description: "Manually banned IP addresses as raw newline-delimited text. qBittorrent drops empty lines and may normalize or reject entries."},
+}

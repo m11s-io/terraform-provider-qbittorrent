@@ -51,12 +51,31 @@ WebUI preferences resource per server.
 
 ## Other supported tabs
 
-| Tab | Attributes in `qbittorrent_preferences` |
-| --- | --- |
-| Downloads | `save_path`, `temp_path`, `temp_path_enabled`, `auto_tmm_enabled` |
-| Connection | `listen_port`, `upnp` |
-| Speed | Normal/alternative limits, scheduler enablement, start/end hour and minute, days, uTP/overhead/LAN flags |
-| BitTorrent | `dht`, `pex`, `lsd` |
+The flat `qbittorrent_preferences` resource covers Downloads, Connection, Speed,
+BitTorrent, RSS, WebUI settings and Advanced controls. Attributes retain native
+wire units: rate limits and socket buffers are bytes, send-buffer watermarks are
+KiB, and share ratios accept fractions. See the generated
+[resource schema](resources/preferences.md) and [read data source](data-sources/preferences.md).
 
-All Behavior controls shown in the 5.3.0 WebUI and all Speed controls are covered.
-Other tabs are partially covered; this remains a provider-specific API subset.
+Separate resources cover settings with different ownership or update semantics:
+
+| Resource | Ownership |
+| --- | --- |
+| `qbittorrent_watch_folders` | Complete watched-folder map; explicit empty map clears it; destroy preserves server settings |
+| `qbittorrent_credentials` | SMTP/proxy/DynDNS write-only passwords with independent version counters |
+| `qbittorrent_webui_endpoint` | Explicit listener/HTTPS maintenance with target URL and verified reconnect |
+| `qbittorrent_webui_auth` | Explicit username/password maintenance with candidate authentication |
+| `qbittorrent_rss_rule` | One named RSS rule, preserving runtime match history |
+
+Use separate targeted maintenance applies for WebUI endpoint/auth transitions,
+then update the provider connection. See the [maintenance guide](webui-maintenance.md). Commands
+and custom HTTP headers are sensitive but can remain in sensitive resource state
+and machine-readable plans; the general data source excludes them. Password
+inputs are write-only and should come from ephemeral sensitive variables.
+
+Conditional Advanced settings have stored/readback coverage; runtime effect
+still depends on the linked library, platform and restart requirements. See
+[Advanced libtorrent limitations](advanced-libtorrent.md). API-key operations,
+test email, random-port selection and DynDNS registration remain explicit action
+boundaries. The [reviewed disposition matrix](planning/2026-10-30-options-save-keys.json)
+records each inventoried control and its test reference.

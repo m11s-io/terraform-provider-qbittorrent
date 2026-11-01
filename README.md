@@ -1,6 +1,7 @@
 # Terraform / OpenTofu provider for qBittorrent
 
-Manage selected application preferences and download categories on **qBittorrent
+Manage application preferences, watched folders, RSS rules, write-only service
+passwords, explicit WebUI maintenance, and download categories on **qBittorrent
 5.3.0**, Web API **2.16.2**, using the Terraform Plugin Framework. Other versions
 are rejected. This provider does not bootstrap credentials or manage torrents.
 

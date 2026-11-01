@@ -1,0 +1,328 @@
+Read:
+  type: object
+  properties:
+    torrent_content_layout:
+      x-go-name: TorrentContentLayout
+      x-ui-tab: Downloads
+      type: string
+      enum: [Original, Subfolder, NoSubfolder]
+      description: Layout for the content directory when adding torrents.
+    add_to_top_of_queue:
+      x-go-name: AddToTopOfQueue
+      x-ui-tab: Downloads
+      type: boolean
+      description: Add new torrents to the top of the queue.
+    add_stopped_enabled:
+      x-go-name: AddStoppedEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Add new torrents in the stopped state.
+    torrent_stop_condition:
+      x-go-name: TorrentStopCondition
+      x-ui-tab: Downloads
+      type: string
+      enum: [None, MetadataReceived, FilesChecked]
+      description: Condition at which a torrent stops automatically.
+    merge_trackers:
+      x-go-name: MergeTrackers
+      x-ui-tab: Downloads
+      type: boolean
+      description: Merge trackers when adding a duplicate torrent.
+    auto_delete_mode:
+      x-go-name: AutoDeleteMode
+      x-ui-tab: Downloads
+      type: integer
+      enum: [0, 1, 2]
+      minimum: 0
+      maximum: 2
+      description: Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+    preallocate_all:
+      x-go-name: PreallocateAll
+      x-ui-tab: Downloads
+      type: boolean
+      description: Preallocate disk space for all files when adding a torrent.
+    incomplete_files_ext:
+      x-go-name: IncompleteFilesExt
+      x-ui-tab: Downloads
+      type: boolean
+      description: Append .!qB to incomplete files.
+    use_unwanted_folder:
+      x-go-name: UseUnwantedFolder
+      x-ui-tab: Downloads
+      type: boolean
+      description: Keep unselected files in the .unwanted folder.
+    torrent_changed_tmm_enabled:
+      x-go-name: TorrentChangedTmmEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Relocate torrents when their category changes.
+    save_path_changed_tmm_enabled:
+      x-go-name: SavePathChangedTmmEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Relocate affected torrents when the default save path changes.
+    category_changed_tmm_enabled:
+      x-go-name: CategoryChangedTmmEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Relocate affected torrents when a category save path changes.
+    use_category_paths_in_manual_mode:
+      x-go-name: UseCategoryPathsInManualMode
+      x-ui-tab: Downloads
+      type: boolean
+      description: Resolve relative save paths against the category path in Manual Mode.
+    torrent_files_backup_enabled:
+      x-go-name: TorrentFilesBackupEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Back up torrent files.
+    torrent_files_backup_dir:
+      x-go-name: TorrentFilesBackupDir
+      x-ui-tab: Downloads
+      type: string
+      description: Server directory for torrent file backups.
+    torrent_files_finished_backup_dir_enabled:
+      x-go-name: TorrentFilesFinishedBackupDirEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Move finished torrent file backups to a separate directory.
+    torrent_files_finished_backup_dir:
+      x-go-name: TorrentFilesFinishedBackupDir
+      x-ui-tab: Downloads
+      type: string
+      description: Server directory for finished torrent file backups.
+    remove_torrent_file_backup:
+      x-go-name: RemoveTorrentFileBackup
+      x-ui-tab: Downloads
+      type: boolean
+      description: Remove a torrent file backup when removing its torrent.
+    excluded_file_names_enabled:
+      x-go-name: ExcludedFileNamesEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Exclude files matching the configured newline-delimited patterns.
+    excluded_file_names:
+      x-go-name: ExcludedFileNames
+      x-ui-tab: Downloads
+      type: string
+      description: Newline-delimited file name exclusion patterns; blank lines are preserved.
+    mail_notification_enabled:
+      x-go-name: MailNotificationEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Send an email notification when a download completes.
+    mail_notification_sender:
+      x-go-name: MailNotificationSender
+      x-ui-tab: Downloads
+      type: string
+      description: Sender address for completion email notifications.
+    mail_notification_email:
+      x-go-name: MailNotificationEmail
+      x-ui-tab: Downloads
+      type: string
+      description: Recipient addresses for completion email notifications.
+    mail_notification_smtp:
+      x-go-name: MailNotificationSmtp
+      x-ui-tab: Downloads
+      type: string
+      description: SMTP server host with an optional port.
+    mail_notification_encryption_type:
+      x-go-name: MailNotificationEncryptionType
+      x-ui-tab: Downloads
+      type: string
+      enum: [None, STARTTLS, SMTPS]
+      description: SMTP encryption mode.
+    mail_notification_auth_enabled:
+      x-go-name: MailNotificationAuthEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Enable SMTP authentication.
+    mail_notification_username:
+      x-go-name: MailNotificationUsername
+      x-ui-tab: Downloads
+      type: string
+      description: SMTP authentication username.
+    autorun_on_torrent_added_enabled:
+      x-go-name: AutorunOnTorrentAddedEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Run a configured program when a torrent is added.
+    autorun_on_torrent_added_program:
+      x-go-name: AutorunOnTorrentAddedProgram
+      x-ui-tab: Downloads
+      type: string
+      description: Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+    autorun_enabled:
+      x-go-name: AutorunEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Run a configured program when a torrent finishes.
+    autorun_program:
+      x-go-name: AutorunProgram
+      x-ui-tab: Downloads
+      type: string
+      description: Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
+Patch:
+  type: object
+  properties:
+    torrent_content_layout:
+      x-go-name: TorrentContentLayout
+      x-ui-tab: Downloads
+      type: string
+      enum: [Original, Subfolder, NoSubfolder]
+      description: Layout for the content directory when adding torrents.
+    add_to_top_of_queue:
+      x-go-name: AddToTopOfQueue
+      x-ui-tab: Downloads
+      type: boolean
+      description: Add new torrents to the top of the queue.
+    add_stopped_enabled:
+      x-go-name: AddStoppedEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Add new torrents in the stopped state.
+    torrent_stop_condition:
+      x-go-name: TorrentStopCondition
+      x-ui-tab: Downloads
+      type: string
+      enum: [None, MetadataReceived, FilesChecked]
+      description: Condition at which a torrent stops automatically.
+    merge_trackers:
+      x-go-name: MergeTrackers
+      x-ui-tab: Downloads
+      type: boolean
+      description: Merge trackers when adding a duplicate torrent.
+    auto_delete_mode:
+      x-go-name: AutoDeleteMode
+      x-ui-tab: Downloads
+      type: integer
+      enum: [0, 1, 2]
+      minimum: 0
+      maximum: 2
+      description: Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+    preallocate_all:
+      x-go-name: PreallocateAll
+      x-ui-tab: Downloads
+      type: boolean
+      description: Preallocate disk space for all files when adding a torrent.
+    incomplete_files_ext:
+      x-go-name: IncompleteFilesExt
+      x-ui-tab: Downloads
+      type: boolean
+      description: Append .!qB to incomplete files.
+    use_unwanted_folder:
+      x-go-name: UseUnwantedFolder
+      x-ui-tab: Downloads
+      type: boolean
+      description: Keep unselected files in the .unwanted folder.
+    torrent_changed_tmm_enabled:
+      x-go-name: TorrentChangedTmmEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Relocate torrents when their category changes.
+    save_path_changed_tmm_enabled:
+      x-go-name: SavePathChangedTmmEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Relocate affected torrents when the default save path changes.
+    category_changed_tmm_enabled:
+      x-go-name: CategoryChangedTmmEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Relocate affected torrents when a category save path changes.
+    use_category_paths_in_manual_mode:
+      x-go-name: UseCategoryPathsInManualMode
+      x-ui-tab: Downloads
+      type: boolean
+      description: Resolve relative save paths against the category path in Manual Mode.
+    torrent_files_backup_enabled:
+      x-go-name: TorrentFilesBackupEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Back up torrent files.
+    torrent_files_backup_dir:
+      x-go-name: TorrentFilesBackupDir
+      x-ui-tab: Downloads
+      type: string
+      description: Server directory for torrent file backups.
+    torrent_files_finished_backup_dir_enabled:
+      x-go-name: TorrentFilesFinishedBackupDirEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Move finished torrent file backups to a separate directory.
+    torrent_files_finished_backup_dir:
+      x-go-name: TorrentFilesFinishedBackupDir
+      x-ui-tab: Downloads
+      type: string
+      description: Server directory for finished torrent file backups.
+    remove_torrent_file_backup:
+      x-go-name: RemoveTorrentFileBackup
+      x-ui-tab: Downloads
+      type: boolean
+      description: Remove a torrent file backup when removing its torrent.
+    excluded_file_names_enabled:
+      x-go-name: ExcludedFileNamesEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Exclude files matching the configured newline-delimited patterns.
+    excluded_file_names:
+      x-go-name: ExcludedFileNames
+      x-ui-tab: Downloads
+      type: string
+      description: Newline-delimited file name exclusion patterns; blank lines are preserved.
+    mail_notification_enabled:
+      x-go-name: MailNotificationEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Send an email notification when a download completes.
+    mail_notification_sender:
+      x-go-name: MailNotificationSender
+      x-ui-tab: Downloads
+      type: string
+      description: Sender address for completion email notifications.
+    mail_notification_email:
+      x-go-name: MailNotificationEmail
+      x-ui-tab: Downloads
+      type: string
+      description: Recipient addresses for completion email notifications.
+    mail_notification_smtp:
+      x-go-name: MailNotificationSmtp
+      x-ui-tab: Downloads
+      type: string
+      description: SMTP server host with an optional port.
+    mail_notification_encryption_type:
+      x-go-name: MailNotificationEncryptionType
+      x-ui-tab: Downloads
+      type: string
+      enum: [None, STARTTLS, SMTPS]
+      description: SMTP encryption mode.
+    mail_notification_auth_enabled:
+      x-go-name: MailNotificationAuthEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Enable SMTP authentication.
+    mail_notification_username:
+      x-go-name: MailNotificationUsername
+      x-ui-tab: Downloads
+      type: string
+      description: SMTP authentication username.
+    autorun_on_torrent_added_enabled:
+      x-go-name: AutorunOnTorrentAddedEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Run a configured program when a torrent is added.
+    autorun_on_torrent_added_program:
+      x-go-name: AutorunOnTorrentAddedProgram
+      x-ui-tab: Downloads
+      type: string
+      description: Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+    autorun_enabled:
+      x-go-name: AutorunEnabled
+      x-ui-tab: Downloads
+      type: boolean
+      description: Run a configured program when a torrent finishes.
+    autorun_program:
+      x-go-name: AutorunProgram
+      x-ui-tab: Downloads
+      type: string
+      description: Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.

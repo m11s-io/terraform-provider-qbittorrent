@@ -2,4 +2,5 @@
 // Edit api/qbittorrent.yaml and run make generate; do not edit client.gen.go.
 package openapi
 
-//go:generate go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.1 -config ../../../api/oapi-codegen.yaml ../../../api/qbittorrent.yaml
+//go:generate go run ../../../scripts/bundle_openapi.go --input ../../../api/qbittorrent.yaml --output ../../../api/.qbittorrent-bundled.yaml
+//go:generate go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.1 -config ../../../api/oapi-codegen.yaml ../../../api/.qbittorrent-bundled.yaml

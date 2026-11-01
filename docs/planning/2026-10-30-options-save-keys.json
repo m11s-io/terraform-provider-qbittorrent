@@ -1,0 +1,2507 @@
+{
+  "upstream_commit": "9213075dd5f7b352208361c6a84c1c115efc898e",
+  "provider_base": "a73a3a1",
+  "source": "src/webui/www/private/views/preferences.html",
+  "note": "Reviewed disposition matrix of all literal Options save keys and additional controls. Capability limits are explicit; raw counts are not a completion assertion.",
+  "preferences": [
+    {
+      "tab": "Behavior",
+      "wire_key": "locale",
+      "mapped_in_0_3_0": true,
+      "source_line": 2975,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "status_bar_external_ip",
+      "mapped_in_0_3_0": true,
+      "source_line": 2986,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "performance_warning",
+      "mapped_in_0_3_0": true,
+      "source_line": 2987,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "confirm_torrent_deletion",
+      "mapped_in_0_3_0": true,
+      "source_line": 2995,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "store_search_jobs",
+      "mapped_in_0_3_0": true,
+      "source_line": 2996,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "store_search_job_results",
+      "mapped_in_0_3_0": true,
+      "source_line": 2997,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_enabled",
+      "mapped_in_0_3_0": true,
+      "source_line": 2999,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_path",
+      "mapped_in_0_3_0": true,
+      "source_line": 3000,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_backup_enabled",
+      "mapped_in_0_3_0": true,
+      "source_line": 3001,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_max_size",
+      "mapped_in_0_3_0": true,
+      "source_line": 3002,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_delete_old",
+      "mapped_in_0_3_0": true,
+      "source_line": 3003,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_age",
+      "mapped_in_0_3_0": true,
+      "source_line": 3004,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Behavior",
+      "wire_key": "file_log_age_type",
+      "mapped_in_0_3_0": true,
+      "source_line": 3005,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_content_layout",
+      "mapped_in_0_3_0": false,
+      "source_line": 3009,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "add_to_top_of_queue",
+      "mapped_in_0_3_0": false,
+      "source_line": 3010,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "add_stopped_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3011,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_stop_condition",
+      "mapped_in_0_3_0": false,
+      "source_line": 3012,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "merge_trackers",
+      "mapped_in_0_3_0": false,
+      "source_line": 3013,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "auto_delete_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3014,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "preallocate_all",
+      "mapped_in_0_3_0": false,
+      "source_line": 3018,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "incomplete_files_ext",
+      "mapped_in_0_3_0": false,
+      "source_line": 3019,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "use_unwanted_folder",
+      "mapped_in_0_3_0": false,
+      "source_line": 3020,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "auto_tmm_enabled",
+      "mapped_in_0_3_0": true,
+      "source_line": 3023,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_changed_tmm_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3024,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "save_path_changed_tmm_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3025,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "category_changed_tmm_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3026,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "use_category_paths_in_manual_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3027,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "save_path",
+      "mapped_in_0_3_0": true,
+      "source_line": 3028,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "temp_path_enabled",
+      "mapped_in_0_3_0": true,
+      "source_line": 3029,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "temp_path",
+      "mapped_in_0_3_0": true,
+      "source_line": 3030,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_files_backup_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3033,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_files_backup_dir",
+      "mapped_in_0_3_0": false,
+      "source_line": 3034,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_files_finished_backup_dir_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3035,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "torrent_files_finished_backup_dir",
+      "mapped_in_0_3_0": false,
+      "source_line": 3036,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "remove_torrent_file_backup",
+      "mapped_in_0_3_0": false,
+      "source_line": 3037,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "scan_dirs",
+      "mapped_in_0_3_0": false,
+      "source_line": 3040,
+      "disposition": "special resource",
+      "owner": "qbittorrent_watch_folders",
+      "reason": "Authoritative map ownership. Legacy custom/watch-folder to default transition requires explicit remove/clear apply then re-add; diagnosed before mutation.",
+      "test_reference": "internal/provider/watch_folders_resource_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "excluded_file_names_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3043,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "excluded_file_names",
+      "mapped_in_0_3_0": false,
+      "source_line": 3044,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3047,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_sender",
+      "mapped_in_0_3_0": false,
+      "source_line": 3048,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_email",
+      "mapped_in_0_3_0": false,
+      "source_line": 3049,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_smtp",
+      "mapped_in_0_3_0": false,
+      "source_line": 3050,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_encryption_type",
+      "mapped_in_0_3_0": false,
+      "source_line": 3051,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_auth_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3052,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_username",
+      "mapped_in_0_3_0": false,
+      "source_line": 3053,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "mail_notification_password",
+      "mapped_in_0_3_0": false,
+      "source_line": 3054,
+      "disposition": "special resource",
+      "owner": "qbittorrent_credentials",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/credentials_resource_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "autorun_on_torrent_added_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3057,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "autorun_on_torrent_added_program",
+      "mapped_in_0_3_0": false,
+      "source_line": 3058,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "autorun_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3060,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Downloads",
+      "wire_key": "autorun_program",
+      "mapped_in_0_3_0": false,
+      "source_line": 3061,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_downloads_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "listen_port",
+      "mapped_in_0_3_0": true,
+      "source_line": 3070,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "upnp",
+      "mapped_in_0_3_0": true,
+      "source_line": 3071,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "max_connec",
+      "mapped_in_0_3_0": false,
+      "source_line": 3082,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "max_connec_per_torrent",
+      "mapped_in_0_3_0": false,
+      "source_line": 3092,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "max_uploads",
+      "mapped_in_0_3_0": false,
+      "source_line": 3102,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "max_uploads_per_torrent",
+      "mapped_in_0_3_0": false,
+      "source_line": 3112,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "i2p_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3115,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "i2p_address",
+      "mapped_in_0_3_0": false,
+      "source_line": 3116,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "i2p_port",
+      "mapped_in_0_3_0": false,
+      "source_line": 3117,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "i2p_mixed_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3118,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "i2p_pex_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3119,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_type",
+      "mapped_in_0_3_0": false,
+      "source_line": 3122,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_ip",
+      "mapped_in_0_3_0": false,
+      "source_line": 3123,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_port",
+      "mapped_in_0_3_0": false,
+      "source_line": 3124,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_auth_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3125,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_username",
+      "mapped_in_0_3_0": false,
+      "source_line": 3126,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_password",
+      "mapped_in_0_3_0": false,
+      "source_line": 3127,
+      "disposition": "special resource",
+      "owner": "qbittorrent_credentials",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/credentials_resource_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_hostname_lookup",
+      "mapped_in_0_3_0": false,
+      "source_line": 3128,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_bittorrent",
+      "mapped_in_0_3_0": false,
+      "source_line": 3129,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_peer_connections",
+      "mapped_in_0_3_0": false,
+      "source_line": 3130,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_rss",
+      "mapped_in_0_3_0": false,
+      "source_line": 3131,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "proxy_misc",
+      "mapped_in_0_3_0": false,
+      "source_line": 3132,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "ip_filter_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3135,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "ip_filter_path",
+      "mapped_in_0_3_0": false,
+      "source_line": 3136,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "ip_filter_trackers",
+      "mapped_in_0_3_0": false,
+      "source_line": 3137,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "banned_IPs",
+      "mapped_in_0_3_0": false,
+      "source_line": 3138,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "up_limit",
+      "mapped_in_0_3_0": true,
+      "source_line": 3147,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "dl_limit",
+      "mapped_in_0_3_0": true,
+      "source_line": 3154,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "alt_up_limit",
+      "mapped_in_0_3_0": true,
+      "source_line": 3162,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "alt_dl_limit",
+      "mapped_in_0_3_0": true,
+      "source_line": 3169,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Connection",
+      "wire_key": "bittorrent_protocol",
+      "mapped_in_0_3_0": false,
+      "source_line": 3171,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_connection_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "limit_utp_rate",
+      "mapped_in_0_3_0": true,
+      "source_line": 3172,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "limit_tcp_overhead",
+      "mapped_in_0_3_0": true,
+      "source_line": 3173,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "limit_lan_peers",
+      "mapped_in_0_3_0": true,
+      "source_line": 3174,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "scheduler_enabled",
+      "mapped_in_0_3_0": true,
+      "source_line": 3178,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "schedule_from_hour",
+      "mapped_in_0_3_0": true,
+      "source_line": 3180,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "schedule_from_min",
+      "mapped_in_0_3_0": true,
+      "source_line": 3181,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "schedule_to_hour",
+      "mapped_in_0_3_0": true,
+      "source_line": 3182,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "schedule_to_min",
+      "mapped_in_0_3_0": true,
+      "source_line": 3183,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "Speed",
+      "wire_key": "scheduler_days",
+      "mapped_in_0_3_0": true,
+      "source_line": 3184,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "dht",
+      "mapped_in_0_3_0": true,
+      "source_line": 3189,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "pex",
+      "mapped_in_0_3_0": true,
+      "source_line": 3190,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "lsd",
+      "mapped_in_0_3_0": true,
+      "source_line": 3191,
+      "disposition": "existing",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/provider_test.go; speed_preferences_test.go; behavior_preferences_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "encryption",
+      "mapped_in_0_3_0": false,
+      "source_line": 3192,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "anonymous_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3193,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_active_checking_torrents",
+      "mapped_in_0_3_0": false,
+      "source_line": 3195,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "queueing_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3198,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_active_downloads",
+      "mapped_in_0_3_0": false,
+      "source_line": 3205,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_active_uploads",
+      "mapped_in_0_3_0": false,
+      "source_line": 3212,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_active_torrents",
+      "mapped_in_0_3_0": false,
+      "source_line": 3219,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "dont_count_slow_torrents",
+      "mapped_in_0_3_0": false,
+      "source_line": 3220,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "slow_torrent_dl_rate_threshold",
+      "mapped_in_0_3_0": false,
+      "source_line": 3227,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "slow_torrent_ul_rate_threshold",
+      "mapped_in_0_3_0": false,
+      "source_line": 3234,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "slow_torrent_inactive_timer",
+      "mapped_in_0_3_0": false,
+      "source_line": 3241,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_ratio_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3253,
+      "disposition": "computed-only",
+      "owner": "data.qbittorrent_preferences",
+      "reason": "Derived output excluded from resource schema and patch.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_ratio",
+      "mapped_in_0_3_0": false,
+      "source_line": 3254,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_seeding_time_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3264,
+      "disposition": "computed-only",
+      "owner": "data.qbittorrent_preferences",
+      "reason": "Derived output excluded from resource schema and patch.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_seeding_time",
+      "mapped_in_0_3_0": false,
+      "source_line": 3265,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_inactive_seeding_time_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3275,
+      "disposition": "computed-only",
+      "owner": "data.qbittorrent_preferences",
+      "reason": "Derived output excluded from resource schema and patch.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_inactive_seeding_time",
+      "mapped_in_0_3_0": false,
+      "source_line": 3276,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "share_limits_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3277,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "max_ratio_act",
+      "mapped_in_0_3_0": false,
+      "source_line": 3278,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "add_trackers_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3281,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "add_trackers",
+      "mapped_in_0_3_0": false,
+      "source_line": 3282,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "add_trackers_from_url_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3283,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "BitTorrent",
+      "wire_key": "add_trackers_url",
+      "mapped_in_0_3_0": false,
+      "source_line": 3284,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_processing_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3287,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_refresh_interval",
+      "mapped_in_0_3_0": false,
+      "source_line": 3288,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_fetch_delay",
+      "mapped_in_0_3_0": false,
+      "source_line": 3289,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_max_articles_per_feed",
+      "mapped_in_0_3_0": false,
+      "source_line": 3290,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_auto_downloading_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3291,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_download_repack_proper_episodes",
+      "mapped_in_0_3_0": false,
+      "source_line": 3292,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "RSS",
+      "wire_key": "rss_smart_episode_filters",
+      "mapped_in_0_3_0": false,
+      "source_line": 3293,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_bittorrent_rss_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_domain_list",
+      "mapped_in_0_3_0": false,
+      "source_line": 3297,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_address",
+      "mapped_in_0_3_0": false,
+      "source_line": 3304,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_endpoint",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_port",
+      "mapped_in_0_3_0": false,
+      "source_line": 3305,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_endpoint",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_upnp",
+      "mapped_in_0_3_0": false,
+      "source_line": 3306,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "use_https",
+      "mapped_in_0_3_0": false,
+      "source_line": 3309,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_endpoint",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_https_cert_path",
+      "mapped_in_0_3_0": false,
+      "source_line": 3312,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_endpoint",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_https_key_path",
+      "mapped_in_0_3_0": false,
+      "source_line": 3319,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_endpoint",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_username",
+      "mapped_in_0_3_0": false,
+      "source_line": 3341,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_auth",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_password",
+      "mapped_in_0_3_0": false,
+      "source_line": 3343,
+      "disposition": "special resource",
+      "owner": "qbittorrent_webui_auth",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/webui_maintenance_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "bypass_local_auth",
+      "mapped_in_0_3_0": false,
+      "source_line": 3344,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "bypass_auth_subnet_whitelist_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3345,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "bypass_auth_subnet_whitelist",
+      "mapped_in_0_3_0": false,
+      "source_line": 3346,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_max_auth_fail_count",
+      "mapped_in_0_3_0": false,
+      "source_line": 3347,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_ban_duration",
+      "mapped_in_0_3_0": false,
+      "source_line": 3348,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_session_timeout",
+      "mapped_in_0_3_0": false,
+      "source_line": 3349,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_sessions_count_limit",
+      "mapped_in_0_3_0": false,
+      "source_line": 3350,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "alternative_webui_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3359,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "alternative_webui_path",
+      "mapped_in_0_3_0": false,
+      "source_line": 3360,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_clickjacking_protection_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3363,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_csrf_protection_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3364,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_secure_cookie_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3365,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_host_header_validation_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3366,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_use_custom_http_headers_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3369,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_custom_http_headers",
+      "mapped_in_0_3_0": false,
+      "source_line": 3370,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_reverse_proxy_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3373,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "web_ui_reverse_proxies_list",
+      "mapped_in_0_3_0": false,
+      "source_line": 3374,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "dyndns_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3377,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "dyndns_service",
+      "mapped_in_0_3_0": false,
+      "source_line": 3378,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "dyndns_domain",
+      "mapped_in_0_3_0": false,
+      "source_line": 3379,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "dyndns_username",
+      "mapped_in_0_3_0": false,
+      "source_line": 3380,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_webui_settings_test.go"
+    },
+    {
+      "tab": "WebUI",
+      "wire_key": "dyndns_password",
+      "mapped_in_0_3_0": false,
+      "source_line": 3381,
+      "disposition": "special resource",
+      "owner": "qbittorrent_credentials",
+      "reason": "Exclusive typed lifecycle for collections, secrets or explicit maintenance.",
+      "test_reference": "internal/provider/credentials_resource_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "resume_data_storage_type",
+      "mapped_in_0_3_0": false,
+      "source_line": 3385,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "torrent_content_remove_option",
+      "mapped_in_0_3_0": false,
+      "source_line": 3386,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "memory_working_set_limit",
+      "mapped_in_0_3_0": false,
+      "source_line": 3387,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "current_network_interface",
+      "mapped_in_0_3_0": false,
+      "source_line": 3388,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "current_interface_address",
+      "mapped_in_0_3_0": false,
+      "source_line": 3389,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "save_resume_data_interval",
+      "mapped_in_0_3_0": false,
+      "source_line": 3390,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "save_statistics_interval",
+      "mapped_in_0_3_0": false,
+      "source_line": 3391,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "torrent_file_size_limit",
+      "mapped_in_0_3_0": false,
+      "source_line": 3392,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "confirm_torrent_recheck",
+      "mapped_in_0_3_0": false,
+      "source_line": 3393,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "recheck_completed_torrents",
+      "mapped_in_0_3_0": false,
+      "source_line": 3394,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "app_instance_name",
+      "mapped_in_0_3_0": false,
+      "source_line": 3395,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "refresh_interval",
+      "mapped_in_0_3_0": false,
+      "source_line": 3396,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "resolve_peer_host_names",
+      "mapped_in_0_3_0": false,
+      "source_line": 3397,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "resolve_peer_countries",
+      "mapped_in_0_3_0": false,
+      "source_line": 3398,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "confirm_remove_all_tags",
+      "mapped_in_0_3_0": false,
+      "source_line": 3399,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "confirm_remove_tracker_from_all_torrents",
+      "mapped_in_0_3_0": false,
+      "source_line": 3400,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "reannounce_when_address_changed",
+      "mapped_in_0_3_0": false,
+      "source_line": 3401,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "enable_embedded_tracker",
+      "mapped_in_0_3_0": false,
+      "source_line": 3402,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "embedded_tracker_port",
+      "mapped_in_0_3_0": false,
+      "source_line": 3403,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "embedded_tracker_port_forwarding",
+      "mapped_in_0_3_0": false,
+      "source_line": 3404,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "mark_of_the_web",
+      "mapped_in_0_3_0": false,
+      "source_line": 3405,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "ignore_ssl_errors",
+      "mapped_in_0_3_0": false,
+      "source_line": 3406,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "python_executable_path",
+      "mapped_in_0_3_0": false,
+      "source_line": 3415,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "start_paused",
+      "mapped_in_0_3_0": false,
+      "source_line": 3417,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "shutdown_timeout",
+      "mapped_in_0_3_0": false,
+      "source_line": 3425,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_session_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "bdecode_depth_limit",
+      "mapped_in_0_3_0": false,
+      "source_line": 3428,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "bdecode_token_limit",
+      "mapped_in_0_3_0": false,
+      "source_line": 3429,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "async_io_threads",
+      "mapped_in_0_3_0": false,
+      "source_line": 3430,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "hashing_threads",
+      "mapped_in_0_3_0": false,
+      "source_line": 3431,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "file_pool_size",
+      "mapped_in_0_3_0": false,
+      "source_line": 3432,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "checking_memory_use",
+      "mapped_in_0_3_0": false,
+      "source_line": 3439,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "disk_cache",
+      "mapped_in_0_3_0": false,
+      "source_line": 3441,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "disk_cache_ttl",
+      "mapped_in_0_3_0": false,
+      "source_line": 3442,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "disk_queue_size",
+      "mapped_in_0_3_0": false,
+      "source_line": 3443,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "disk_io_type",
+      "mapped_in_0_3_0": false,
+      "source_line": 3444,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "disk_io_read_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3445,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "disk_io_write_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3446,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "enable_coalesce_read_write",
+      "mapped_in_0_3_0": false,
+      "source_line": 3447,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "enable_piece_extent_affinity",
+      "mapped_in_0_3_0": false,
+      "source_line": 3448,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "enable_upload_suggestions",
+      "mapped_in_0_3_0": false,
+      "source_line": 3449,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "send_buffer_watermark",
+      "mapped_in_0_3_0": false,
+      "source_line": 3450,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "send_buffer_low_watermark",
+      "mapped_in_0_3_0": false,
+      "source_line": 3451,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "send_buffer_watermark_factor",
+      "mapped_in_0_3_0": false,
+      "source_line": 3452,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "connection_speed",
+      "mapped_in_0_3_0": false,
+      "source_line": 3453,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "seeding_outgoing_connections",
+      "mapped_in_0_3_0": false,
+      "source_line": 3454,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "socket_send_buffer_size",
+      "mapped_in_0_3_0": false,
+      "source_line": 3455,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "socket_receive_buffer_size",
+      "mapped_in_0_3_0": false,
+      "source_line": 3456,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "socket_backlog_size",
+      "mapped_in_0_3_0": false,
+      "source_line": 3457,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "outgoing_ports_min",
+      "mapped_in_0_3_0": false,
+      "source_line": 3458,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "outgoing_ports_max",
+      "mapped_in_0_3_0": false,
+      "source_line": 3459,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "upnp_lease_duration",
+      "mapped_in_0_3_0": false,
+      "source_line": 3460,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "peer_tos",
+      "mapped_in_0_3_0": false,
+      "source_line": 3467,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "utp_tcp_mixed_mode",
+      "mapped_in_0_3_0": false,
+      "source_line": 3469,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "hostname_cache_ttl",
+      "mapped_in_0_3_0": false,
+      "source_line": 3470,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "idn_support_enabled",
+      "mapped_in_0_3_0": false,
+      "source_line": 3471,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "enable_multi_connections_from_same_ip",
+      "mapped_in_0_3_0": false,
+      "source_line": 3472,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "enable_multi_connections_from_same_peer_id",
+      "mapped_in_0_3_0": false,
+      "source_line": 3473,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "validate_https_tracker_certificate",
+      "mapped_in_0_3_0": false,
+      "source_line": 3474,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "ssrf_mitigation",
+      "mapped_in_0_3_0": false,
+      "source_line": 3475,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "block_peers_on_privileged_ports",
+      "mapped_in_0_3_0": false,
+      "source_line": 3476,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "upload_slots_behavior",
+      "mapped_in_0_3_0": false,
+      "source_line": 3477,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "upload_choking_algorithm",
+      "mapped_in_0_3_0": false,
+      "source_line": 3478,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "announce_to_all_trackers",
+      "mapped_in_0_3_0": false,
+      "source_line": 3479,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "announce_to_all_tiers",
+      "mapped_in_0_3_0": false,
+      "source_line": 3480,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "announce_ip",
+      "mapped_in_0_3_0": false,
+      "source_line": 3481,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "announce_port",
+      "mapped_in_0_3_0": false,
+      "source_line": 3487,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "max_concurrent_http_announces",
+      "mapped_in_0_3_0": false,
+      "source_line": 3488,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "stop_tracker_timeout",
+      "mapped_in_0_3_0": false,
+      "source_line": 3489,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "peer_turnover",
+      "mapped_in_0_3_0": false,
+      "source_line": 3496,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "peer_turnover_cutoff",
+      "mapped_in_0_3_0": false,
+      "source_line": 3503,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "peer_turnover_interval",
+      "mapped_in_0_3_0": false,
+      "source_line": 3510,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "request_queue_size",
+      "mapped_in_0_3_0": false,
+      "source_line": 3512,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "max_outstanding_block_requests",
+      "mapped_in_0_3_0": false,
+      "source_line": 3513,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "dht_bootstrap_nodes",
+      "mapped_in_0_3_0": false,
+      "source_line": 3514,
+      "disposition": "new preference",
+      "owner": "qbittorrent_preferences",
+      "reason": "Typed partial preference; native units, validation and ownership tested by owning module.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "webtorrent_stun_server",
+      "mapped_in_0_3_0": false,
+      "source_line": 3515,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "i2p_inbound_quantity",
+      "mapped_in_0_3_0": false,
+      "source_line": 3516,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "i2p_outbound_quantity",
+      "mapped_in_0_3_0": false,
+      "source_line": 3517,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "i2p_inbound_length",
+      "mapped_in_0_3_0": false,
+      "source_line": 3518,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "i2p_outbound_length",
+      "mapped_in_0_3_0": false,
+      "source_line": 3519,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "i2p_inbound_length_variance",
+      "mapped_in_0_3_0": false,
+      "source_line": 3520,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    },
+    {
+      "tab": "Advanced",
+      "wire_key": "i2p_outbound_length_variance",
+      "mapped_in_0_3_0": false,
+      "source_line": 3521,
+      "disposition": "capability-limited",
+      "owner": "qbittorrent_preferences",
+      "reason": "Stored/readback coverage; runtime build predicates or conservative enum subset documented in docs/advanced-libtorrent.md and field descriptions. Key presence alone does not prove runtime effect.",
+      "test_reference": "internal/provider/preferences_advanced_libtorrent_test.go"
+    }
+  ],
+  "additional_controls": [
+    {
+      "control": "current_interface_name",
+      "disposition": "computed-only",
+      "owner": "data.qbittorrent_preferences",
+      "reason": "Display/fetched output absent from patches.",
+      "test_reference": "internal/provider/preferences_contract_test.go"
+    },
+    {
+      "control": "add_trackers_url_list",
+      "disposition": "computed-only",
+      "owner": "data.qbittorrent_preferences",
+      "reason": "Display/fetched output absent from patches.",
+      "test_reference": "internal/provider/preferences_contract_test.go"
+    },
+    {
+      "control": "date_format",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_date_format clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "color_scheme",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_color_scheme clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "display_density",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_display_density clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "use_alt_row_colors",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_use_alt_row_colors clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "dblclick_download",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_dblclick_download clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "dblclick_complete",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_dblclick_complete clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "dblclick_filter",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_dblclick_filter clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "hide_zero_status_filters",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_hide_zero_status_filters clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "add_new_torrent_dialog_enabled",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_add_new_torrent_dialog_enabled clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "full_url_tracker_column",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_full_url_tracker_column clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "use_virtual_list",
+      "disposition": "existing",
+      "owner": "qbittorrent_webui_preferences",
+      "reason": "Server-stored qbt_use_virtual_list clientdata, separate endpoint.",
+      "test_reference": "internal/provider/behavior_preferences_test.go"
+    },
+    {
+      "control": "Random port button",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Explicit action boundary, never a normal apply side effect.",
+      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+    },
+    {
+      "control": "Send test email",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Explicit action boundary, never a normal apply side effect.",
+      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+    },
+    {
+      "control": "API key rotate",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Explicit action boundary, never a normal apply side effect.",
+      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+    },
+    {
+      "control": "API key delete",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Explicit action boundary, never a normal apply side effect.",
+      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+    },
+    {
+      "control": "API key copy",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Explicit action boundary, never a normal apply side effect.",
+      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+    },
+    {
+      "control": "DynDNS Register",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Explicit action boundary, never a normal apply side effect.",
+      "test_reference": "docs/superpowers/specs/2026-10-30-remaining-options-design.md"
+    },
+    {
+      "control": "WebUI API key display",
+      "disposition": "action/non-config",
+      "owner": "none",
+      "reason": "Credential deliberately discarded from public read models/state.",
+      "test_reference": "internal/client/client_test.go"
+    },
+    {
+      "control": "RSS auto-download rule editor",
+      "disposition": "special resource",
+      "owner": "qbittorrent_rss_rule",
+      "reason": "Per-rule ownership preserves runtime history.",
+      "test_reference": "internal/provider/rss_rule_resource_test.go"
+    }
+  ]
+}

@@ -20,6 +20,7 @@ tags:
   - name: Authentication
   - name: Application
   - name: Categories
+  - name: RSS
   - name: WebUI
 paths:
   /auth/login:
@@ -111,7 +112,7 @@ paths:
                 json:
                   type: string
                   description: A JSON-encoded Preferences object, carried as a form string.
-                  x-preferences-schema: '#/components/schemas/Preferences'
+                  x-preferences-schema: '#/components/schemas/PreferencesPatch'
       responses:
         '200':
           description: Preferences updated.
@@ -214,6 +215,12 @@ paths:
                 $ref: '#/components/schemas/WebUIPreferences'
         default:
           $ref: '#/components/responses/APIError'
+  /rss/rules:
+    $ref: './paths/rss-rules.yaml#/rules'
+  /rss/setRule:
+    $ref: './paths/rss-rules.yaml#/setRule'
+  /rss/removeRule:
+    $ref: './paths/rss-rules.yaml#/removeRule'
   /clientdata/store:
     post:
       operationId: storeClientData
@@ -280,7 +287,7 @@ components:
           type: string
         savePath:
           type: string
-    Preferences:
+    LegacyPreferences:
       type: object
       description: |
         Allowlisted fields only. Unknown server fields (including credentials)
@@ -472,6 +479,42 @@ components:
           x-ui-tab: Connection
           type: boolean
           x-go-name: UPnP
+    Preferences:
+      allOf:
+        - $ref: '#/components/schemas/LegacyPreferences'
+        - $ref: './schemas/downloads.yaml#/Read'
+        - $ref: './schemas/connection.yaml#/Read'
+        - $ref: './schemas/bittorrent.yaml#/Read'
+        - $ref: './schemas/rss.yaml#/Read'
+        - $ref: './schemas/advanced-session.yaml#/Read'
+        - $ref: './schemas/webui-settings.yaml#/Read'
+        - $ref: './schemas/advanced-libtorrent.yaml#/Read'
+        - $ref: './schemas/preferences-read-only.yaml'
+        - $ref: './schemas/watch-folders.yaml#/Read'
+        - $ref: './schemas/webui-maintenance.yaml#/Read'
+      description: Nonsecret allowlisted preference response fields only.
+    PreferencesPatch:
+      allOf:
+        - $ref: '#/components/schemas/LegacyPreferences'
+        - $ref: './schemas/downloads.yaml#/Patch'
+        - $ref: './schemas/connection.yaml#/Patch'
+        - $ref: './schemas/bittorrent.yaml#/Patch'
+        - $ref: './schemas/rss.yaml#/Patch'
+        - $ref: './schemas/advanced-session.yaml#/Patch'
+        - $ref: './schemas/webui-settings.yaml#/Patch'
+        - $ref: './schemas/advanced-libtorrent.yaml#/Patch'
+        - $ref: './schemas/credentials-patch.yaml'
+        - $ref: './schemas/watch-folders.yaml#/Patch'
+        - $ref: './schemas/webui-maintenance.yaml#/Patch'
+      description: Typed partial preference writes; response-only properties are excluded.
+    RSSRule:
+      $ref: './schemas/rss-rules.yaml#/Rule'
+    RSSRules:
+      $ref: './schemas/rss-rules.yaml#/Rules'
+    SetRSSRuleForm:
+      $ref: './schemas/rss-rules.yaml#/SetRuleForm'
+    RemoveRSSRuleForm:
+      $ref: './schemas/rss-rules.yaml#/RemoveRuleForm'
     DownloadLimit:
       type: integer
       format: int64

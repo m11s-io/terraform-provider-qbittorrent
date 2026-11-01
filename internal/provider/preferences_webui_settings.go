@@ -1,0 +1,27 @@
+package provider
+
+var webUISettingsPreferenceFields = []preferenceField{
+	field("web_ui_upnp", "WebUI", "bool", "Enable UPnP/NAT-PMP forwarding for the WebUI port. Configure explicitly; disabled values are preserved."),
+	field("bypass_local_auth", "WebUI", "bool", "Bypass authentication for clients connecting from localhost. This weakens authentication."),
+	field("bypass_auth_subnet_whitelist_enabled", "WebUI", "bool", "Bypass authentication for clients in the configured subnet whitelist. This weakens authentication."),
+	field("bypass_auth_subnet_whitelist", "WebUI", "string", "Raw newline-delimited subnet whitelist. qBittorrent also accepts commas and normalizes delimiters."),
+	{name: "web_ui_max_auth_fail_count", wireKey: "web_ui_max_auth_fail_count", kind: preferenceInt, tab: "WebUI", description: "Consecutive failed WebUI authentication attempts before a ban; signed 32-bit integer. Nonpositive values disable the count.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "web_ui_ban_duration", wireKey: "web_ui_ban_duration", kind: preferenceInt, tab: "WebUI", description: "WebUI ban duration in seconds; signed 32-bit integer, stored by qBittorrent without a narrower bound.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "web_ui_session_timeout", wireKey: "web_ui_session_timeout", kind: preferenceInt, tab: "WebUI", description: "WebUI session timeout in seconds; signed 32-bit integer, stored by qBittorrent without a narrower bound.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "web_ui_sessions_count_limit", wireKey: "web_ui_sessions_count_limit", kind: preferenceInt, tab: "WebUI", description: "Maximum simultaneous WebUI sessions; signed 32-bit integer. Nonpositive values mean unlimited.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	field("alternative_webui_enabled", "WebUI", "bool", "Enable the alternative WebUI."),
+	field("alternative_webui_path", "WebUI", "string", "Server-side directory path for the alternative WebUI."),
+	field("web_ui_clickjacking_protection_enabled", "WebUI", "bool", "Enable clickjacking protection."),
+	field("web_ui_csrf_protection_enabled", "WebUI", "bool", "Enable CSRF protection."),
+	field("web_ui_secure_cookie_enabled", "WebUI", "bool", "Mark WebUI session cookies Secure. Requires HTTPS or localhost."),
+	field("web_ui_host_header_validation_enabled", "WebUI", "bool", "Validate the HTTP Host header."),
+	field("web_ui_domain_list", "WebUI", "string", "Semicolon-delimited allowed WebUI domains; * is the upstream wildcard."),
+	field("web_ui_use_custom_http_headers_enabled", "WebUI", "bool", "Enable custom HTTP response headers."),
+	{name: "web_ui_custom_http_headers", wireKey: "web_ui_custom_http_headers", kind: preferenceString, tab: "WebUI", description: "Raw newline-delimited custom HTTP headers in Header: value form. Treat values as secret-capable.", sensitive: true, excludeFromDataSource: true},
+	field("web_ui_reverse_proxy_enabled", "WebUI", "bool", "Enable trusted reverse proxy support."),
+	field("web_ui_reverse_proxies_list", "WebUI", "string", "Raw semicolon-delimited trusted reverse proxy addresses or subnets."),
+	field("dyndns_enabled", "WebUI", "bool", "Enable dynamic DNS updates. Applying configuration does not register an account or perform an external registration flow."),
+	{name: "dyndns_service", wireKey: "dyndns_service", kind: preferenceInt, tab: "WebUI", description: "Dynamic DNS provider: 0 DynDNS, 1 NO-IP.", integerMin: int64ptr(0), integerMax: int64ptr(1), integerEnums: []int64{0, 1}},
+	field("dyndns_domain", "WebUI", "string", "Dynamic DNS domain name."),
+	field("dyndns_username", "WebUI", "string", "Dynamic DNS account username."),
+}

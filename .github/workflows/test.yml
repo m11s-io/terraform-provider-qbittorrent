@@ -15,6 +15,11 @@ jobs:
           go-version-file: go.mod
       - run: test -z "$(gofmt -l main.go internal)"
       - run: make generate-check
+      - name: Validate the OpenAPI 3.2 contract
+        run: |
+          python3 -m venv "$RUNNER_TEMP/openapi-tools"
+          "$RUNNER_TEMP/openapi-tools/bin/pip" install -r scripts/requirements-openapi.txt
+          "$RUNNER_TEMP/openapi-tools/bin/python" scripts/validate_openapi.py
       - run: go vet ./...
       - run: go test -race ./...
       - run: go mod tidy && git diff --exit-code -- go.mod go.sum

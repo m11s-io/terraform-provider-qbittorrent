@@ -63,7 +63,7 @@ func TestBearerAndPartialPreferences(t *testing.T) {
 				t.Errorf("wrong partial update: %v", got)
 			}
 		case "/proxy/api/v2/app/preferences":
-			fmt.Fprint(w, `{"dht":false,"dl_limit":0,"save_path":"/downloads","web_ui_api_key":"must-not-be-returned"}`)
+			fmt.Fprint(w, `{"dht":false,"dl_limit":0,"file_log_max_size":104857600,"save_path":"/downloads","mail_notification_password":"smtp-canary","proxy_password":"proxy-canary","dyndns_password":"dyndns-canary","web_ui_password":"webui-canary","web_ui_api_key":"api-key-canary"}`)
 		default:
 			t.Errorf("unexpected request %s", r.URL.Path)
 		}
@@ -76,12 +76,42 @@ func TestBearerAndPartialPreferences(t *testing.T) {
 		t.Fatal(err)
 	}
 	p, err := c.Preferences(context.Background())
-	if err != nil || p.SavePath == nil || *p.SavePath != "/downloads" {
+	if err != nil || p.SavePath == nil || *p.SavePath != "/downloads" || p.FileLogMaxSize == nil || *p.FileLogMaxSize != 104857600 {
 		t.Fatalf("%+v %v", p, err)
 	}
 	b, _ := json.Marshal(p)
-	if strings.Contains(string(b), "must-not") || strings.Contains(string(b), "api_key") {
+	for _, secret := range []string{"smtp-canary", "proxy-canary", "dyndns-canary", "webui-canary", "api-key-canary", "mail_notification_password", "proxy_password", "dyndns_password", "web_ui_password", "web_ui_api_key"} {
+		if strings.Contains(string(b), secret) {
+			t.Fatalf("secret response key/value %q escaped allowlist", secret)
+		}
+	}
+	if strings.Contains(string(b), "api_key") {
 		t.Fatal("secret escaped allowlist")
+	}
+}
+
+func TestSetPreferencesPatchUsesTypedWriteModel(t *testing.T) {
+	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if versionHandler(w, r) {
+			return
+		}
+		if r.URL.Path != "/proxy/api/v2/app/setPreferences" {
+			t.Errorf("unexpected request %s", r.URL.Path)
+			return
+		}
+		r.ParseForm()
+		var got map[string]any
+		if err := json.Unmarshal([]byte(r.Form.Get("json")), &got); err != nil {
+			t.Fatal(err)
+		}
+		if got["dht"] != false || got["dl_limit"] != float64(0) || len(got) != 2 {
+			t.Errorf("unexpected typed patch: %v", got)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	}, false)
+	f, z := false, int64(0)
+	if err := c.SetPreferencesPatch(context.Background(), PreferencesPatch{DHT: &f, DownloadLimit: &z}); err != nil {
+		t.Fatal(err)
 	}
 }
 func TestLoginCookieAndBoundedRecovery(t *testing.T) {

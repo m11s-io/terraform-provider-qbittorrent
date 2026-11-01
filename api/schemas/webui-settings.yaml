@@ -1,0 +1,52 @@
+Read:
+  type: object
+  properties:
+    web_ui_upnp: { type: boolean, x-go-name: WebUIUPnP, x-ui-tab: WebUI }
+    bypass_local_auth: { type: boolean, x-go-name: BypassLocalAuth, x-ui-tab: WebUI }
+    bypass_auth_subnet_whitelist_enabled: { type: boolean, x-go-name: BypassAuthSubnetWhitelistEnabled, x-ui-tab: WebUI }
+    bypass_auth_subnet_whitelist: { type: string, x-go-name: BypassAuthSubnetWhitelist, x-ui-tab: WebUI }
+    web_ui_max_auth_fail_count: { type: integer, format: int32, x-go-name: WebUIMaxAuthFailCount, x-ui-tab: WebUI }
+    web_ui_ban_duration: { type: integer, format: int32, x-go-name: WebUIBanDuration, x-ui-tab: WebUI }
+    web_ui_session_timeout: { type: integer, format: int32, x-go-name: WebUISessionTimeout, x-ui-tab: WebUI }
+    web_ui_sessions_count_limit: { type: integer, format: int32, x-go-name: WebUISessionsCountLimit, x-ui-tab: WebUI }
+    alternative_webui_enabled: { type: boolean, x-go-name: AlternativeWebUIEnabled, x-ui-tab: WebUI }
+    alternative_webui_path: { type: string, x-go-name: AlternativeWebUIPath, x-ui-tab: WebUI }
+    web_ui_clickjacking_protection_enabled: { type: boolean, x-go-name: WebUIClickjackingProtectionEnabled, x-ui-tab: WebUI }
+    web_ui_csrf_protection_enabled: { type: boolean, x-go-name: WebUICSRFProtectionEnabled, x-ui-tab: WebUI }
+    web_ui_secure_cookie_enabled: { type: boolean, x-go-name: WebUISecureCookieEnabled, x-ui-tab: WebUI }
+    web_ui_host_header_validation_enabled: { type: boolean, x-go-name: WebUIHostHeaderValidationEnabled, x-ui-tab: WebUI }
+    web_ui_domain_list: { type: string, x-go-name: WebUIDomainList, x-ui-tab: WebUI }
+    web_ui_use_custom_http_headers_enabled: { type: boolean, x-go-name: WebUIUseCustomHTTPHeadersEnabled, x-ui-tab: WebUI }
+    web_ui_custom_http_headers: { type: string, x-go-name: WebUICustomHTTPHeaders, x-ui-tab: WebUI }
+    web_ui_reverse_proxy_enabled: { type: boolean, x-go-name: WebUIReverseProxyEnabled, x-ui-tab: WebUI }
+    web_ui_reverse_proxies_list: { type: string, x-go-name: WebUIReverseProxiesList, x-ui-tab: WebUI }
+    dyndns_enabled: { type: boolean, x-go-name: DynDNSEnabled, x-ui-tab: WebUI }
+    dyndns_service: { type: integer, format: int32, x-go-name: DynDNSService, x-ui-tab: WebUI }
+    dyndns_domain: { type: string, x-go-name: DynDNSDomain, x-ui-tab: WebUI }
+    dyndns_username: { type: string, x-go-name: DynDNSUsername, x-ui-tab: WebUI }
+Patch:
+  type: object
+  properties:
+    web_ui_upnp: { type: boolean, x-go-name: WebUIUPnP, x-ui-tab: WebUI }
+    bypass_local_auth: { type: boolean, x-go-name: BypassLocalAuth, x-ui-tab: WebUI }
+    bypass_auth_subnet_whitelist_enabled: { type: boolean, x-go-name: BypassAuthSubnetWhitelistEnabled, x-ui-tab: WebUI }
+    bypass_auth_subnet_whitelist: { type: string, x-go-name: BypassAuthSubnetWhitelist, x-ui-tab: WebUI }
+    web_ui_max_auth_fail_count: { type: integer, format: int32, x-go-name: WebUIMaxAuthFailCount, x-ui-tab: WebUI }
+    web_ui_ban_duration: { type: integer, format: int32, x-go-name: WebUIBanDuration, x-ui-tab: WebUI }
+    web_ui_session_timeout: { type: integer, format: int32, x-go-name: WebUISessionTimeout, x-ui-tab: WebUI }
+    web_ui_sessions_count_limit: { type: integer, format: int32, x-go-name: WebUISessionsCountLimit, x-ui-tab: WebUI }
+    alternative_webui_enabled: { type: boolean, x-go-name: AlternativeWebUIEnabled, x-ui-tab: WebUI }
+    alternative_webui_path: { type: string, x-go-name: AlternativeWebUIPath, x-ui-tab: WebUI }
+    web_ui_clickjacking_protection_enabled: { type: boolean, x-go-name: WebUIClickjackingProtectionEnabled, x-ui-tab: WebUI }
+    web_ui_csrf_protection_enabled: { type: boolean, x-go-name: WebUICSRFProtectionEnabled, x-ui-tab: WebUI }
+    web_ui_secure_cookie_enabled: { type: boolean, x-go-name: WebUISecureCookieEnabled, x-ui-tab: WebUI }
+    web_ui_host_header_validation_enabled: { type: boolean, x-go-name: WebUIHostHeaderValidationEnabled, x-ui-tab: WebUI }
+    web_ui_domain_list: { type: string, x-go-name: WebUIDomainList, x-ui-tab: WebUI }
+    web_ui_use_custom_http_headers_enabled: { type: boolean, x-go-name: WebUIUseCustomHTTPHeadersEnabled, x-ui-tab: WebUI }
+    web_ui_custom_http_headers: { type: string, x-go-name: WebUICustomHTTPHeaders, x-ui-tab: WebUI }
+    web_ui_reverse_proxy_enabled: { type: boolean, x-go-name: WebUIReverseProxyEnabled, x-ui-tab: WebUI }
+    web_ui_reverse_proxies_list: { type: string, x-go-name: WebUIReverseProxiesList, x-ui-tab: WebUI }
+    dyndns_enabled: { type: boolean, x-go-name: DynDNSEnabled, x-ui-tab: WebUI }
+    dyndns_service: { type: integer, format: int32, x-go-name: DynDNSService, x-ui-tab: WebUI }
+    dyndns_domain: { type: string, x-go-name: DynDNSDomain, x-ui-tab: WebUI }
+    dyndns_username: { type: string, x-go-name: DynDNSUsername, x-ui-tab: WebUI }

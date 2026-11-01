@@ -39,6 +39,8 @@ func testState(t *testing.T, s rschema.Schema, fields map[string]attr.Value) tfs
 			vals[k] = types.BoolNull()
 		case types.Int64Type:
 			vals[k] = types.Int64Null()
+		case types.Float64Type:
+			vals[k] = types.Float64Null()
 		}
 	}
 	for k, v := range fields {
@@ -148,6 +150,59 @@ func TestPreferencesOwnershipLifecycle(t *testing.T) {
 		t.Fatal("bad import accepted")
 	}
 }
+
+func TestConfiguredUnsupportedCapabilityStopsBeforePatch(t *testing.T) {
+	original := downloadsPreferenceFields
+	f := field("conditional_pref", "Downloads", "int", "Build-dependent preference")
+	f.capability = "optional-native-support"
+	downloadsPreferenceFields = append(append([]preferenceField(nil), original...), f)
+	t.Cleanup(func() { downloadsPreferenceFields = original })
+	var writes atomic.Int32
+	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "setPreferences") {
+			writes.Add(1)
+			return
+		}
+		fmt.Fprint(w, `{}`)
+	})
+	s := testState(t, prefsSchema(), map[string]attr.Value{"conditional_pref": types.Int64Value(1)})
+	r := &preferencesResource{client: c}
+	var out resource.CreateResponse
+	out.State = tfsdk.State{Schema: s.Schema}
+	r.Create(ctx, resource.CreateRequest{Plan: tfsdk.Plan{Schema: s.Schema, Raw: s.Raw}}, &out)
+	if !out.Diagnostics.HasError() || writes.Load() != 0 {
+		t.Fatalf("unsupported field did not fail before write: writes=%d diagnostics=%v", writes.Load(), out.Diagnostics)
+	}
+}
+
+func TestReadOnlyPreferenceIsDataSourceOnly(t *testing.T) {
+	original := downloadsPreferenceFields
+	f := field("resolved_name", "Advanced", "string", "Resolved interface name")
+	f.readOnly = true
+	f.capability = "interface-name"
+	downloadsPreferenceFields = append(append([]preferenceField(nil), original...), f)
+	t.Cleanup(func() { downloadsPreferenceFields = original })
+
+	var resourceSchema resource.SchemaResponse
+	(&preferencesResource{}).Schema(ctx, resource.SchemaRequest{}, &resourceSchema)
+	if _, ok := resourceSchema.Schema.Attributes[f.name]; ok {
+		t.Fatalf("read-only preference %q must not be a resource attribute", f.name)
+	}
+
+	var dataSourceSchema datasource.SchemaResponse
+	(&preferencesDataSource{}).Schema(ctx, datasource.SchemaRequest{}, &dataSourceSchema)
+	attribute, ok := dataSourceSchema.Schema.Attributes[f.name]
+	if !ok {
+		t.Fatalf("read-only preference %q is missing from the data source", f.name)
+	}
+	computed, ok := attribute.(interface{ IsComputed() bool })
+	if !ok || !computed.IsComputed() {
+		t.Fatalf("data-source preference %q must be computed", f.name)
+	}
+	if _, _, include := preferencePatchEntry([]preferenceField{f}, f.name, "eth0"); include {
+		t.Fatalf("read-only preference %q entered a patch", f.name)
+	}
+}
 func TestPreferencesRejectedNormalization(t *testing.T) {
 	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "preferences") {
@@ -164,7 +219,31 @@ func TestPreferencesRejectedNormalization(t *testing.T) {
 }
 func TestPreferencesDataSourceExcludesCredentials(t *testing.T) {
 	c := fakeClient(t, func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `{"locale":"en","confirm_torrent_deletion":true,"status_bar_external_ip":false,"store_search_jobs":false,"store_search_job_results":false,"performance_warning":false,"file_log_enabled":false,"file_log_path":"/logs","file_log_backup_enabled":false,"file_log_max_size":65,"file_log_delete_old":false,"file_log_age":1,"file_log_age_type":1,"save_path":"/data","temp_path":"/tmp","temp_path_enabled":false,"auto_tmm_enabled":false,"dl_limit":0,"up_limit":0,"alt_dl_limit":1024,"alt_up_limit":1024,"scheduler_enabled":false,"schedule_from_hour":8,"schedule_from_min":0,"schedule_to_hour":20,"schedule_to_min":0,"scheduler_days":0,"limit_utp_rate":true,"limit_tcp_overhead":false,"limit_lan_peers":true,"dht":true,"pex":true,"lsd":true,"listen_port":6881,"upnp":false,"web_ui_api_key":"secret"}`)
+		fixture := map[string]any{
+			"mail_notification_password": "secret-smtp",
+			"proxy_password":             "secret-proxy",
+			"dyndns_password":            "secret-dyndns",
+			"web_ui_password":            "secret-webui",
+			"web_ui_api_key":             "secret-key",
+		}
+		// This fixture tests filtering, not individual values. Tab-specific tests
+		// provide literal wire values and missing-field tests remain separate.
+		for _, f := range allPreferenceFields() {
+			switch f.kind {
+			case preferenceString:
+				fixture[f.wireKey] = ""
+				if f.sensitive {
+					fixture[f.wireKey] = "secret-template-or-header"
+				}
+			case preferenceBool:
+				fixture[f.wireKey] = false
+			case preferenceInt:
+				fixture[f.wireKey] = int64(0)
+			case preferenceFloat:
+				fixture[f.wireKey] = float64(0)
+			}
+		}
+		json.NewEncoder(w).Encode(fixture)
 	})
 	d := &preferencesDataSource{client: c}
 	var schema datasource.SchemaResponse

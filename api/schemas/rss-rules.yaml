@@ -1,0 +1,93 @@
+Rule:
+  type: object
+  additionalProperties: false
+  properties:
+    enabled: { type: boolean }
+    priority: { type: integer, format: int32 }
+    useRegex: { type: boolean }
+    mustContain: { type: string }
+    mustNotContain: { type: string }
+    episodeFilter: { type: string }
+    affectedFeeds:
+      type: array
+      items: { type: string }
+    lastMatch:
+      type: string
+      description: Runtime history; preserve when replacing a rule.
+    ignoreDays: { type: integer, format: int32 }
+    smartFilter: { type: boolean }
+    previouslyMatchedEpisodes:
+      type: array
+      items: { type: string }
+      description: Runtime history; preserve when replacing a rule.
+    addPaused:
+      type: boolean
+      nullable: true
+    torrentContentLayout:
+      type: string
+      nullable: true
+      enum: [Original, Subfolder, NoSubfolder]
+    savePath: { type: string }
+    assignedCategory: { type: string }
+    torrentParams:
+      $ref: '#/TorrentParams'
+  required:
+    - enabled
+    - priority
+    - useRegex
+    - mustContain
+    - mustNotContain
+    - episodeFilter
+    - affectedFeeds
+    - lastMatch
+    - ignoreDays
+    - smartFilter
+    - previouslyMatchedEpisodes
+    - addPaused
+    - torrentContentLayout
+    - savePath
+    - assignedCategory
+    - torrentParams
+TorrentParams:
+  type: object
+  additionalProperties: false
+  properties:
+    category: { type: string }
+    tags:
+      type: array
+      items: { type: string }
+    save_path: { type: string }
+    download_path: { type: string }
+    use_download_path: { type: boolean, nullable: true }
+    operating_mode: { type: string, enum: [AutoManaged, Forced] }
+    seed_mode: { type: boolean }
+    upload_limit: { type: integer, format: int64 }
+    download_limit: { type: integer, format: int64 }
+    ratio_limit: { type: number, format: double }
+    seeding_time_limit: { type: integer, format: int32 }
+    inactive_seeding_time_limit: { type: integer, format: int32 }
+    share_limit_action: { type: string }
+    share_limits_mode: { type: string }
+    add_to_top_of_queue: { type: boolean, nullable: true }
+    stopped: { type: boolean, nullable: true }
+    stop_condition: { type: string, nullable: true }
+    content_layout: { type: string, nullable: true, enum: [Original, Subfolder, NoSubfolder] }
+    use_auto_tmm: { type: boolean, nullable: true }
+  description: Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+Rules:
+  type: object
+  additionalProperties:
+    $ref: '#/Rule'
+SetRuleForm:
+  type: object
+  required: [ruleName, ruleDef]
+  properties:
+    ruleName: { type: string }
+    ruleDef:
+      type: string
+      description: JSON-encoded RSS rule definition.
+RemoveRuleForm:
+  type: object
+  required: [ruleName]
+  properties:
+    ruleName: { type: string }

@@ -1,0 +1,28 @@
+package provider
+
+var bittorrentPreferenceFields = []preferenceField{
+	{name: "encryption", wireKey: "encryption", kind: preferenceInt, tab: "BitTorrent", description: "Encryption mode: 0 allow, 1 require, 2 disable.", integerMin: int64ptr(0), integerMax: int64ptr(2), integerEnums: []int64{0, 1, 2}},
+	field("anonymous_mode", "BitTorrent", "bool", "Enable anonymous mode."),
+	{name: "max_active_checking_torrents", wireKey: "max_active_checking_torrents", kind: preferenceInt, tab: "BitTorrent", description: "Maximum concurrent checking torrents as a signed 32-bit integer; qBittorrent stores the value as supplied.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	field("queueing_enabled", "BitTorrent", "bool", "Enable torrent queueing."),
+	{name: "max_active_downloads", wireKey: "max_active_downloads", kind: preferenceInt, tab: "BitTorrent", description: "Maximum active downloads; -1 means unlimited.", integerMin: int64ptr(-1), integerMax: int64ptr(2147483647)},
+	{name: "max_active_uploads", wireKey: "max_active_uploads", kind: preferenceInt, tab: "BitTorrent", description: "Maximum active uploads; -1 means unlimited.", integerMin: int64ptr(-1), integerMax: int64ptr(2147483647)},
+	{name: "max_active_torrents", wireKey: "max_active_torrents", kind: preferenceInt, tab: "BitTorrent", description: "Maximum active torrents; -1 means unlimited.", integerMin: int64ptr(-1), integerMax: int64ptr(2147483647)},
+	field("dont_count_slow_torrents", "BitTorrent", "bool", "Do not count slow torrents against queue limits."),
+	{name: "slow_torrent_dl_rate_threshold", wireKey: "slow_torrent_dl_rate_threshold", kind: preferenceInt, tab: "BitTorrent", description: "Slow download threshold in KiB/s; the native signed 32-bit setter stores the value as supplied.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "slow_torrent_ul_rate_threshold", wireKey: "slow_torrent_ul_rate_threshold", kind: preferenceInt, tab: "BitTorrent", description: "Slow upload threshold in KiB/s; the native signed 32-bit setter stores the value as supplied.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "slow_torrent_inactive_timer", wireKey: "slow_torrent_inactive_timer", kind: preferenceInt, tab: "BitTorrent", description: "Slow-torrent inactivity timer in seconds; the native signed 32-bit setter stores the value as supplied.", integerMin: int64ptr(-2147483648), integerMax: int64ptr(2147483647)},
+	{name: "max_ratio", wireKey: "max_ratio", kind: preferenceFloat, tab: "BitTorrent", description: "Share ratio limit; -1 disables the limit.", floatMin: float64ptr(0), floatSentinels: []float64{-1}},
+	{name: "max_ratio_enabled", wireKey: "max_ratio_enabled", kind: preferenceBool, tab: "BitTorrent", description: "Computed view indicating whether max_ratio is enabled.", readOnly: true},
+	{name: "max_seeding_time", wireKey: "max_seeding_time", kind: preferenceInt, tab: "BitTorrent", description: "Maximum seeding time in minutes; -1 disables the limit.", integerMin: int64ptr(-1), integerMax: int64ptr(2147483647)},
+	{name: "max_seeding_time_enabled", wireKey: "max_seeding_time_enabled", kind: preferenceBool, tab: "BitTorrent", description: "Computed view indicating whether max_seeding_time is enabled.", readOnly: true},
+	{name: "max_inactive_seeding_time", wireKey: "max_inactive_seeding_time", kind: preferenceInt, tab: "BitTorrent", description: "Maximum inactive seeding time in minutes; -1 disables the limit.", integerMin: int64ptr(-1), integerMax: int64ptr(2147483647)},
+	{name: "max_inactive_seeding_time_enabled", wireKey: "max_inactive_seeding_time_enabled", kind: preferenceBool, tab: "BitTorrent", description: "Computed view indicating whether max_inactive_seeding_time is enabled.", readOnly: true},
+	{name: "share_limits_mode", wireKey: "share_limits_mode", kind: preferenceString, tab: "BitTorrent", description: "Apply share limits when MatchAny or MatchAll conditions are met.", stringEnums: []string{"MatchAny", "MatchAll"}},
+	{name: "max_ratio_act", wireKey: "max_ratio_act", kind: preferenceInt, tab: "BitTorrent", description: "Action when a share limit is reached: 0 stop, 1 remove torrent, 2 enable super seeding, 3 remove torrent and its files.", integerMin: int64ptr(0), integerMax: int64ptr(3), integerEnums: []int64{0, 1, 2, 3}},
+	field("add_trackers_enabled", "BitTorrent", "bool", "Append configured trackers to newly added torrents."),
+	field("add_trackers", "BitTorrent", "string", "Newline-delimited tracker URLs appended to new torrents."),
+	field("add_trackers_from_url_enabled", "BitTorrent", "bool", "Append trackers fetched from add_trackers_url to new torrents."),
+	field("add_trackers_url", "BitTorrent", "string", "URL used by qBittorrent to fetch tracker additions."),
+	{name: "add_trackers_url_list", wireKey: "add_trackers_url_list", kind: preferenceString, tab: "BitTorrent", description: "Computed fetched tracker list; this output is never patched.", readOnly: true},
+}

@@ -1,0 +1,46 @@
+rules:
+  get:
+    operationId: getRSSRules
+    tags: [RSS]
+    summary: Read RSS auto-download rules
+    responses:
+      '200':
+        description: RSS rule collection.
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/rss-rules.yaml#/Rules'
+      default:
+        $ref: '../qbittorrent.yaml#/components/responses/APIError'
+setRule:
+  post:
+    operationId: setRSSRule
+    tags: [RSS]
+    summary: Create or update an RSS auto-download rule
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '../schemas/rss-rules.yaml#/SetRuleForm'
+    responses:
+      '200':
+        description: RSS rule updated.
+      default:
+        $ref: '../qbittorrent.yaml#/components/responses/APIError'
+removeRule:
+  post:
+    operationId: removeRSSRule
+    tags: [RSS]
+    summary: Remove an RSS auto-download rule
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '../schemas/rss-rules.yaml#/RemoveRuleForm'
+    responses:
+      '200':
+        description: RSS rule removed.
+      default:
+        $ref: '../qbittorrent.yaml#/components/responses/APIError'

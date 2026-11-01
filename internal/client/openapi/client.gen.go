@@ -15,6 +15,633 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for PreferencesAutoDeleteMode.
+const (
+	PreferencesAutoDeleteModeN0 PreferencesAutoDeleteMode = 0
+	PreferencesAutoDeleteModeN1 PreferencesAutoDeleteMode = 1
+	PreferencesAutoDeleteModeN2 PreferencesAutoDeleteMode = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesAutoDeleteMode enum.
+func (e PreferencesAutoDeleteMode) Valid() bool {
+	switch e {
+	case PreferencesAutoDeleteModeN0:
+		return true
+	case PreferencesAutoDeleteModeN1:
+		return true
+	case PreferencesAutoDeleteModeN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesBittorrentProtocol.
+const (
+	PreferencesBittorrentProtocolN0 PreferencesBittorrentProtocol = 0
+	PreferencesBittorrentProtocolN1 PreferencesBittorrentProtocol = 1
+	PreferencesBittorrentProtocolN2 PreferencesBittorrentProtocol = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesBittorrentProtocol enum.
+func (e PreferencesBittorrentProtocol) Valid() bool {
+	switch e {
+	case PreferencesBittorrentProtocolN0:
+		return true
+	case PreferencesBittorrentProtocolN1:
+		return true
+	case PreferencesBittorrentProtocolN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesEncryption.
+const (
+	PreferencesEncryptionN0 PreferencesEncryption = 0
+	PreferencesEncryptionN1 PreferencesEncryption = 1
+	PreferencesEncryptionN2 PreferencesEncryption = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesEncryption enum.
+func (e PreferencesEncryption) Valid() bool {
+	switch e {
+	case PreferencesEncryptionN0:
+		return true
+	case PreferencesEncryptionN1:
+		return true
+	case PreferencesEncryptionN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesMailNotificationEncryptionType.
+const (
+	PreferencesMailNotificationEncryptionTypeNone     PreferencesMailNotificationEncryptionType = "None"
+	PreferencesMailNotificationEncryptionTypeSMTPS    PreferencesMailNotificationEncryptionType = "SMTPS"
+	PreferencesMailNotificationEncryptionTypeSTARTTLS PreferencesMailNotificationEncryptionType = "STARTTLS"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesMailNotificationEncryptionType enum.
+func (e PreferencesMailNotificationEncryptionType) Valid() bool {
+	switch e {
+	case PreferencesMailNotificationEncryptionTypeNone:
+		return true
+	case PreferencesMailNotificationEncryptionTypeSMTPS:
+		return true
+	case PreferencesMailNotificationEncryptionTypeSTARTTLS:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesMaxRatioAct.
+const (
+	PreferencesMaxRatioActN0 PreferencesMaxRatioAct = 0
+	PreferencesMaxRatioActN1 PreferencesMaxRatioAct = 1
+	PreferencesMaxRatioActN2 PreferencesMaxRatioAct = 2
+	PreferencesMaxRatioActN3 PreferencesMaxRatioAct = 3
+)
+
+// Valid indicates whether the value is a known member of the PreferencesMaxRatioAct enum.
+func (e PreferencesMaxRatioAct) Valid() bool {
+	switch e {
+	case PreferencesMaxRatioActN0:
+		return true
+	case PreferencesMaxRatioActN1:
+		return true
+	case PreferencesMaxRatioActN2:
+		return true
+	case PreferencesMaxRatioActN3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesProxyType.
+const (
+	PreferencesProxyTypeHTTP   PreferencesProxyType = "HTTP"
+	PreferencesProxyTypeNone   PreferencesProxyType = "None"
+	PreferencesProxyTypeSOCKS4 PreferencesProxyType = "SOCKS4"
+	PreferencesProxyTypeSOCKS5 PreferencesProxyType = "SOCKS5"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesProxyType enum.
+func (e PreferencesProxyType) Valid() bool {
+	switch e {
+	case PreferencesProxyTypeHTTP:
+		return true
+	case PreferencesProxyTypeNone:
+		return true
+	case PreferencesProxyTypeSOCKS4:
+		return true
+	case PreferencesProxyTypeSOCKS5:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesResumeDataStorageType.
+const (
+	PreferencesResumeDataStorageTypeLegacy PreferencesResumeDataStorageType = "Legacy"
+	PreferencesResumeDataStorageTypeSQLite PreferencesResumeDataStorageType = "SQLite"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesResumeDataStorageType enum.
+func (e PreferencesResumeDataStorageType) Valid() bool {
+	switch e {
+	case PreferencesResumeDataStorageTypeLegacy:
+		return true
+	case PreferencesResumeDataStorageTypeSQLite:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesScanDirs0.
+const (
+	PreferencesScanDirs0N0 PreferencesScanDirs0 = 0
+	PreferencesScanDirs0N1 PreferencesScanDirs0 = 1
+)
+
+// Valid indicates whether the value is a known member of the PreferencesScanDirs0 enum.
+func (e PreferencesScanDirs0) Valid() bool {
+	switch e {
+	case PreferencesScanDirs0N0:
+		return true
+	case PreferencesScanDirs0N1:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesShareLimitsMode.
+const (
+	PreferencesShareLimitsModeMatchAll PreferencesShareLimitsMode = "MatchAll"
+	PreferencesShareLimitsModeMatchAny PreferencesShareLimitsMode = "MatchAny"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesShareLimitsMode enum.
+func (e PreferencesShareLimitsMode) Valid() bool {
+	switch e {
+	case PreferencesShareLimitsModeMatchAll:
+		return true
+	case PreferencesShareLimitsModeMatchAny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesTorrentContentLayout.
+const (
+	PreferencesTorrentContentLayoutNoSubfolder PreferencesTorrentContentLayout = "NoSubfolder"
+	PreferencesTorrentContentLayoutOriginal    PreferencesTorrentContentLayout = "Original"
+	PreferencesTorrentContentLayoutSubfolder   PreferencesTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesTorrentContentLayout enum.
+func (e PreferencesTorrentContentLayout) Valid() bool {
+	switch e {
+	case PreferencesTorrentContentLayoutNoSubfolder:
+		return true
+	case PreferencesTorrentContentLayoutOriginal:
+		return true
+	case PreferencesTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesTorrentContentRemoveOption.
+const (
+	PreferencesTorrentContentRemoveOptionDelete      PreferencesTorrentContentRemoveOption = "Delete"
+	PreferencesTorrentContentRemoveOptionMoveToTrash PreferencesTorrentContentRemoveOption = "MoveToTrash"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesTorrentContentRemoveOption enum.
+func (e PreferencesTorrentContentRemoveOption) Valid() bool {
+	switch e {
+	case PreferencesTorrentContentRemoveOptionDelete:
+		return true
+	case PreferencesTorrentContentRemoveOptionMoveToTrash:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesTorrentStopCondition.
+const (
+	PreferencesTorrentStopConditionFilesChecked     PreferencesTorrentStopCondition = "FilesChecked"
+	PreferencesTorrentStopConditionMetadataReceived PreferencesTorrentStopCondition = "MetadataReceived"
+	PreferencesTorrentStopConditionNone             PreferencesTorrentStopCondition = "None"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesTorrentStopCondition enum.
+func (e PreferencesTorrentStopCondition) Valid() bool {
+	switch e {
+	case PreferencesTorrentStopConditionFilesChecked:
+		return true
+	case PreferencesTorrentStopConditionMetadataReceived:
+		return true
+	case PreferencesTorrentStopConditionNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchAutoDeleteMode.
+const (
+	PreferencesPatchAutoDeleteModeN0 PreferencesPatchAutoDeleteMode = 0
+	PreferencesPatchAutoDeleteModeN1 PreferencesPatchAutoDeleteMode = 1
+	PreferencesPatchAutoDeleteModeN2 PreferencesPatchAutoDeleteMode = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchAutoDeleteMode enum.
+func (e PreferencesPatchAutoDeleteMode) Valid() bool {
+	switch e {
+	case PreferencesPatchAutoDeleteModeN0:
+		return true
+	case PreferencesPatchAutoDeleteModeN1:
+		return true
+	case PreferencesPatchAutoDeleteModeN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchBittorrentProtocol.
+const (
+	PreferencesPatchBittorrentProtocolN0 PreferencesPatchBittorrentProtocol = 0
+	PreferencesPatchBittorrentProtocolN1 PreferencesPatchBittorrentProtocol = 1
+	PreferencesPatchBittorrentProtocolN2 PreferencesPatchBittorrentProtocol = 2
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchBittorrentProtocol enum.
+func (e PreferencesPatchBittorrentProtocol) Valid() bool {
+	switch e {
+	case PreferencesPatchBittorrentProtocolN0:
+		return true
+	case PreferencesPatchBittorrentProtocolN1:
+		return true
+	case PreferencesPatchBittorrentProtocolN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchMailNotificationEncryptionType.
+const (
+	PreferencesPatchMailNotificationEncryptionTypeNone     PreferencesPatchMailNotificationEncryptionType = "None"
+	PreferencesPatchMailNotificationEncryptionTypeSMTPS    PreferencesPatchMailNotificationEncryptionType = "SMTPS"
+	PreferencesPatchMailNotificationEncryptionTypeSTARTTLS PreferencesPatchMailNotificationEncryptionType = "STARTTLS"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchMailNotificationEncryptionType enum.
+func (e PreferencesPatchMailNotificationEncryptionType) Valid() bool {
+	switch e {
+	case PreferencesPatchMailNotificationEncryptionTypeNone:
+		return true
+	case PreferencesPatchMailNotificationEncryptionTypeSMTPS:
+		return true
+	case PreferencesPatchMailNotificationEncryptionTypeSTARTTLS:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchProxyType.
+const (
+	PreferencesPatchProxyTypeHTTP   PreferencesPatchProxyType = "HTTP"
+	PreferencesPatchProxyTypeNone   PreferencesPatchProxyType = "None"
+	PreferencesPatchProxyTypeSOCKS4 PreferencesPatchProxyType = "SOCKS4"
+	PreferencesPatchProxyTypeSOCKS5 PreferencesPatchProxyType = "SOCKS5"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchProxyType enum.
+func (e PreferencesPatchProxyType) Valid() bool {
+	switch e {
+	case PreferencesPatchProxyTypeHTTP:
+		return true
+	case PreferencesPatchProxyTypeNone:
+		return true
+	case PreferencesPatchProxyTypeSOCKS4:
+		return true
+	case PreferencesPatchProxyTypeSOCKS5:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchResumeDataStorageType.
+const (
+	PreferencesPatchResumeDataStorageTypeLegacy PreferencesPatchResumeDataStorageType = "Legacy"
+	PreferencesPatchResumeDataStorageTypeSQLite PreferencesPatchResumeDataStorageType = "SQLite"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchResumeDataStorageType enum.
+func (e PreferencesPatchResumeDataStorageType) Valid() bool {
+	switch e {
+	case PreferencesPatchResumeDataStorageTypeLegacy:
+		return true
+	case PreferencesPatchResumeDataStorageTypeSQLite:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchScanDirs0.
+const (
+	PreferencesPatchScanDirs0N0 PreferencesPatchScanDirs0 = 0
+	PreferencesPatchScanDirs0N1 PreferencesPatchScanDirs0 = 1
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchScanDirs0 enum.
+func (e PreferencesPatchScanDirs0) Valid() bool {
+	switch e {
+	case PreferencesPatchScanDirs0N0:
+		return true
+	case PreferencesPatchScanDirs0N1:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchShareLimitsMode.
+const (
+	PreferencesPatchShareLimitsModeMatchAll PreferencesPatchShareLimitsMode = "MatchAll"
+	PreferencesPatchShareLimitsModeMatchAny PreferencesPatchShareLimitsMode = "MatchAny"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchShareLimitsMode enum.
+func (e PreferencesPatchShareLimitsMode) Valid() bool {
+	switch e {
+	case PreferencesPatchShareLimitsModeMatchAll:
+		return true
+	case PreferencesPatchShareLimitsModeMatchAny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchTorrentContentLayout.
+const (
+	PreferencesPatchTorrentContentLayoutNoSubfolder PreferencesPatchTorrentContentLayout = "NoSubfolder"
+	PreferencesPatchTorrentContentLayoutOriginal    PreferencesPatchTorrentContentLayout = "Original"
+	PreferencesPatchTorrentContentLayoutSubfolder   PreferencesPatchTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchTorrentContentLayout enum.
+func (e PreferencesPatchTorrentContentLayout) Valid() bool {
+	switch e {
+	case PreferencesPatchTorrentContentLayoutNoSubfolder:
+		return true
+	case PreferencesPatchTorrentContentLayoutOriginal:
+		return true
+	case PreferencesPatchTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchTorrentContentRemoveOption.
+const (
+	PreferencesPatchTorrentContentRemoveOptionDelete      PreferencesPatchTorrentContentRemoveOption = "Delete"
+	PreferencesPatchTorrentContentRemoveOptionMoveToTrash PreferencesPatchTorrentContentRemoveOption = "MoveToTrash"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchTorrentContentRemoveOption enum.
+func (e PreferencesPatchTorrentContentRemoveOption) Valid() bool {
+	switch e {
+	case PreferencesPatchTorrentContentRemoveOptionDelete:
+		return true
+	case PreferencesPatchTorrentContentRemoveOptionMoveToTrash:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PreferencesPatchTorrentStopCondition.
+const (
+	PreferencesPatchTorrentStopConditionFilesChecked     PreferencesPatchTorrentStopCondition = "FilesChecked"
+	PreferencesPatchTorrentStopConditionMetadataReceived PreferencesPatchTorrentStopCondition = "MetadataReceived"
+	PreferencesPatchTorrentStopConditionNone             PreferencesPatchTorrentStopCondition = "None"
+)
+
+// Valid indicates whether the value is a known member of the PreferencesPatchTorrentStopCondition enum.
+func (e PreferencesPatchTorrentStopCondition) Valid() bool {
+	switch e {
+	case PreferencesPatchTorrentStopConditionFilesChecked:
+		return true
+	case PreferencesPatchTorrentStopConditionMetadataReceived:
+		return true
+	case PreferencesPatchTorrentStopConditionNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRuleTorrentContentLayout.
+const (
+	RSSRuleTorrentContentLayoutNoSubfolder RSSRuleTorrentContentLayout = "NoSubfolder"
+	RSSRuleTorrentContentLayoutOriginal    RSSRuleTorrentContentLayout = "Original"
+	RSSRuleTorrentContentLayoutSubfolder   RSSRuleTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRuleTorrentContentLayout enum.
+func (e RSSRuleTorrentContentLayout) Valid() bool {
+	switch e {
+	case RSSRuleTorrentContentLayoutNoSubfolder:
+		return true
+	case RSSRuleTorrentContentLayoutOriginal:
+		return true
+	case RSSRuleTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRuleTorrentParamsContentLayout.
+const (
+	RSSRuleTorrentParamsContentLayoutNoSubfolder RSSRuleTorrentParamsContentLayout = "NoSubfolder"
+	RSSRuleTorrentParamsContentLayoutOriginal    RSSRuleTorrentParamsContentLayout = "Original"
+	RSSRuleTorrentParamsContentLayoutSubfolder   RSSRuleTorrentParamsContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRuleTorrentParamsContentLayout enum.
+func (e RSSRuleTorrentParamsContentLayout) Valid() bool {
+	switch e {
+	case RSSRuleTorrentParamsContentLayoutNoSubfolder:
+		return true
+	case RSSRuleTorrentParamsContentLayoutOriginal:
+		return true
+	case RSSRuleTorrentParamsContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRuleTorrentParamsOperatingMode.
+const (
+	RSSRuleTorrentParamsOperatingModeAutoManaged RSSRuleTorrentParamsOperatingMode = "AutoManaged"
+	RSSRuleTorrentParamsOperatingModeForced      RSSRuleTorrentParamsOperatingMode = "Forced"
+)
+
+// Valid indicates whether the value is a known member of the RSSRuleTorrentParamsOperatingMode enum.
+func (e RSSRuleTorrentParamsOperatingMode) Valid() bool {
+	switch e {
+	case RSSRuleTorrentParamsOperatingModeAutoManaged:
+		return true
+	case RSSRuleTorrentParamsOperatingModeForced:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRulesTorrentContentLayout.
+const (
+	RSSRulesTorrentContentLayoutNoSubfolder RSSRulesTorrentContentLayout = "NoSubfolder"
+	RSSRulesTorrentContentLayoutOriginal    RSSRulesTorrentContentLayout = "Original"
+	RSSRulesTorrentContentLayoutSubfolder   RSSRulesTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRulesTorrentContentLayout enum.
+func (e RSSRulesTorrentContentLayout) Valid() bool {
+	switch e {
+	case RSSRulesTorrentContentLayoutNoSubfolder:
+		return true
+	case RSSRulesTorrentContentLayoutOriginal:
+		return true
+	case RSSRulesTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRulesTorrentParamsContentLayout.
+const (
+	RSSRulesTorrentParamsContentLayoutNoSubfolder RSSRulesTorrentParamsContentLayout = "NoSubfolder"
+	RSSRulesTorrentParamsContentLayoutOriginal    RSSRulesTorrentParamsContentLayout = "Original"
+	RSSRulesTorrentParamsContentLayoutSubfolder   RSSRulesTorrentParamsContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the RSSRulesTorrentParamsContentLayout enum.
+func (e RSSRulesTorrentParamsContentLayout) Valid() bool {
+	switch e {
+	case RSSRulesTorrentParamsContentLayoutNoSubfolder:
+		return true
+	case RSSRulesTorrentParamsContentLayoutOriginal:
+		return true
+	case RSSRulesTorrentParamsContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RSSRulesTorrentParamsOperatingMode.
+const (
+	RSSRulesTorrentParamsOperatingModeAutoManaged RSSRulesTorrentParamsOperatingMode = "AutoManaged"
+	RSSRulesTorrentParamsOperatingModeForced      RSSRulesTorrentParamsOperatingMode = "Forced"
+)
+
+// Valid indicates whether the value is a known member of the RSSRulesTorrentParamsOperatingMode enum.
+func (e RSSRulesTorrentParamsOperatingMode) Valid() bool {
+	switch e {
+	case RSSRulesTorrentParamsOperatingModeAutoManaged:
+		return true
+	case RSSRulesTorrentParamsOperatingModeForced:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRSSRules200JSONResponseBodyTorrentContentLayout.
+const (
+	GetRSSRules200JSONResponseBodyTorrentContentLayoutNoSubfolder GetRSSRules200JSONResponseBodyTorrentContentLayout = "NoSubfolder"
+	GetRSSRules200JSONResponseBodyTorrentContentLayoutOriginal    GetRSSRules200JSONResponseBodyTorrentContentLayout = "Original"
+	GetRSSRules200JSONResponseBodyTorrentContentLayoutSubfolder   GetRSSRules200JSONResponseBodyTorrentContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the GetRSSRules200JSONResponseBodyTorrentContentLayout enum.
+func (e GetRSSRules200JSONResponseBodyTorrentContentLayout) Valid() bool {
+	switch e {
+	case GetRSSRules200JSONResponseBodyTorrentContentLayoutNoSubfolder:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentContentLayoutOriginal:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRSSRules200JSONResponseBodyTorrentParamsContentLayout.
+const (
+	GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutNoSubfolder GetRSSRules200JSONResponseBodyTorrentParamsContentLayout = "NoSubfolder"
+	GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutOriginal    GetRSSRules200JSONResponseBodyTorrentParamsContentLayout = "Original"
+	GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutSubfolder   GetRSSRules200JSONResponseBodyTorrentParamsContentLayout = "Subfolder"
+)
+
+// Valid indicates whether the value is a known member of the GetRSSRules200JSONResponseBodyTorrentParamsContentLayout enum.
+func (e GetRSSRules200JSONResponseBodyTorrentParamsContentLayout) Valid() bool {
+	switch e {
+	case GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutNoSubfolder:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutOriginal:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentParamsContentLayoutSubfolder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode.
+const (
+	GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeAutoManaged GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode = "AutoManaged"
+	GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeForced      GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode = "Forced"
+)
+
+// Valid indicates whether the value is a known member of the GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode enum.
+func (e GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode) Valid() bool {
+	switch e {
+	case GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeAutoManaged:
+		return true
+	case GetRSSRules200JSONResponseBodyTorrentParamsOperatingModeForced:
+		return true
+	default:
+		return false
+	}
+}
+
 // AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 type AltDownloadLimit = int64
 
@@ -30,10 +657,10 @@ type Category struct {
 // DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 type DownloadLimit = int64
 
-// Preferences Allowlisted fields only. Unknown server fields (including credentials)
+// LegacyPreferences Allowlisted fields only. Unknown server fields (including credentials)
 // are ignored, never captured in an additional-properties map. Every
 // property is optional; absence must stay distinct from false or zero.
-type Preferences struct {
+type LegacyPreferences struct {
 	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
 	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
 
@@ -122,6 +749,1301 @@ type Preferences struct {
 	UPnP        *bool        `json:"upnp,omitempty"`
 }
 
+// Preferences Nonsecret allowlisted preference response fields only.
+type Preferences struct {
+	// AddStoppedEnabled Add new torrents in the stopped state.
+	AddStoppedEnabled *bool `json:"add_stopped_enabled,omitempty"`
+
+	// AddToTopOfQueue Add new torrents to the top of the queue.
+	AddToTopOfQueue *bool `json:"add_to_top_of_queue,omitempty"`
+
+	// AddTrackers Newline-delimited tracker URLs.
+	AddTrackers               *string `json:"add_trackers,omitempty"`
+	AddTrackersEnabled        *bool   `json:"add_trackers_enabled,omitempty"`
+	AddTrackersFromUrlEnabled *bool   `json:"add_trackers_from_url_enabled,omitempty"`
+	AddTrackersUrl            *string `json:"add_trackers_url,omitempty"`
+
+	// AddTrackersUrlList Newline-delimited tracker list fetched by qBittorrent.
+	AddTrackersUrlList *string `json:"add_trackers_url_list,omitempty"`
+
+	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
+
+	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltUploadLimit          *AltUploadLimit `json:"alt_up_limit,omitempty"`
+	AlternativeWebUIEnabled *bool           `json:"alternative_webui_enabled,omitempty"`
+	AlternativeWebUIPath    *string         `json:"alternative_webui_path,omitempty"`
+
+	// AnnounceIp IP address announced to trackers; empty uses the default. Changes require restart.
+	AnnounceIp *string `json:"announce_ip,omitempty"`
+
+	// AnnouncePort Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied.
+	AnnouncePort *int `json:"announce_port,omitempty"`
+
+	// AnnounceToAllTiers Announce to all tracker tiers.
+	AnnounceToAllTiers *bool `json:"announce_to_all_tiers,omitempty"`
+
+	// AnnounceToAllTrackers Announce to all trackers in each tier.
+	AnnounceToAllTrackers *bool `json:"announce_to_all_trackers,omitempty"`
+	AnonymousMode         *bool `json:"anonymous_mode,omitempty"`
+
+	// AppInstanceName Application instance name shown by qBittorrent.
+	AppInstanceName *string `json:"app_instance_name,omitempty"`
+
+	// AsyncIOThreads Asynchronous I/O thread count; the native getter clamps to 1..1024.
+	AsyncIOThreads *int `json:"async_io_threads,omitempty"`
+
+	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+	AutoDeleteMode *PreferencesAutoDeleteMode `json:"auto_delete_mode,omitempty"`
+	AutoTMMEnabled *bool                      `json:"auto_tmm_enabled,omitempty"`
+
+	// AutorunEnabled Run a configured program when a torrent finishes.
+	AutorunEnabled *bool `json:"autorun_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedEnabled Run a configured program when a torrent is added.
+	AutorunOnTorrentAddedEnabled *bool `json:"autorun_on_torrent_added_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedProgram Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+	AutorunOnTorrentAddedProgram *string `json:"autorun_on_torrent_added_program,omitempty"`
+
+	// AutorunProgram Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
+	AutorunProgram *string `json:"autorun_program,omitempty"`
+
+	// BannedIPs Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
+	BannedIPs *string `json:"banned_IPs,omitempty"`
+
+	// BdecodeDepthLimit Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer.
+	BdecodeDepthLimit *int `json:"bdecode_depth_limit,omitempty"`
+
+	// BdecodeTokenLimit Libtorrent bdecode maximum token count; sent as a signed 32-bit integer.
+	BdecodeTokenLimit *int `json:"bdecode_token_limit,omitempty"`
+
+	// BittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+	BittorrentProtocol *PreferencesBittorrentProtocol `json:"bittorrent_protocol,omitempty"`
+
+	// BlockPeersOnPrivilegedPorts Block peer connections to privileged destination ports.
+	BlockPeersOnPrivilegedPorts      *bool   `json:"block_peers_on_privileged_ports,omitempty"`
+	BypassAuthSubnetWhitelist        *string `json:"bypass_auth_subnet_whitelist,omitempty"`
+	BypassAuthSubnetWhitelistEnabled *bool   `json:"bypass_auth_subnet_whitelist_enabled,omitempty"`
+	BypassLocalAuth                  *bool   `json:"bypass_local_auth,omitempty"`
+
+	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
+	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
+
+	// CheckingMemoryUse Memory limit while checking torrents in MiB; native setter clamps the minimum to 1.
+	CheckingMemoryUse *int `json:"checking_memory_use,omitempty"`
+
+	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
+	ConfirmRemoveAllTags *bool `json:"confirm_remove_all_tags,omitempty"`
+
+	// ConfirmRemoveTrackerFromAllTorrents Ask before removing a tracker from all torrents.
+	ConfirmRemoveTrackerFromAllTorrents *bool `json:"confirm_remove_tracker_from_all_torrents,omitempty"`
+
+	// ConfirmTorrentDeletion Confirm torrent deletion.
+	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
+
+	// ConfirmTorrentRecheck Ask for confirmation before rechecking a torrent.
+	ConfirmTorrentRecheck *bool `json:"confirm_torrent_recheck,omitempty"`
+
+	// ConnectionSpeed Outgoing connection attempts per second.
+	ConnectionSpeed *int `json:"connection_speed,omitempty"`
+
+	// CurrentInterfaceAddress Optional IP address to bind on the selected server interface.
+	CurrentInterfaceAddress *string `json:"current_interface_address,omitempty"`
+
+	// CurrentInterfaceName Resolved display name for the selected server network interface; read-only.
+	CurrentInterfaceName *string `json:"current_interface_name,omitempty"`
+
+	// CurrentNetworkInterface Network interface name on the qBittorrent server; the API stores the supplied name and resolves its display name when the interface exists on the server.
+	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
+	DHT                     *bool   `json:"dht,omitempty"`
+
+	// DHTBootstrapNodes DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list.
+	DHTBootstrapNodes *string `json:"dht_bootstrap_nodes,omitempty"`
+
+	// DiskCache Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2.
+	DiskCache *int `json:"disk_cache,omitempty"`
+
+	// DiskCacheTTL Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2.
+	DiskCacheTTL *int `json:"disk_cache_ttl,omitempty"`
+
+	// DiskIOReadMode OS read cache: 0 disabled, 1 enabled.
+	DiskIOReadMode *int `json:"disk_io_read_mode,omitempty"`
+
+	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset.
+	DiskIOType *int `json:"disk_io_type,omitempty"`
+
+	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset.
+	DiskIOWriteMode *int `json:"disk_io_write_mode,omitempty"`
+
+	// DiskQueueSize Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
+	DiskQueueSize *int64 `json:"disk_queue_size,omitempty"`
+
+	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
+	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+	DynDNSDomain          *string        `json:"dyndns_domain,omitempty"`
+	DynDNSEnabled         *bool          `json:"dyndns_enabled,omitempty"`
+	DynDNSService         *int32         `json:"dyndns_service,omitempty"`
+	DynDNSUsername        *string        `json:"dyndns_username,omitempty"`
+
+	// EmbeddedTrackerPort Port used by the embedded tracker.
+	EmbeddedTrackerPort *int64 `json:"embedded_tracker_port,omitempty"`
+
+	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
+	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
+
+	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2.
+	EnableCoalesceReadWrite *bool `json:"enable_coalesce_read_write,omitempty"`
+
+	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
+	EnableEmbeddedTracker *bool `json:"enable_embedded_tracker,omitempty"`
+
+	// EnableMultiConnectionsFromSameIp Allow multiple peer connections from one IP address.
+	EnableMultiConnectionsFromSameIp *bool `json:"enable_multi_connections_from_same_ip,omitempty"`
+
+	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013.
+	EnableMultiConnectionsFromSamePeerId *bool `json:"enable_multi_connections_from_same_peer_id,omitempty"`
+
+	// EnablePieceExtentAffinity Prefer allocating pieces near each other on disk.
+	EnablePieceExtentAffinity *bool `json:"enable_piece_extent_affinity,omitempty"`
+
+	// EnableUploadSuggestions Allow upload piece suggestions.
+	EnableUploadSuggestions *bool `json:"enable_upload_suggestions,omitempty"`
+
+	// Encryption Encryption mode: allow, require, or disable encryption.
+	Encryption *PreferencesEncryption `json:"encryption,omitempty"`
+
+	// ExcludedFileNames Newline-delimited file name exclusion patterns; blank lines are preserved.
+	ExcludedFileNames *string `json:"excluded_file_names,omitempty"`
+
+	// ExcludedFileNamesEnabled Exclude files matching the configured newline-delimited patterns.
+	ExcludedFileNamesEnabled *bool `json:"excluded_file_names_enabled,omitempty"`
+
+	// FileLogAge Backup log retention count, 1..365.
+	FileLogAge *int64 `json:"file_log_age,omitempty"`
+
+	// FileLogAgeType Retention unit: 0 days, 1 months, 2 years.
+	FileLogAgeType *int64 `json:"file_log_age_type,omitempty"`
+
+	// FileLogBackupEnabled Rotate log files by size.
+	FileLogBackupEnabled *bool `json:"file_log_backup_enabled,omitempty"`
+
+	// FileLogDeleteOld Delete old backup logs.
+	FileLogDeleteOld *bool `json:"file_log_delete_old,omitempty"`
+
+	// FileLogEnabled Enable file logging.
+	FileLogEnabled *bool `json:"file_log_enabled,omitempty"`
+
+	// FileLogMaxSize Log rotation size in KiB, 1..1024000.
+	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
+
+	// FileLogPath Server log directory.
+	FileLogPath *string `json:"file_log_path,omitempty"`
+
+	// FilePoolSize Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
+	FilePoolSize *int `json:"file_pool_size,omitempty"`
+
+	// HashingThreads Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2.
+	HashingThreads *int `json:"hashing_threads,omitempty"`
+
+	// HostnameCacheTTL Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
+	HostnameCacheTTL *int    `json:"hostname_cache_ttl,omitempty"`
+	I2PAddress       *string `json:"i2p_address,omitempty"`
+	I2PEnabled       *bool   `json:"i2p_enabled,omitempty"`
+
+	// I2PInboundLength I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2PInboundLength *int `json:"i2p_inbound_length,omitempty"`
+
+	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
+	I2PInboundLengthVariance *int `json:"i2p_inbound_length_variance,omitempty"`
+
+	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2PInboundQuantity *int  `json:"i2p_inbound_quantity,omitempty"`
+	I2PMixedMode       *bool `json:"i2p_mixed_mode,omitempty"`
+
+	// I2POutboundLength I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2POutboundLength *int `json:"i2p_outbound_length,omitempty"`
+
+	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
+	I2POutboundLengthVariance *int `json:"i2p_outbound_length_variance,omitempty"`
+
+	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2POutboundQuantity *int `json:"i2p_outbound_quantity,omitempty"`
+
+	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
+	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
+	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IDNSupportEnabled Resolve internationalized domain names.
+	IDNSupportEnabled *bool `json:"idn_support_enabled,omitempty"`
+
+	// IgnoreSslErrors Ignore SSL certificate errors; enabling this weakens TLS verification.
+	IgnoreSslErrors *bool `json:"ignore_ssl_errors,omitempty"`
+
+	// IncompleteFilesExt Append .!qB to incomplete files.
+	IncompleteFilesExt *bool   `json:"incomplete_files_ext,omitempty"`
+	IPFilterEnabled    *bool   `json:"ip_filter_enabled,omitempty"`
+	IPFilterPath       *string `json:"ip_filter_path,omitempty"`
+	IPFilterTrackers   *bool   `json:"ip_filter_trackers,omitempty"`
+
+	// LimitLANPeers Apply rate limits to peers on the LAN.
+	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
+
+	// LimitTCPOverhead Apply rate limits to transport overhead.
+	LimitTCPOverhead *bool `json:"limit_tcp_overhead,omitempty"`
+
+	// LimitUTPRate Apply rate limits to the uTP protocol.
+	LimitUTPRate *bool  `json:"limit_utp_rate,omitempty"`
+	ListenPort   *int64 `json:"listen_port,omitempty"`
+
+	// Locale User interface language (upstream locale identifier).
+	Locale *string `json:"locale,omitempty"`
+	LSD    *bool   `json:"lsd,omitempty"`
+
+	// MailNotificationAuthEnabled Enable SMTP authentication.
+	MailNotificationAuthEnabled *bool `json:"mail_notification_auth_enabled,omitempty"`
+
+	// MailNotificationEmail Recipient addresses for completion email notifications.
+	MailNotificationEmail *string `json:"mail_notification_email,omitempty"`
+
+	// MailNotificationEnabled Send an email notification when a download completes.
+	MailNotificationEnabled *bool `json:"mail_notification_enabled,omitempty"`
+
+	// MailNotificationEncryptionType SMTP encryption mode.
+	MailNotificationEncryptionType *PreferencesMailNotificationEncryptionType `json:"mail_notification_encryption_type,omitempty"`
+
+	// MailNotificationSender Sender address for completion email notifications.
+	MailNotificationSender *string `json:"mail_notification_sender,omitempty"`
+
+	// MailNotificationSmtp SMTP server host with an optional port.
+	MailNotificationSmtp *string `json:"mail_notification_smtp,omitempty"`
+
+	// MailNotificationUsername SMTP authentication username.
+	MailNotificationUsername *string `json:"mail_notification_username,omitempty"`
+
+	// MarkOfTheWeb Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
+	MarkOfTheWeb *bool `json:"mark_of_the_web,omitempty"`
+
+	// MaxActiveCheckingTorrents Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.
+	MaxActiveCheckingTorrents *int32 `json:"max_active_checking_torrents,omitempty"`
+	MaxActiveDownloads        *int32 `json:"max_active_downloads,omitempty"`
+	MaxActiveTorrents         *int32 `json:"max_active_torrents,omitempty"`
+	MaxActiveUploads          *int32 `json:"max_active_uploads,omitempty"`
+
+	// MaxConcurrentHttpAnnounces Maximum concurrent HTTP tracker announces.
+	MaxConcurrentHttpAnnounces *int `json:"max_concurrent_http_announces,omitempty"`
+
+	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
+	MaxConnections *int64 `json:"max_connec,omitempty"`
+
+	// MaxConnectionsPerTorrent Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxConnectionsPerTorrent *int64 `json:"max_connec_per_torrent,omitempty"`
+
+	// MaxInactiveSeedingTime Maximum inactive seeding minutes; -1 disables the limit.
+	MaxInactiveSeedingTime        *int32 `json:"max_inactive_seeding_time,omitempty"`
+	MaxInactiveSeedingTimeEnabled *bool  `json:"max_inactive_seeding_time_enabled,omitempty"`
+
+	// MaxOutstandingBlockRequests Maximum outstanding block requests from one peer.
+	MaxOutstandingBlockRequests *int `json:"max_outstanding_block_requests,omitempty"`
+
+	// MaxRatio Share ratio; -1 disables the limit.
+	MaxRatio        *float64                `json:"max_ratio,omitempty"`
+	MaxRatioAct     *PreferencesMaxRatioAct `json:"max_ratio_act,omitempty"`
+	MaxRatioEnabled *bool                   `json:"max_ratio_enabled,omitempty"`
+
+	// MaxSeedingTime Maximum seeding minutes; -1 disables the limit.
+	MaxSeedingTime        *int32 `json:"max_seeding_time,omitempty"`
+	MaxSeedingTimeEnabled *bool  `json:"max_seeding_time_enabled,omitempty"`
+
+	// MaxUploads Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
+	MaxUploads *int64 `json:"max_uploads,omitempty"`
+
+	// MaxUploadsPerTorrent Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxUploadsPerTorrent *int64 `json:"max_uploads_per_torrent,omitempty"`
+
+	// MemoryWorkingSetLimit Physical memory working-set limit in MiB.
+	MemoryWorkingSetLimit *int64 `json:"memory_working_set_limit,omitempty"`
+
+	// MergeTrackers Merge trackers when adding a duplicate torrent.
+	MergeTrackers *bool `json:"merge_trackers,omitempty"`
+
+	// OutgoingPortsMax Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range.
+	OutgoingPortsMax *int `json:"outgoing_ports_max,omitempty"`
+
+	// OutgoingPortsMin Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range.
+	OutgoingPortsMin *int `json:"outgoing_ports_min,omitempty"`
+
+	// PeerTos Peer connection DSCP/TOS value.
+	PeerTos *int `json:"peer_tos,omitempty"`
+
+	// PeerTurnover Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnover *int `json:"peer_turnover,omitempty"`
+
+	// PeerTurnoverCutoff Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverCutoff *int `json:"peer_turnover_cutoff,omitempty"`
+
+	// PeerTurnoverInterval Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverInterval *int `json:"peer_turnover_interval,omitempty"`
+
+	// PerformanceWarning Log performance warnings.
+	PerformanceWarning *bool `json:"performance_warning,omitempty"`
+	PeX                *bool `json:"pex,omitempty"`
+
+	// PreallocateAll Preallocate disk space for all files when adding a torrent.
+	PreallocateAll       *bool                 `json:"preallocate_all,omitempty"`
+	ProxyAuthEnabled     *bool                 `json:"proxy_auth_enabled,omitempty"`
+	ProxyBittorrent      *bool                 `json:"proxy_bittorrent,omitempty"`
+	ProxyHostnameLookup  *bool                 `json:"proxy_hostname_lookup,omitempty"`
+	ProxyIP              *string               `json:"proxy_ip,omitempty"`
+	ProxyMisc            *bool                 `json:"proxy_misc,omitempty"`
+	ProxyPeerConnections *bool                 `json:"proxy_peer_connections,omitempty"`
+	ProxyPort            *int64                `json:"proxy_port,omitempty"`
+	ProxyRSS             *bool                 `json:"proxy_rss,omitempty"`
+	ProxyType            *PreferencesProxyType `json:"proxy_type,omitempty"`
+	ProxyUsername        *string               `json:"proxy_username,omitempty"`
+
+	// PythonExecutablePath Server-side Python executable path; empty requests automatic detection. Changing this may require a qBittorrent restart.
+	PythonExecutablePath *string `json:"python_executable_path,omitempty"`
+	QueueingEnabled      *bool   `json:"queueing_enabled,omitempty"`
+
+	// ReannounceWhenAddressChanged Reannounce to trackers when the local IP address or port changes.
+	ReannounceWhenAddressChanged *bool `json:"reannounce_when_address_changed,omitempty"`
+
+	// RecheckCompletedTorrents Recheck torrents after they finish downloading.
+	RecheckCompletedTorrents *bool `json:"recheck_completed_torrents,omitempty"`
+
+	// RefreshInterval Internal state refresh interval in milliseconds.
+	RefreshInterval *int64 `json:"refresh_interval,omitempty"`
+
+	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
+	RemoveTorrentFileBackup *bool `json:"remove_torrent_file_backup,omitempty"`
+
+	// RequestQueueSize Maximum outstanding requests to one peer.
+	RequestQueueSize *int `json:"request_queue_size,omitempty"`
+
+	// ResolvePeerCountries Resolve peer IP addresses to country names.
+	ResolvePeerCountries *bool `json:"resolve_peer_countries,omitempty"`
+
+	// ResolvePeerHostNames Resolve peer IP addresses to host names.
+	ResolvePeerHostNames *bool `json:"resolve_peer_host_names,omitempty"`
+
+	// ResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+	ResumeDataStorageType           *PreferencesResumeDataStorageType `json:"resume_data_storage_type,omitempty"`
+	RssAutoDownloadingEnabled       *bool                             `json:"rss_auto_downloading_enabled,omitempty"`
+	RssDownloadRepackProperEpisodes *bool                             `json:"rss_download_repack_proper_episodes,omitempty"`
+
+	// RssFetchDelay Same-host request delay in seconds.
+	RssFetchDelay         *int64 `json:"rss_fetch_delay,omitempty"`
+	RssMaxArticlesPerFeed *int32 `json:"rss_max_articles_per_feed,omitempty"`
+	RssProcessingEnabled  *bool  `json:"rss_processing_enabled,omitempty"`
+
+	// RssRefreshInterval Refresh interval in minutes.
+	RssRefreshInterval *int32 `json:"rss_refresh_interval,omitempty"`
+
+	// RssSmartEpisodeFilters Newline-delimited smart episode filters.
+	RssSmartEpisodeFilters *string `json:"rss_smart_episode_filters,omitempty"`
+	SavePath               *string `json:"save_path,omitempty"`
+
+	// SavePathChangedTmmEnabled Relocate affected torrents when the default save path changes.
+	SavePathChangedTmmEnabled *bool `json:"save_path_changed_tmm_enabled,omitempty"`
+
+	// SaveResumeDataInterval Resume data save interval in minutes.
+	SaveResumeDataInterval *int64 `json:"save_resume_data_interval,omitempty"`
+
+	// SaveStatisticsInterval Statistics save interval in minutes.
+	SaveStatisticsInterval *int64 `json:"save_statistics_interval,omitempty"`
+
+	// ScanDirs Complete qBittorrent watched-folder map. Values are integer 0 for the watched folder, integer 1 for the default save path, or a custom path.
+	ScanDirs *map[string]Preferences_ScanDirs_AdditionalProperties `json:"scan_dirs,omitempty"`
+
+	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
+	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
+
+	// ScheduleFromMin Start minute; must be supplied together with schedule_from_hour.
+	ScheduleFromMin *int64 `json:"schedule_from_min,omitempty"`
+
+	// ScheduleToHour End hour; must be supplied together with schedule_to_min.
+	ScheduleToHour *int64 `json:"schedule_to_hour,omitempty"`
+
+	// ScheduleToMin End minute; must be supplied together with schedule_to_hour.
+	ScheduleToMin *int64 `json:"schedule_to_min,omitempty"`
+
+	// SchedulerDays 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
+
+	// SchedulerEnabled Schedule alternative rate limits using the server local time.
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// SeedingOutgoingConnections Allow outgoing connections while seeding.
+	SeedingOutgoingConnections *bool `json:"seeding_outgoing_connections,omitempty"`
+
+	// SendBufferLowWatermark Low send buffer watermark in KiB (wire units).
+	SendBufferLowWatermark *int `json:"send_buffer_low_watermark,omitempty"`
+
+	// SendBufferWatermark Send buffer watermark in KiB (wire units).
+	SendBufferWatermark *int `json:"send_buffer_watermark,omitempty"`
+
+	// SendBufferWatermarkFactor Send buffer watermark growth factor in percent.
+	SendBufferWatermarkFactor *int                        `json:"send_buffer_watermark_factor,omitempty"`
+	ShareLimitsMode           *PreferencesShareLimitsMode `json:"share_limits_mode,omitempty"`
+
+	// ShutdownTimeout Session shutdown timeout in seconds; -1 means unlimited.
+	ShutdownTimeout *int64 `json:"shutdown_timeout,omitempty"`
+
+	// SlowTorrentDlRateThreshold Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.
+	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
+
+	// SlowTorrentInactiveTimer Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.
+	SlowTorrentInactiveTimer *int32 `json:"slow_torrent_inactive_timer,omitempty"`
+
+	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
+	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
+
+	// SocketBacklogSize Listen socket backlog size.
+	SocketBacklogSize *int `json:"socket_backlog_size,omitempty"`
+
+	// SocketReceiveBufferSize Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketReceiveBufferSize *int `json:"socket_receive_buffer_size,omitempty"`
+
+	// SocketSendBufferSize Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketSendBufferSize *int `json:"socket_send_buffer_size,omitempty"`
+
+	// SSRFMitigation Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy.
+	SSRFMitigation *bool `json:"ssrf_mitigation,omitempty"`
+
+	// StartPaused Start the BitTorrent session in the paused state.
+	StartPaused *bool `json:"start_paused,omitempty"`
+
+	// StatusBarExternalIP Show external IP in the status bar.
+	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StopTrackerTimeout Stop tracker announce timeout in seconds; 0 disables the timeout.
+	StopTrackerTimeout *int `json:"stop_tracker_timeout,omitempty"`
+
+	// StoreSearchJobResults Save search results with search tabs.
+	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
+
+	// StoreSearchJobs Save search tabs.
+	StoreSearchJobs *bool   `json:"store_search_jobs,omitempty"`
+	TempPath        *string `json:"temp_path,omitempty"`
+	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
+
+	// TorrentChangedTmmEnabled Relocate torrents when their category changes.
+	TorrentChangedTmmEnabled *bool `json:"torrent_changed_tmm_enabled,omitempty"`
+
+	// TorrentContentLayout Layout for the content directory when adding torrents.
+	TorrentContentLayout *PreferencesTorrentContentLayout `json:"torrent_content_layout,omitempty"`
+
+	// TorrentContentRemoveOption Torrent content removal mode.
+	TorrentContentRemoveOption *PreferencesTorrentContentRemoveOption `json:"torrent_content_remove_option,omitempty"`
+
+	// TorrentFileSizeLimit .torrent file size limit in bytes (the UI displays MiB).
+	TorrentFileSizeLimit *int64 `json:"torrent_file_size_limit,omitempty"`
+
+	// TorrentFilesBackupDir Server directory for torrent file backups.
+	TorrentFilesBackupDir *string `json:"torrent_files_backup_dir,omitempty"`
+
+	// TorrentFilesBackupEnabled Back up torrent files.
+	TorrentFilesBackupEnabled *bool `json:"torrent_files_backup_enabled,omitempty"`
+
+	// TorrentFilesFinishedBackupDir Server directory for finished torrent file backups.
+	TorrentFilesFinishedBackupDir *string `json:"torrent_files_finished_backup_dir,omitempty"`
+
+	// TorrentFilesFinishedBackupDirEnabled Move finished torrent file backups to a separate directory.
+	TorrentFilesFinishedBackupDirEnabled *bool `json:"torrent_files_finished_backup_dir_enabled,omitempty"`
+
+	// TorrentStopCondition Condition at which a torrent stops automatically.
+	TorrentStopCondition *PreferencesTorrentStopCondition `json:"torrent_stop_condition,omitempty"`
+
+	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
+
+	// UploadChokingAlgorithm Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech.
+	UploadChokingAlgorithm *int `json:"upload_choking_algorithm,omitempty"`
+
+	// UploadSlotsBehavior Upload slot behavior: 0 fixed slots, 1 upload-rate-based.
+	UploadSlotsBehavior *int  `json:"upload_slots_behavior,omitempty"`
+	UPnP                *bool `json:"upnp,omitempty"`
+
+	// UPnPLeaseDuration UPnP lease duration in seconds; 0 requests a permanent lease.
+	UPnPLeaseDuration *int `json:"upnp_lease_duration,omitempty"`
+
+	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
+	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
+	UseHttps                     *bool `json:"use_https,omitempty"`
+
+	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
+	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
+
+	// UtpTcpMixedMode Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional.
+	UtpTcpMixedMode *int `json:"utp_tcp_mixed_mode,omitempty"`
+
+	// ValidateHttpsTrackerCertificate Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
+	ValidateHttpsTrackerCertificate    *bool   `json:"validate_https_tracker_certificate,omitempty"`
+	WebUIAddress                       *string `json:"web_ui_address,omitempty"`
+	WebUIBanDuration                   *int32  `json:"web_ui_ban_duration,omitempty"`
+	WebUIClickjackingProtectionEnabled *bool   `json:"web_ui_clickjacking_protection_enabled,omitempty"`
+	WebUICSRFProtectionEnabled         *bool   `json:"web_ui_csrf_protection_enabled,omitempty"`
+	WebUICustomHTTPHeaders             *string `json:"web_ui_custom_http_headers,omitempty"`
+	WebUIDomainList                    *string `json:"web_ui_domain_list,omitempty"`
+	WebUIHostHeaderValidationEnabled   *bool   `json:"web_ui_host_header_validation_enabled,omitempty"`
+	WebUIHttpsCertPath                 *string `json:"web_ui_https_cert_path,omitempty"`
+	WebUIHttpsKeyPath                  *string `json:"web_ui_https_key_path,omitempty"`
+	WebUIMaxAuthFailCount              *int32  `json:"web_ui_max_auth_fail_count,omitempty"`
+	WebUIPort                          *int32  `json:"web_ui_port,omitempty"`
+	WebUIReverseProxiesList            *string `json:"web_ui_reverse_proxies_list,omitempty"`
+	WebUIReverseProxyEnabled           *bool   `json:"web_ui_reverse_proxy_enabled,omitempty"`
+	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
+	WebUISessionTimeout                *int32  `json:"web_ui_session_timeout,omitempty"`
+	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
+	WebUIUPnP                          *bool   `json:"web_ui_upnp,omitempty"`
+	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
+	WebUIUsername                      *string `json:"web_ui_username,omitempty"`
+
+	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
+	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
+}
+
+// PreferencesAutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+type PreferencesAutoDeleteMode int
+
+// PreferencesBittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+type PreferencesBittorrentProtocol int64
+
+// PreferencesEncryption Encryption mode: allow, require, or disable encryption.
+type PreferencesEncryption int32
+
+// PreferencesMailNotificationEncryptionType SMTP encryption mode.
+type PreferencesMailNotificationEncryptionType string
+
+// PreferencesMaxRatioAct defines model for Preferences.MaxRatioAct.
+type PreferencesMaxRatioAct int32
+
+// PreferencesProxyType defines model for Preferences.ProxyType.
+type PreferencesProxyType string
+
+// PreferencesResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+type PreferencesResumeDataStorageType string
+
+// PreferencesScanDirs0 defines model for Preferences.ScanDirs.0.
+type PreferencesScanDirs0 int
+
+// PreferencesScanDirs1 defines model for Preferences.ScanDirs.1.
+type PreferencesScanDirs1 = string
+
+// Preferences_ScanDirs_AdditionalProperties defines model for Preferences.scan_dirs.AdditionalProperties.
+type Preferences_ScanDirs_AdditionalProperties struct {
+	union json.RawMessage
+}
+
+// PreferencesShareLimitsMode defines model for Preferences.ShareLimitsMode.
+type PreferencesShareLimitsMode string
+
+// PreferencesTorrentContentLayout Layout for the content directory when adding torrents.
+type PreferencesTorrentContentLayout string
+
+// PreferencesTorrentContentRemoveOption Torrent content removal mode.
+type PreferencesTorrentContentRemoveOption string
+
+// PreferencesTorrentStopCondition Condition at which a torrent stops automatically.
+type PreferencesTorrentStopCondition string
+
+// PreferencesPatch Typed partial preference writes; response-only properties are excluded.
+type PreferencesPatch struct {
+	// AddStoppedEnabled Add new torrents in the stopped state.
+	AddStoppedEnabled *bool `json:"add_stopped_enabled,omitempty"`
+
+	// AddToTopOfQueue Add new torrents to the top of the queue.
+	AddToTopOfQueue           *bool   `json:"add_to_top_of_queue,omitempty"`
+	AddTrackers               *string `json:"add_trackers,omitempty"`
+	AddTrackersEnabled        *bool   `json:"add_trackers_enabled,omitempty"`
+	AddTrackersFromUrlEnabled *bool   `json:"add_trackers_from_url_enabled,omitempty"`
+	AddTrackersUrl            *string `json:"add_trackers_url,omitempty"`
+
+	// AltDownloadLimit Alternate download bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltDownloadLimit *AltDownloadLimit `json:"alt_dl_limit,omitempty"`
+
+	// AltUploadLimit Alternate upload bytes/second; 0 is unlimited. The server quantizes to multiples of 1024.
+	AltUploadLimit          *AltUploadLimit `json:"alt_up_limit,omitempty"`
+	AlternativeWebUIEnabled *bool           `json:"alternative_webui_enabled,omitempty"`
+	AlternativeWebUIPath    *string         `json:"alternative_webui_path,omitempty"`
+
+	// AnnounceIp IP address announced to trackers; empty uses the default. Changes require restart.
+	AnnounceIp *string `json:"announce_ip,omitempty"`
+
+	// AnnouncePort Port announced to trackers; 0 uses the listening port. Changes require restart; native setter stores signed 32-bit values as supplied.
+	AnnouncePort *int `json:"announce_port,omitempty"`
+
+	// AnnounceToAllTiers Announce to all tracker tiers.
+	AnnounceToAllTiers *bool `json:"announce_to_all_tiers,omitempty"`
+
+	// AnnounceToAllTrackers Announce to all trackers in each tier.
+	AnnounceToAllTrackers *bool `json:"announce_to_all_trackers,omitempty"`
+	AnonymousMode         *bool `json:"anonymous_mode,omitempty"`
+
+	// AppInstanceName Application instance name shown by qBittorrent.
+	AppInstanceName *string `json:"app_instance_name,omitempty"`
+
+	// AsyncIOThreads Asynchronous I/O thread count; the native getter clamps to 1..1024.
+	AsyncIOThreads *int `json:"async_io_threads,omitempty"`
+
+	// AutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+	AutoDeleteMode *PreferencesPatchAutoDeleteMode `json:"auto_delete_mode,omitempty"`
+	AutoTMMEnabled *bool                           `json:"auto_tmm_enabled,omitempty"`
+
+	// AutorunEnabled Run a configured program when a torrent finishes.
+	AutorunEnabled *bool `json:"autorun_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedEnabled Run a configured program when a torrent is added.
+	AutorunOnTorrentAddedEnabled *bool `json:"autorun_on_torrent_added_enabled,omitempty"`
+
+	// AutorunOnTorrentAddedProgram Command template to run when a torrent is added; surrounding whitespace is trimmed by the server.
+	AutorunOnTorrentAddedProgram *string `json:"autorun_on_torrent_added_program,omitempty"`
+
+	// AutorunProgram Command template to run when a torrent finishes; surrounding whitespace is trimmed by the server.
+	AutorunProgram *string `json:"autorun_program,omitempty"`
+
+	// BannedIPs Raw newline-delimited IP addresses; qBittorrent skips empty lines and may normalize entries.
+	BannedIPs *string `json:"banned_IPs,omitempty"`
+
+	// BdecodeDepthLimit Libtorrent bdecode maximum nesting depth; sent as a signed 32-bit integer.
+	BdecodeDepthLimit *int `json:"bdecode_depth_limit,omitempty"`
+
+	// BdecodeTokenLimit Libtorrent bdecode maximum token count; sent as a signed 32-bit integer.
+	BdecodeTokenLimit *int `json:"bdecode_token_limit,omitempty"`
+
+	// BittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+	BittorrentProtocol *PreferencesPatchBittorrentProtocol `json:"bittorrent_protocol,omitempty"`
+
+	// BlockPeersOnPrivilegedPorts Block peer connections to privileged destination ports.
+	BlockPeersOnPrivilegedPorts      *bool   `json:"block_peers_on_privileged_ports,omitempty"`
+	BypassAuthSubnetWhitelist        *string `json:"bypass_auth_subnet_whitelist,omitempty"`
+	BypassAuthSubnetWhitelistEnabled *bool   `json:"bypass_auth_subnet_whitelist_enabled,omitempty"`
+	BypassLocalAuth                  *bool   `json:"bypass_local_auth,omitempty"`
+
+	// CategoryChangedTmmEnabled Relocate affected torrents when a category save path changes.
+	CategoryChangedTmmEnabled *bool `json:"category_changed_tmm_enabled,omitempty"`
+
+	// CheckingMemoryUse Memory limit while checking torrents in MiB; native setter clamps the minimum to 1.
+	CheckingMemoryUse *int `json:"checking_memory_use,omitempty"`
+
+	// ConfirmRemoveAllTags Ask before removing all tags from torrents.
+	ConfirmRemoveAllTags *bool `json:"confirm_remove_all_tags,omitempty"`
+
+	// ConfirmRemoveTrackerFromAllTorrents Ask before removing a tracker from all torrents.
+	ConfirmRemoveTrackerFromAllTorrents *bool `json:"confirm_remove_tracker_from_all_torrents,omitempty"`
+
+	// ConfirmTorrentDeletion Confirm torrent deletion.
+	ConfirmTorrentDeletion *bool `json:"confirm_torrent_deletion,omitempty"`
+
+	// ConfirmTorrentRecheck Ask for confirmation before rechecking a torrent.
+	ConfirmTorrentRecheck *bool `json:"confirm_torrent_recheck,omitempty"`
+
+	// ConnectionSpeed Outgoing connection attempts per second.
+	ConnectionSpeed *int `json:"connection_speed,omitempty"`
+
+	// CurrentInterfaceAddress Optional IP address to bind on the selected server interface.
+	CurrentInterfaceAddress *string `json:"current_interface_address,omitempty"`
+
+	// CurrentNetworkInterface Network interface name on the qBittorrent server; the API stores the supplied name and resolves its display name when the interface exists on the server.
+	CurrentNetworkInterface *string `json:"current_network_interface,omitempty"`
+	DHT                     *bool   `json:"dht,omitempty"`
+
+	// DHTBootstrapNodes DHT bootstrap node list; empty input resets to the native default, and the getter reads back the canonical default list.
+	DHTBootstrapNodes *string `json:"dht_bootstrap_nodes,omitempty"`
+
+	// DiskCache Disk cache size in MiB; native setter retains negative values and caps at 33554431 on 64-bit builds (1536 on 32-bit builds). Runtime cache application is compiled only without QBT_USES_LIBTORRENT2.
+	DiskCache *int `json:"disk_cache,omitempty"`
+
+	// DiskCacheTTL Disk cache expiry in seconds; runtime application is compiled only without QBT_USES_LIBTORRENT2.
+	DiskCacheTTL *int `json:"disk_cache_ttl,omitempty"`
+
+	// DiskIOReadMode OS read cache: 0 disabled, 1 enabled.
+	DiskIOReadMode *int `json:"disk_io_read_mode,omitempty"`
+
+	// DiskIOType Disk I/O implementation; restart required. 0 default, 1 memory-mapped, 2 POSIX, 3 simple pread/pwrite. Upstream 4 pread/pwrite is compiled only when LIBTORRENT_VERSION_NUM >= 20100; the provider accepts the common 0..3 subset.
+	DiskIOType *int `json:"disk_io_type,omitempty"`
+
+	// DiskIOWriteMode OS write cache: 0 disabled, 1 enabled. Upstream 2 write-through is compiled only with QBT_USES_LIBTORRENT2; the provider accepts the common 0..1 subset.
+	DiskIOWriteMode *int `json:"disk_io_write_mode,omitempty"`
+
+	// DiskQueueSize Disk queue threshold in bytes on the wire (the UI displays KiB); accepts signed 64-bit values.
+	DiskQueueSize *int64 `json:"disk_queue_size,omitempty"`
+
+	// DownloadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	DownloadLimit         *DownloadLimit `json:"dl_limit,omitempty"`
+	DontCountSlowTorrents *bool          `json:"dont_count_slow_torrents,omitempty"`
+	DynDNSDomain          *string        `json:"dyndns_domain,omitempty"`
+	DynDNSEnabled         *bool          `json:"dyndns_enabled,omitempty"`
+	DynDNSPassword        *string        `json:"dyndns_password,omitempty"`
+	DynDNSService         *int32         `json:"dyndns_service,omitempty"`
+	DynDNSUsername        *string        `json:"dyndns_username,omitempty"`
+
+	// EmbeddedTrackerPort Port used by the embedded tracker.
+	EmbeddedTrackerPort *int64 `json:"embedded_tracker_port,omitempty"`
+
+	// EmbeddedTrackerPortForwarding Enable port forwarding for the embedded tracker.
+	EmbeddedTrackerPortForwarding *bool `json:"embedded_tracker_port_forwarding,omitempty"`
+
+	// EnableCoalesceReadWrite Enable coalescing disk reads and writes; runtime application is compiled only without QBT_USES_LIBTORRENT2.
+	EnableCoalesceReadWrite *bool `json:"enable_coalesce_read_write,omitempty"`
+
+	// EnableEmbeddedTracker Enable qBittorrent's embedded tracker.
+	EnableEmbeddedTracker *bool `json:"enable_embedded_tracker,omitempty"`
+
+	// EnableMultiConnectionsFromSameIp Allow multiple peer connections from one IP address.
+	EnableMultiConnectionsFromSameIp *bool `json:"enable_multi_connections_from_same_ip,omitempty"`
+
+	// EnableMultiConnectionsFromSamePeerId Allow multiple peer connections with the same peer ID; runtime application requires LIBTORRENT_VERSION_NUM >= 20013.
+	EnableMultiConnectionsFromSamePeerId *bool `json:"enable_multi_connections_from_same_peer_id,omitempty"`
+
+	// EnablePieceExtentAffinity Prefer allocating pieces near each other on disk.
+	EnablePieceExtentAffinity *bool `json:"enable_piece_extent_affinity,omitempty"`
+
+	// EnableUploadSuggestions Allow upload piece suggestions.
+	EnableUploadSuggestions *bool  `json:"enable_upload_suggestions,omitempty"`
+	Encryption              *int32 `json:"encryption,omitempty"`
+
+	// ExcludedFileNames Newline-delimited file name exclusion patterns; blank lines are preserved.
+	ExcludedFileNames *string `json:"excluded_file_names,omitempty"`
+
+	// ExcludedFileNamesEnabled Exclude files matching the configured newline-delimited patterns.
+	ExcludedFileNamesEnabled *bool `json:"excluded_file_names_enabled,omitempty"`
+
+	// FileLogAge Backup log retention count, 1..365.
+	FileLogAge *int64 `json:"file_log_age,omitempty"`
+
+	// FileLogAgeType Retention unit: 0 days, 1 months, 2 years.
+	FileLogAgeType *int64 `json:"file_log_age_type,omitempty"`
+
+	// FileLogBackupEnabled Rotate log files by size.
+	FileLogBackupEnabled *bool `json:"file_log_backup_enabled,omitempty"`
+
+	// FileLogDeleteOld Delete old backup logs.
+	FileLogDeleteOld *bool `json:"file_log_delete_old,omitempty"`
+
+	// FileLogEnabled Enable file logging.
+	FileLogEnabled *bool `json:"file_log_enabled,omitempty"`
+
+	// FileLogMaxSize Log rotation size in KiB, 1..1024000.
+	FileLogMaxSize *int64 `json:"file_log_max_size,omitempty"`
+
+	// FileLogPath Server log directory.
+	FileLogPath *string `json:"file_log_path,omitempty"`
+
+	// FilePoolSize Maximum open files retained by libtorrent; sent as a signed 32-bit integer.
+	FilePoolSize *int `json:"file_pool_size,omitempty"`
+
+	// HashingThreads Hashing thread count; the native getter clamps to 1..1024 and runtime use is conditional on QBT_USES_LIBTORRENT2.
+	HashingThreads *int `json:"hashing_threads,omitempty"`
+
+	// HostnameCacheTTL Hostname resolver cache time to live in seconds; 0 disables the cache lifetime.
+	HostnameCacheTTL *int    `json:"hostname_cache_ttl,omitempty"`
+	I2PAddress       *string `json:"i2p_address,omitempty"`
+	I2PEnabled       *bool   `json:"i2p_enabled,omitempty"`
+
+	// I2PInboundLength I2P inbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2PInboundLength *int `json:"i2p_inbound_length,omitempty"`
+
+	// I2PInboundLengthVariance I2P inbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
+	I2PInboundLengthVariance *int `json:"i2p_inbound_length_variance,omitempty"`
+
+	// I2PInboundQuantity I2P inbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2PInboundQuantity *int  `json:"i2p_inbound_quantity,omitempty"`
+	I2PMixedMode       *bool `json:"i2p_mixed_mode,omitempty"`
+
+	// I2POutboundLength I2P outbound tunnel length, 0..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2POutboundLength *int `json:"i2p_outbound_length,omitempty"`
+
+	// I2POutboundLengthVariance I2P outbound tunnel length variance, -7..7; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P and LIBTORRENT_VERSION_NUM >= 20012.
+	I2POutboundLengthVariance *int `json:"i2p_outbound_length_variance,omitempty"`
+
+	// I2POutboundQuantity I2P outbound tunnel quantity, 1..16; runtime use requires QBT_USES_LIBTORRENT2 && TORRENT_USE_I2P.
+	I2POutboundQuantity *int `json:"i2p_outbound_quantity,omitempty"`
+
+	// I2PPeXEnabled qBittorrent marks this setting as requiring a restart.
+	I2PPeXEnabled *bool  `json:"i2p_pex_enabled,omitempty"`
+	I2PPort       *int64 `json:"i2p_port,omitempty"`
+
+	// IDNSupportEnabled Resolve internationalized domain names.
+	IDNSupportEnabled *bool `json:"idn_support_enabled,omitempty"`
+
+	// IgnoreSslErrors Ignore SSL certificate errors; enabling this weakens TLS verification.
+	IgnoreSslErrors *bool `json:"ignore_ssl_errors,omitempty"`
+
+	// IncompleteFilesExt Append .!qB to incomplete files.
+	IncompleteFilesExt *bool   `json:"incomplete_files_ext,omitempty"`
+	IPFilterEnabled    *bool   `json:"ip_filter_enabled,omitempty"`
+	IPFilterPath       *string `json:"ip_filter_path,omitempty"`
+	IPFilterTrackers   *bool   `json:"ip_filter_trackers,omitempty"`
+
+	// LimitLANPeers Apply rate limits to peers on the LAN.
+	LimitLANPeers *bool `json:"limit_lan_peers,omitempty"`
+
+	// LimitTCPOverhead Apply rate limits to transport overhead.
+	LimitTCPOverhead *bool `json:"limit_tcp_overhead,omitempty"`
+
+	// LimitUTPRate Apply rate limits to the uTP protocol.
+	LimitUTPRate *bool  `json:"limit_utp_rate,omitempty"`
+	ListenPort   *int64 `json:"listen_port,omitempty"`
+
+	// Locale User interface language (upstream locale identifier).
+	Locale *string `json:"locale,omitempty"`
+	LSD    *bool   `json:"lsd,omitempty"`
+
+	// MailNotificationAuthEnabled Enable SMTP authentication.
+	MailNotificationAuthEnabled *bool `json:"mail_notification_auth_enabled,omitempty"`
+
+	// MailNotificationEmail Recipient addresses for completion email notifications.
+	MailNotificationEmail *string `json:"mail_notification_email,omitempty"`
+
+	// MailNotificationEnabled Send an email notification when a download completes.
+	MailNotificationEnabled *bool `json:"mail_notification_enabled,omitempty"`
+
+	// MailNotificationEncryptionType SMTP encryption mode.
+	MailNotificationEncryptionType *PreferencesPatchMailNotificationEncryptionType `json:"mail_notification_encryption_type,omitempty"`
+	MailNotificationPassword       *string                                         `json:"mail_notification_password,omitempty"`
+
+	// MailNotificationSender Sender address for completion email notifications.
+	MailNotificationSender *string `json:"mail_notification_sender,omitempty"`
+
+	// MailNotificationSmtp SMTP server host with an optional port.
+	MailNotificationSmtp *string `json:"mail_notification_smtp,omitempty"`
+
+	// MailNotificationUsername SMTP authentication username.
+	MailNotificationUsername *string `json:"mail_notification_username,omitempty"`
+
+	// MarkOfTheWeb Mark downloaded files with Mark-of-the-Web metadata where supported (macOS or Windows).
+	MarkOfTheWeb *bool `json:"mark_of_the_web,omitempty"`
+
+	// MaxActiveCheckingTorrents Maximum concurrent checking torrents; native setter stores signed 32-bit input unchanged.
+	MaxActiveCheckingTorrents *int32 `json:"max_active_checking_torrents,omitempty"`
+	MaxActiveDownloads        *int32 `json:"max_active_downloads,omitempty"`
+	MaxActiveTorrents         *int32 `json:"max_active_torrents,omitempty"`
+	MaxActiveUploads          *int32 `json:"max_active_uploads,omitempty"`
+
+	// MaxConcurrentHttpAnnounces Maximum concurrent HTTP tracker announces.
+	MaxConcurrentHttpAnnounces *int `json:"max_concurrent_http_announces,omitempty"`
+
+	// MaxConnections Global peer connection limit; -1 disables the limit and zero is rejected by the provider.
+	MaxConnections *int64 `json:"max_connec,omitempty"`
+
+	// MaxConnectionsPerTorrent Peer connection limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxConnectionsPerTorrent *int64 `json:"max_connec_per_torrent,omitempty"`
+	MaxInactiveSeedingTime   *int32 `json:"max_inactive_seeding_time,omitempty"`
+
+	// MaxOutstandingBlockRequests Maximum outstanding block requests from one peer.
+	MaxOutstandingBlockRequests *int     `json:"max_outstanding_block_requests,omitempty"`
+	MaxRatio                    *float64 `json:"max_ratio,omitempty"`
+	MaxRatioAct                 *int32   `json:"max_ratio_act,omitempty"`
+	MaxSeedingTime              *int32   `json:"max_seeding_time,omitempty"`
+
+	// MaxUploads Global upload slot limit; -1 disables the limit and zero is rejected by the provider.
+	MaxUploads *int64 `json:"max_uploads,omitempty"`
+
+	// MaxUploadsPerTorrent Upload slot limit per torrent; -1 disables the limit and zero is rejected by the provider.
+	MaxUploadsPerTorrent *int64 `json:"max_uploads_per_torrent,omitempty"`
+
+	// MemoryWorkingSetLimit Physical memory working-set limit in MiB.
+	MemoryWorkingSetLimit *int64 `json:"memory_working_set_limit,omitempty"`
+
+	// MergeTrackers Merge trackers when adding a duplicate torrent.
+	MergeTrackers *bool `json:"merge_trackers,omitempty"`
+
+	// OutgoingPortsMax Maximum outgoing port; 0 disables port restriction. Configure with outgoing_ports_min when managing a range.
+	OutgoingPortsMax *int `json:"outgoing_ports_max,omitempty"`
+
+	// OutgoingPortsMin Minimum outgoing port; 0 disables port restriction. Configure with outgoing_ports_max when managing a range.
+	OutgoingPortsMin *int `json:"outgoing_ports_min,omitempty"`
+
+	// PeerTos Peer connection DSCP/TOS value.
+	PeerTos *int `json:"peer_tos,omitempty"`
+
+	// PeerTurnover Peer turnover disconnect percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnover *int `json:"peer_turnover,omitempty"`
+
+	// PeerTurnoverCutoff Peer turnover threshold percentage; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverCutoff *int `json:"peer_turnover_cutoff,omitempty"`
+
+	// PeerTurnoverInterval Peer turnover disconnect interval in seconds; native setter stores signed 32-bit values as supplied.
+	PeerTurnoverInterval *int `json:"peer_turnover_interval,omitempty"`
+
+	// PerformanceWarning Log performance warnings.
+	PerformanceWarning *bool `json:"performance_warning,omitempty"`
+	PeX                *bool `json:"pex,omitempty"`
+
+	// PreallocateAll Preallocate disk space for all files when adding a torrent.
+	PreallocateAll       *bool                      `json:"preallocate_all,omitempty"`
+	ProxyAuthEnabled     *bool                      `json:"proxy_auth_enabled,omitempty"`
+	ProxyBittorrent      *bool                      `json:"proxy_bittorrent,omitempty"`
+	ProxyHostnameLookup  *bool                      `json:"proxy_hostname_lookup,omitempty"`
+	ProxyIP              *string                    `json:"proxy_ip,omitempty"`
+	ProxyMisc            *bool                      `json:"proxy_misc,omitempty"`
+	ProxyPassword        *string                    `json:"proxy_password,omitempty"`
+	ProxyPeerConnections *bool                      `json:"proxy_peer_connections,omitempty"`
+	ProxyPort            *int64                     `json:"proxy_port,omitempty"`
+	ProxyRSS             *bool                      `json:"proxy_rss,omitempty"`
+	ProxyType            *PreferencesPatchProxyType `json:"proxy_type,omitempty"`
+	ProxyUsername        *string                    `json:"proxy_username,omitempty"`
+
+	// PythonExecutablePath Server-side Python executable path; empty requests automatic detection. Changing this may require a qBittorrent restart.
+	PythonExecutablePath *string `json:"python_executable_path,omitempty"`
+	QueueingEnabled      *bool   `json:"queueing_enabled,omitempty"`
+
+	// ReannounceWhenAddressChanged Reannounce to trackers when the local IP address or port changes.
+	ReannounceWhenAddressChanged *bool `json:"reannounce_when_address_changed,omitempty"`
+
+	// RecheckCompletedTorrents Recheck torrents after they finish downloading.
+	RecheckCompletedTorrents *bool `json:"recheck_completed_torrents,omitempty"`
+
+	// RefreshInterval Internal state refresh interval in milliseconds.
+	RefreshInterval *int64 `json:"refresh_interval,omitempty"`
+
+	// RemoveTorrentFileBackup Remove a torrent file backup when removing its torrent.
+	RemoveTorrentFileBackup *bool `json:"remove_torrent_file_backup,omitempty"`
+
+	// RequestQueueSize Maximum outstanding requests to one peer.
+	RequestQueueSize *int `json:"request_queue_size,omitempty"`
+
+	// ResolvePeerCountries Resolve peer IP addresses to country names.
+	ResolvePeerCountries *bool `json:"resolve_peer_countries,omitempty"`
+
+	// ResolvePeerHostNames Resolve peer IP addresses to host names.
+	ResolvePeerHostNames *bool `json:"resolve_peer_host_names,omitempty"`
+
+	// ResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+	ResumeDataStorageType           *PreferencesPatchResumeDataStorageType `json:"resume_data_storage_type,omitempty"`
+	RssAutoDownloadingEnabled       *bool                                  `json:"rss_auto_downloading_enabled,omitempty"`
+	RssDownloadRepackProperEpisodes *bool                                  `json:"rss_download_repack_proper_episodes,omitempty"`
+	RssFetchDelay                   *int64                                 `json:"rss_fetch_delay,omitempty"`
+	RssMaxArticlesPerFeed           *int32                                 `json:"rss_max_articles_per_feed,omitempty"`
+	RssProcessingEnabled            *bool                                  `json:"rss_processing_enabled,omitempty"`
+	RssRefreshInterval              *int32                                 `json:"rss_refresh_interval,omitempty"`
+	RssSmartEpisodeFilters          *string                                `json:"rss_smart_episode_filters,omitempty"`
+	SavePath                        *string                                `json:"save_path,omitempty"`
+
+	// SavePathChangedTmmEnabled Relocate affected torrents when the default save path changes.
+	SavePathChangedTmmEnabled *bool `json:"save_path_changed_tmm_enabled,omitempty"`
+
+	// SaveResumeDataInterval Resume data save interval in minutes.
+	SaveResumeDataInterval *int64 `json:"save_resume_data_interval,omitempty"`
+
+	// SaveStatisticsInterval Statistics save interval in minutes.
+	SaveStatisticsInterval *int64 `json:"save_statistics_interval,omitempty"`
+
+	// ScanDirs Replaces the complete qBittorrent watched-folder map. An empty object clears all watched folders.
+	ScanDirs *map[string]PreferencesPatch_ScanDirs_AdditionalProperties `json:"scan_dirs,omitempty"`
+
+	// ScheduleFromHour Start hour; must be supplied together with schedule_from_min.
+	ScheduleFromHour *int64 `json:"schedule_from_hour,omitempty"`
+
+	// ScheduleFromMin Start minute; must be supplied together with schedule_from_hour.
+	ScheduleFromMin *int64 `json:"schedule_from_min,omitempty"`
+
+	// ScheduleToHour End hour; must be supplied together with schedule_to_min.
+	ScheduleToHour *int64 `json:"schedule_to_hour,omitempty"`
+
+	// ScheduleToMin End minute; must be supplied together with schedule_to_hour.
+	ScheduleToMin *int64 `json:"schedule_to_min,omitempty"`
+
+	// SchedulerDays 0 every day, 1 weekdays, 2 weekends, 3 Monday, 4 Tuesday, 5 Wednesday, 6 Thursday, 7 Friday, 8 Saturday, 9 Sunday.
+	SchedulerDays *int64 `json:"scheduler_days,omitempty"`
+
+	// SchedulerEnabled Schedule alternative rate limits using the server local time.
+	SchedulerEnabled *bool `json:"scheduler_enabled,omitempty"`
+
+	// SeedingOutgoingConnections Allow outgoing connections while seeding.
+	SeedingOutgoingConnections *bool `json:"seeding_outgoing_connections,omitempty"`
+
+	// SendBufferLowWatermark Low send buffer watermark in KiB (wire units).
+	SendBufferLowWatermark *int `json:"send_buffer_low_watermark,omitempty"`
+
+	// SendBufferWatermark Send buffer watermark in KiB (wire units).
+	SendBufferWatermark *int `json:"send_buffer_watermark,omitempty"`
+
+	// SendBufferWatermarkFactor Send buffer watermark growth factor in percent.
+	SendBufferWatermarkFactor *int                             `json:"send_buffer_watermark_factor,omitempty"`
+	ShareLimitsMode           *PreferencesPatchShareLimitsMode `json:"share_limits_mode,omitempty"`
+
+	// ShutdownTimeout Session shutdown timeout in seconds; -1 means unlimited.
+	ShutdownTimeout *int64 `json:"shutdown_timeout,omitempty"`
+
+	// SlowTorrentDlRateThreshold Download threshold in KiB/s; native setter stores signed 32-bit input unchanged.
+	SlowTorrentDlRateThreshold *int32 `json:"slow_torrent_dl_rate_threshold,omitempty"`
+
+	// SlowTorrentInactiveTimer Inactivity threshold in seconds; native setter stores signed 32-bit input unchanged.
+	SlowTorrentInactiveTimer *int32 `json:"slow_torrent_inactive_timer,omitempty"`
+
+	// SlowTorrentUlRateThreshold Upload threshold in KiB/s; native setter stores signed 32-bit input unchanged.
+	SlowTorrentUlRateThreshold *int32 `json:"slow_torrent_ul_rate_threshold,omitempty"`
+
+	// SocketBacklogSize Listen socket backlog size.
+	SocketBacklogSize *int `json:"socket_backlog_size,omitempty"`
+
+	// SocketReceiveBufferSize Socket receive buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketReceiveBufferSize *int `json:"socket_receive_buffer_size,omitempty"`
+
+	// SocketSendBufferSize Socket send buffer in bytes on the wire (the UI displays KiB); 0 selects the system default.
+	SocketSendBufferSize *int `json:"socket_send_buffer_size,omitempty"`
+
+	// SSRFMitigation Mitigate server-side request forgery in tracker requests; keep enabled unless explicitly changing the server's security policy.
+	SSRFMitigation *bool `json:"ssrf_mitigation,omitempty"`
+
+	// StartPaused Start the BitTorrent session in the paused state.
+	StartPaused *bool `json:"start_paused,omitempty"`
+
+	// StatusBarExternalIP Show external IP in the status bar.
+	StatusBarExternalIP *bool `json:"status_bar_external_ip,omitempty"`
+
+	// StopTrackerTimeout Stop tracker announce timeout in seconds; 0 disables the timeout.
+	StopTrackerTimeout *int `json:"stop_tracker_timeout,omitempty"`
+
+	// StoreSearchJobResults Save search results with search tabs.
+	StoreSearchJobResults *bool `json:"store_search_job_results,omitempty"`
+
+	// StoreSearchJobs Save search tabs.
+	StoreSearchJobs *bool   `json:"store_search_jobs,omitempty"`
+	TempPath        *string `json:"temp_path,omitempty"`
+	TempPathEnabled *bool   `json:"temp_path_enabled,omitempty"`
+
+	// TorrentChangedTmmEnabled Relocate torrents when their category changes.
+	TorrentChangedTmmEnabled *bool `json:"torrent_changed_tmm_enabled,omitempty"`
+
+	// TorrentContentLayout Layout for the content directory when adding torrents.
+	TorrentContentLayout *PreferencesPatchTorrentContentLayout `json:"torrent_content_layout,omitempty"`
+
+	// TorrentContentRemoveOption Torrent content removal mode.
+	TorrentContentRemoveOption *PreferencesPatchTorrentContentRemoveOption `json:"torrent_content_remove_option,omitempty"`
+
+	// TorrentFileSizeLimit .torrent file size limit in bytes (the UI displays MiB).
+	TorrentFileSizeLimit *int64 `json:"torrent_file_size_limit,omitempty"`
+
+	// TorrentFilesBackupDir Server directory for torrent file backups.
+	TorrentFilesBackupDir *string `json:"torrent_files_backup_dir,omitempty"`
+
+	// TorrentFilesBackupEnabled Back up torrent files.
+	TorrentFilesBackupEnabled *bool `json:"torrent_files_backup_enabled,omitempty"`
+
+	// TorrentFilesFinishedBackupDir Server directory for finished torrent file backups.
+	TorrentFilesFinishedBackupDir *string `json:"torrent_files_finished_backup_dir,omitempty"`
+
+	// TorrentFilesFinishedBackupDirEnabled Move finished torrent file backups to a separate directory.
+	TorrentFilesFinishedBackupDirEnabled *bool `json:"torrent_files_finished_backup_dir_enabled,omitempty"`
+
+	// TorrentStopCondition Condition at which a torrent stops automatically.
+	TorrentStopCondition *PreferencesPatchTorrentStopCondition `json:"torrent_stop_condition,omitempty"`
+
+	// UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
+	UploadLimit *UploadLimit `json:"up_limit,omitempty"`
+
+	// UploadChokingAlgorithm Seed choking algorithm: 0 round-robin, 1 fastest upload, 2 anti-leech.
+	UploadChokingAlgorithm *int `json:"upload_choking_algorithm,omitempty"`
+
+	// UploadSlotsBehavior Upload slot behavior: 0 fixed slots, 1 upload-rate-based.
+	UploadSlotsBehavior *int  `json:"upload_slots_behavior,omitempty"`
+	UPnP                *bool `json:"upnp,omitempty"`
+
+	// UPnPLeaseDuration UPnP lease duration in seconds; 0 requests a permanent lease.
+	UPnPLeaseDuration *int `json:"upnp_lease_duration,omitempty"`
+
+	// UseCategoryPathsInManualMode Resolve relative save paths against the category path in Manual Mode.
+	UseCategoryPathsInManualMode *bool `json:"use_category_paths_in_manual_mode,omitempty"`
+	UseHttps                     *bool `json:"use_https,omitempty"`
+
+	// UseUnwantedFolder Keep unselected files in the .unwanted folder.
+	UseUnwantedFolder *bool `json:"use_unwanted_folder,omitempty"`
+
+	// UtpTcpMixedMode Mixed uTP/TCP mode: 0 prefer TCP, 1 peer proportional.
+	UtpTcpMixedMode *int `json:"utp_tcp_mixed_mode,omitempty"`
+
+	// ValidateHttpsTrackerCertificate Validate HTTPS tracker certificates; keep enabled unless explicitly changing the server's security policy.
+	ValidateHttpsTrackerCertificate    *bool   `json:"validate_https_tracker_certificate,omitempty"`
+	WebUIAddress                       *string `json:"web_ui_address,omitempty"`
+	WebUIBanDuration                   *int32  `json:"web_ui_ban_duration,omitempty"`
+	WebUIClickjackingProtectionEnabled *bool   `json:"web_ui_clickjacking_protection_enabled,omitempty"`
+	WebUICSRFProtectionEnabled         *bool   `json:"web_ui_csrf_protection_enabled,omitempty"`
+	WebUICustomHTTPHeaders             *string `json:"web_ui_custom_http_headers,omitempty"`
+	WebUIDomainList                    *string `json:"web_ui_domain_list,omitempty"`
+	WebUIHostHeaderValidationEnabled   *bool   `json:"web_ui_host_header_validation_enabled,omitempty"`
+	WebUIHttpsCertPath                 *string `json:"web_ui_https_cert_path,omitempty"`
+	WebUIHttpsKeyPath                  *string `json:"web_ui_https_key_path,omitempty"`
+	WebUIMaxAuthFailCount              *int32  `json:"web_ui_max_auth_fail_count,omitempty"`
+	WebUIPassword                      *string `json:"web_ui_password,omitempty"`
+	WebUIPort                          *int32  `json:"web_ui_port,omitempty"`
+	WebUIReverseProxiesList            *string `json:"web_ui_reverse_proxies_list,omitempty"`
+	WebUIReverseProxyEnabled           *bool   `json:"web_ui_reverse_proxy_enabled,omitempty"`
+	WebUISecureCookieEnabled           *bool   `json:"web_ui_secure_cookie_enabled,omitempty"`
+	WebUISessionTimeout                *int32  `json:"web_ui_session_timeout,omitempty"`
+	WebUISessionsCountLimit            *int32  `json:"web_ui_sessions_count_limit,omitempty"`
+	WebUIUPnP                          *bool   `json:"web_ui_upnp,omitempty"`
+	WebUIUseCustomHTTPHeadersEnabled   *bool   `json:"web_ui_use_custom_http_headers_enabled,omitempty"`
+	WebUIUsername                      *string `json:"web_ui_username,omitempty"`
+
+	// WebtorrentStunServer WebTorrent NAT traversal STUN server; runtime application requires LIBTORRENT_VERSION_NUM >= 20100.
+	WebtorrentStunServer *string `json:"webtorrent_stun_server,omitempty"`
+}
+
+// PreferencesPatchAutoDeleteMode Delete the source .torrent file; 0 never, 1 after a successful add, 2 also when adding is cancelled.
+type PreferencesPatchAutoDeleteMode int
+
+// PreferencesPatchBittorrentProtocol 0 TCP and µTP, 1 TCP only, 2 µTP only.
+type PreferencesPatchBittorrentProtocol int64
+
+// PreferencesPatchMailNotificationEncryptionType SMTP encryption mode.
+type PreferencesPatchMailNotificationEncryptionType string
+
+// PreferencesPatchProxyType defines model for PreferencesPatch.ProxyType.
+type PreferencesPatchProxyType string
+
+// PreferencesPatchResumeDataStorageType Resume data storage backend. Changing this setting requires a qBittorrent restart.
+type PreferencesPatchResumeDataStorageType string
+
+// PreferencesPatchScanDirs0 defines model for PreferencesPatch.ScanDirs.0.
+type PreferencesPatchScanDirs0 int
+
+// PreferencesPatchScanDirs1 defines model for PreferencesPatch.ScanDirs.1.
+type PreferencesPatchScanDirs1 = string
+
+// PreferencesPatch_ScanDirs_AdditionalProperties defines model for PreferencesPatch.scan_dirs.AdditionalProperties.
+type PreferencesPatch_ScanDirs_AdditionalProperties struct {
+	union json.RawMessage
+}
+
+// PreferencesPatchShareLimitsMode defines model for PreferencesPatch.ShareLimitsMode.
+type PreferencesPatchShareLimitsMode string
+
+// PreferencesPatchTorrentContentLayout Layout for the content directory when adding torrents.
+type PreferencesPatchTorrentContentLayout string
+
+// PreferencesPatchTorrentContentRemoveOption Torrent content removal mode.
+type PreferencesPatchTorrentContentRemoveOption string
+
+// PreferencesPatchTorrentStopCondition Condition at which a torrent stops automatically.
+type PreferencesPatchTorrentStopCondition string
+
+// RSSRule defines model for RSSRule.
+type RSSRule struct {
+	AddPaused        *bool    `json:"addPaused"`
+	AffectedFeeds    []string `json:"affectedFeeds"`
+	AssignedCategory string   `json:"assignedCategory"`
+	Enabled          bool     `json:"enabled"`
+	EpisodeFilter    string   `json:"episodeFilter"`
+	IgnoreDays       int32    `json:"ignoreDays"`
+
+	// LastMatch Runtime history; preserve when replacing a rule.
+	LastMatch      string `json:"lastMatch"`
+	MustContain    string `json:"mustContain"`
+	MustNotContain string `json:"mustNotContain"`
+
+	// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+	PreviouslyMatchedEpisodes []string                     `json:"previouslyMatchedEpisodes"`
+	Priority                  int32                        `json:"priority"`
+	SavePath                  string                       `json:"savePath"`
+	SmartFilter               bool                         `json:"smartFilter"`
+	TorrentContentLayout      *RSSRuleTorrentContentLayout `json:"torrentContentLayout"`
+
+	// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+	TorrentParams struct {
+		AddToTopOfQueue          *bool                              `json:"add_to_top_of_queue,omitempty"`
+		Category                 *string                            `json:"category,omitempty"`
+		ContentLayout            *RSSRuleTorrentParamsContentLayout `json:"content_layout,omitempty"`
+		DownloadLimit            *int64                             `json:"download_limit,omitempty"`
+		DownloadPath             *string                            `json:"download_path,omitempty"`
+		InactiveSeedingTimeLimit *int32                             `json:"inactive_seeding_time_limit,omitempty"`
+		OperatingMode            *RSSRuleTorrentParamsOperatingMode `json:"operating_mode,omitempty"`
+		RatioLimit               *float64                           `json:"ratio_limit,omitempty"`
+		SavePath                 *string                            `json:"save_path,omitempty"`
+		SeedMode                 *bool                              `json:"seed_mode,omitempty"`
+		SeedingTimeLimit         *int32                             `json:"seeding_time_limit,omitempty"`
+		ShareLimitAction         *string                            `json:"share_limit_action,omitempty"`
+		ShareLimitsMode          *string                            `json:"share_limits_mode,omitempty"`
+		StopCondition            *string                            `json:"stop_condition,omitempty"`
+		Stopped                  *bool                              `json:"stopped,omitempty"`
+		Tags                     *[]string                          `json:"tags,omitempty"`
+		UploadLimit              *int64                             `json:"upload_limit,omitempty"`
+		UseAutoTmm               *bool                              `json:"use_auto_tmm,omitempty"`
+		UseDownloadPath          *bool                              `json:"use_download_path,omitempty"`
+	} `json:"torrentParams"`
+	UseRegex bool `json:"useRegex"`
+}
+
+// RSSRuleTorrentContentLayout defines model for RSSRule.TorrentContentLayout.
+type RSSRuleTorrentContentLayout string
+
+// RSSRuleTorrentParamsContentLayout defines model for RSSRule.TorrentParams.ContentLayout.
+type RSSRuleTorrentParamsContentLayout string
+
+// RSSRuleTorrentParamsOperatingMode defines model for RSSRule.TorrentParams.OperatingMode.
+type RSSRuleTorrentParamsOperatingMode string
+
+// RSSRules defines model for RSSRules.
+type RSSRules map[string]struct {
+	AddPaused        *bool    `json:"addPaused"`
+	AffectedFeeds    []string `json:"affectedFeeds"`
+	AssignedCategory string   `json:"assignedCategory"`
+	Enabled          bool     `json:"enabled"`
+	EpisodeFilter    string   `json:"episodeFilter"`
+	IgnoreDays       int32    `json:"ignoreDays"`
+
+	// LastMatch Runtime history; preserve when replacing a rule.
+	LastMatch      string `json:"lastMatch"`
+	MustContain    string `json:"mustContain"`
+	MustNotContain string `json:"mustNotContain"`
+
+	// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+	PreviouslyMatchedEpisodes []string                      `json:"previouslyMatchedEpisodes"`
+	Priority                  int32                         `json:"priority"`
+	SavePath                  string                        `json:"savePath"`
+	SmartFilter               bool                          `json:"smartFilter"`
+	TorrentContentLayout      *RSSRulesTorrentContentLayout `json:"torrentContentLayout"`
+
+	// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+	TorrentParams struct {
+		AddToTopOfQueue          *bool                               `json:"add_to_top_of_queue,omitempty"`
+		Category                 *string                             `json:"category,omitempty"`
+		ContentLayout            *RSSRulesTorrentParamsContentLayout `json:"content_layout,omitempty"`
+		DownloadLimit            *int64                              `json:"download_limit,omitempty"`
+		DownloadPath             *string                             `json:"download_path,omitempty"`
+		InactiveSeedingTimeLimit *int32                              `json:"inactive_seeding_time_limit,omitempty"`
+		OperatingMode            *RSSRulesTorrentParamsOperatingMode `json:"operating_mode,omitempty"`
+		RatioLimit               *float64                            `json:"ratio_limit,omitempty"`
+		SavePath                 *string                             `json:"save_path,omitempty"`
+		SeedMode                 *bool                               `json:"seed_mode,omitempty"`
+		SeedingTimeLimit         *int32                              `json:"seeding_time_limit,omitempty"`
+		ShareLimitAction         *string                             `json:"share_limit_action,omitempty"`
+		ShareLimitsMode          *string                             `json:"share_limits_mode,omitempty"`
+		StopCondition            *string                             `json:"stop_condition,omitempty"`
+		Stopped                  *bool                               `json:"stopped,omitempty"`
+		Tags                     *[]string                           `json:"tags,omitempty"`
+		UploadLimit              *int64                              `json:"upload_limit,omitempty"`
+		UseAutoTmm               *bool                               `json:"use_auto_tmm,omitempty"`
+		UseDownloadPath          *bool                               `json:"use_download_path,omitempty"`
+	} `json:"torrentParams"`
+	UseRegex bool `json:"useRegex"`
+}
+
+// RSSRulesTorrentContentLayout defines model for RSSRules.TorrentContentLayout.
+type RSSRulesTorrentContentLayout string
+
+// RSSRulesTorrentParamsContentLayout defines model for RSSRules.TorrentParams.ContentLayout.
+type RSSRulesTorrentParamsContentLayout string
+
+// RSSRulesTorrentParamsOperatingMode defines model for RSSRules.TorrentParams.OperatingMode.
+type RSSRulesTorrentParamsOperatingMode string
+
+// RemoveRSSRuleForm defines model for RemoveRSSRuleForm.
+type RemoveRSSRuleForm struct {
+	RuleName string `json:"ruleName"`
+}
+
+// SetRSSRuleForm defines model for SetRSSRuleForm.
+type SetRSSRuleForm struct {
+	// RuleDef JSON-encoded RSS rule definition.
+	RuleDef  string `json:"ruleDef"`
+	RuleName string `json:"ruleName"`
+}
+
 // UploadLimit Bytes/second; 0 is unlimited. The server quantizes to multiples of 1024; provider maximum is 2147482624.
 type UploadLimit = int64
 
@@ -164,6 +2086,27 @@ type StoreClientDataFormdataBody struct {
 	Data string `form:"data" json:"data"`
 }
 
+// RemoveRSSRuleFormdataBody defines parameters for RemoveRSSRule.
+type RemoveRSSRuleFormdataBody struct {
+	RuleName string `form:"ruleName" json:"ruleName"`
+}
+
+// GetRSSRules200JSONResponseBodyTorrentContentLayout defines parameters for GetRSSRules.
+type GetRSSRules200JSONResponseBodyTorrentContentLayout string
+
+// GetRSSRules200JSONResponseBodyTorrentParamsContentLayout defines parameters for GetRSSRules.
+type GetRSSRules200JSONResponseBodyTorrentParamsContentLayout string
+
+// GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode defines parameters for GetRSSRules.
+type GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode string
+
+// SetRSSRuleFormdataBody defines parameters for SetRSSRule.
+type SetRSSRuleFormdataBody struct {
+	// RuleDef JSON-encoded RSS rule definition.
+	RuleDef  string `form:"ruleDef" json:"ruleDef"`
+	RuleName string `form:"ruleName" json:"ruleName"`
+}
+
 // CreateCategoryFormdataBody defines parameters for CreateCategory.
 type CreateCategoryFormdataBody struct {
 	Category string `form:"category" json:"category"`
@@ -198,6 +2141,12 @@ type LoadClientDataFormdataRequestBody LoadClientDataFormdataBody
 // StoreClientDataFormdataRequestBody defines body for StoreClientData for application/x-www-form-urlencoded ContentType.
 type StoreClientDataFormdataRequestBody StoreClientDataFormdataBody
 
+// RemoveRSSRuleFormdataRequestBody defines body for RemoveRSSRule for application/x-www-form-urlencoded ContentType.
+type RemoveRSSRuleFormdataRequestBody RemoveRSSRuleFormdataBody
+
+// SetRSSRuleFormdataRequestBody defines body for SetRSSRule for application/x-www-form-urlencoded ContentType.
+type SetRSSRuleFormdataRequestBody SetRSSRuleFormdataBody
+
 // CreateCategoryFormdataRequestBody defines body for CreateCategory for application/x-www-form-urlencoded ContentType.
 type CreateCategoryFormdataRequestBody CreateCategoryFormdataBody
 
@@ -206,6 +2155,130 @@ type EditCategoryFormdataRequestBody EditCategoryFormdataBody
 
 // RemoveCategoriesFormdataRequestBody defines body for RemoveCategories for application/x-www-form-urlencoded ContentType.
 type RemoveCategoriesFormdataRequestBody RemoveCategoriesFormdataBody
+
+// AsPreferencesScanDirs0 returns the union data inside the Preferences_ScanDirs_AdditionalProperties as a PreferencesScanDirs0
+func (t Preferences_ScanDirs_AdditionalProperties) AsPreferencesScanDirs0() (PreferencesScanDirs0, error) {
+	var body PreferencesScanDirs0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesScanDirs0 overwrites any union data inside the Preferences_ScanDirs_AdditionalProperties as the provided PreferencesScanDirs0
+func (t *Preferences_ScanDirs_AdditionalProperties) FromPreferencesScanDirs0(v PreferencesScanDirs0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesScanDirs0 performs a merge with any union data inside the Preferences_ScanDirs_AdditionalProperties, using the provided PreferencesScanDirs0
+func (t *Preferences_ScanDirs_AdditionalProperties) MergePreferencesScanDirs0(v PreferencesScanDirs0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsPreferencesScanDirs1 returns the union data inside the Preferences_ScanDirs_AdditionalProperties as a PreferencesScanDirs1
+func (t Preferences_ScanDirs_AdditionalProperties) AsPreferencesScanDirs1() (PreferencesScanDirs1, error) {
+	var body PreferencesScanDirs1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesScanDirs1 overwrites any union data inside the Preferences_ScanDirs_AdditionalProperties as the provided PreferencesScanDirs1
+func (t *Preferences_ScanDirs_AdditionalProperties) FromPreferencesScanDirs1(v PreferencesScanDirs1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesScanDirs1 performs a merge with any union data inside the Preferences_ScanDirs_AdditionalProperties, using the provided PreferencesScanDirs1
+func (t *Preferences_ScanDirs_AdditionalProperties) MergePreferencesScanDirs1(v PreferencesScanDirs1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t Preferences_ScanDirs_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *Preferences_ScanDirs_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPreferencesPatchScanDirs0 returns the union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as a PreferencesPatchScanDirs0
+func (t PreferencesPatch_ScanDirs_AdditionalProperties) AsPreferencesPatchScanDirs0() (PreferencesPatchScanDirs0, error) {
+	var body PreferencesPatchScanDirs0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesPatchScanDirs0 overwrites any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as the provided PreferencesPatchScanDirs0
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) FromPreferencesPatchScanDirs0(v PreferencesPatchScanDirs0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesPatchScanDirs0 performs a merge with any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties, using the provided PreferencesPatchScanDirs0
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) MergePreferencesPatchScanDirs0(v PreferencesPatchScanDirs0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsPreferencesPatchScanDirs1 returns the union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as a PreferencesPatchScanDirs1
+func (t PreferencesPatch_ScanDirs_AdditionalProperties) AsPreferencesPatchScanDirs1() (PreferencesPatchScanDirs1, error) {
+	var body PreferencesPatchScanDirs1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPreferencesPatchScanDirs1 overwrites any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties as the provided PreferencesPatchScanDirs1
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) FromPreferencesPatchScanDirs1(v PreferencesPatchScanDirs1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePreferencesPatchScanDirs1 performs a merge with any union data inside the PreferencesPatch_ScanDirs_AdditionalProperties, using the provided PreferencesPatchScanDirs1
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) MergePreferencesPatchScanDirs1(v PreferencesPatchScanDirs1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t PreferencesPatch_ScanDirs_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *PreferencesPatch_ScanDirs_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // RequestEditorFn is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -361,6 +2434,39 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
 	StoreClientDataWithFormdataBody(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveRSSRuleWithBody Remove an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveRSSRuleWithFormdataBody Remove an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithFormdataBody(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetRSSRules Read RSS auto-download rules
+	//
+	// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+	GetRSSRules(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetRSSRuleWithBody Create or update an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetRSSRuleWithFormdataBody Create or update an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithFormdataBody(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetCategories Read categories keyed by name
 	//
@@ -603,6 +2709,89 @@ func (c *Client) StoreClientDataWithBody(ctx context.Context, contentType string
 // Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
 func (c *Client) StoreClientDataWithFormdataBody(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewStoreClientDataRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RemoveRSSRuleWithBody Remove an RSS auto-download rule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *Client) RemoveRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveRSSRuleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RemoveRSSRuleWithFormdataBody Remove an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *Client) RemoveRSSRuleWithFormdataBody(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveRSSRuleRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetRSSRules Read RSS auto-download rules
+//
+// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+func (c *Client) GetRSSRules(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRSSRulesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SetRSSRuleWithBody Create or update an RSS auto-download rule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *Client) SetRSSRuleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetRSSRuleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SetRSSRuleWithFormdataBody Create or update an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *Client) SetRSSRuleWithFormdataBody(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetRSSRuleRequestWithFormdataBody(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -983,6 +3172,113 @@ func NewStoreClientDataRequestWithBody(server string, contentType string, body i
 	return req, nil
 }
 
+// NewRemoveRSSRuleRequestWithFormdataBody calls the generic RemoveRSSRule builder with application/x-www-form-urlencoded body
+func NewRemoveRSSRuleRequestWithFormdataBody(server string, body RemoveRSSRuleFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewRemoveRSSRuleRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewRemoveRSSRuleRequestWithBody constructs an http.Request for the RemoveRSSRule method, with any body, and a specified content type
+func NewRemoveRSSRuleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/rss/removeRule")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetRSSRulesRequest constructs an http.Request for the GetRSSRules method
+func NewGetRSSRulesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/rss/rules")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetRSSRuleRequestWithFormdataBody calls the generic SetRSSRule builder with application/x-www-form-urlencoded body
+func NewSetRSSRuleRequestWithFormdataBody(server string, body SetRSSRuleFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewSetRSSRuleRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewSetRSSRuleRequestWithBody constructs an http.Request for the SetRSSRule method, with any body, and a specified content type
+func NewSetRSSRuleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/rss/setRule")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetCategoriesRequest constructs an http.Request for the GetCategories method
 func NewGetCategoriesRequest(server string) (*http.Request, error) {
 	var err error
@@ -1260,6 +3556,41 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /clientdata/store (the `StoreClientData` operationId).
 	StoreClientDataWithFormdataBodyWithResponse(ctx context.Context, body StoreClientDataFormdataRequestBody, reqEditors ...RequestEditorFn) (*StoreClientDataResponse, error)
+
+	// RemoveRSSRuleWithBodyWithResponse Remove an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error)
+
+	// RemoveRSSRuleWithFormdataBodyWithResponse Remove an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+	RemoveRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error)
+
+	// GetRSSRulesWithResponse Read RSS auto-download rules
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+	GetRSSRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRSSRulesResponse, error)
+
+	// SetRSSRuleWithBodyWithResponse Create or update an RSS auto-download rule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error)
+
+	// SetRSSRuleWithFormdataBodyWithResponse Create or update an RSS auto-download rule
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+	SetRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error)
 
 	// GetCategoriesWithResponse Read categories keyed by name
 	//
@@ -1575,6 +3906,201 @@ func (r StoreClientDataResponse) ContentType() string {
 	return ""
 }
 
+type RemoveRSSRuleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r RemoveRSSRuleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RemoveRSSRuleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RemoveRSSRuleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RemoveRSSRuleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetRSSRulesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *map[string]struct {
+		AddPaused        *bool    `json:"addPaused"`
+		AffectedFeeds    []string `json:"affectedFeeds"`
+		AssignedCategory string   `json:"assignedCategory"`
+		Enabled          bool     `json:"enabled"`
+		EpisodeFilter    string   `json:"episodeFilter"`
+		IgnoreDays       int32    `json:"ignoreDays"`
+
+		// LastMatch Runtime history; preserve when replacing a rule.
+		LastMatch      string `json:"lastMatch"`
+		MustContain    string `json:"mustContain"`
+		MustNotContain string `json:"mustNotContain"`
+
+		// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+		PreviouslyMatchedEpisodes []string                                            `json:"previouslyMatchedEpisodes"`
+		Priority                  int32                                               `json:"priority"`
+		SavePath                  string                                              `json:"savePath"`
+		SmartFilter               bool                                                `json:"smartFilter"`
+		TorrentContentLayout      *GetRSSRules200JSONResponseBodyTorrentContentLayout `json:"torrentContentLayout"`
+
+		// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+		TorrentParams struct {
+			AddToTopOfQueue          *bool                                                     `json:"add_to_top_of_queue,omitempty"`
+			Category                 *string                                                   `json:"category,omitempty"`
+			ContentLayout            *GetRSSRules200JSONResponseBodyTorrentParamsContentLayout `json:"content_layout,omitempty"`
+			DownloadLimit            *int64                                                    `json:"download_limit,omitempty"`
+			DownloadPath             *string                                                   `json:"download_path,omitempty"`
+			InactiveSeedingTimeLimit *int32                                                    `json:"inactive_seeding_time_limit,omitempty"`
+			OperatingMode            *GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode `json:"operating_mode,omitempty"`
+			RatioLimit               *float64                                                  `json:"ratio_limit,omitempty"`
+			SavePath                 *string                                                   `json:"save_path,omitempty"`
+			SeedMode                 *bool                                                     `json:"seed_mode,omitempty"`
+			SeedingTimeLimit         *int32                                                    `json:"seeding_time_limit,omitempty"`
+			ShareLimitAction         *string                                                   `json:"share_limit_action,omitempty"`
+			ShareLimitsMode          *string                                                   `json:"share_limits_mode,omitempty"`
+			StopCondition            *string                                                   `json:"stop_condition,omitempty"`
+			Stopped                  *bool                                                     `json:"stopped,omitempty"`
+			Tags                     *[]string                                                 `json:"tags,omitempty"`
+			UploadLimit              *int64                                                    `json:"upload_limit,omitempty"`
+			UseAutoTmm               *bool                                                     `json:"use_auto_tmm,omitempty"`
+			UseDownloadPath          *bool                                                     `json:"use_download_path,omitempty"`
+		} `json:"torrentParams"`
+		UseRegex bool `json:"useRegex"`
+	}
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetRSSRulesResponse) GetJSON200() *map[string]struct {
+	AddPaused        *bool    `json:"addPaused"`
+	AffectedFeeds    []string `json:"affectedFeeds"`
+	AssignedCategory string   `json:"assignedCategory"`
+	Enabled          bool     `json:"enabled"`
+	EpisodeFilter    string   `json:"episodeFilter"`
+	IgnoreDays       int32    `json:"ignoreDays"`
+
+	// LastMatch Runtime history; preserve when replacing a rule.
+	LastMatch      string `json:"lastMatch"`
+	MustContain    string `json:"mustContain"`
+	MustNotContain string `json:"mustNotContain"`
+
+	// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+	PreviouslyMatchedEpisodes []string                                            `json:"previouslyMatchedEpisodes"`
+	Priority                  int32                                               `json:"priority"`
+	SavePath                  string                                              `json:"savePath"`
+	SmartFilter               bool                                                `json:"smartFilter"`
+	TorrentContentLayout      *GetRSSRules200JSONResponseBodyTorrentContentLayout `json:"torrentContentLayout"`
+
+	// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+	TorrentParams struct {
+		AddToTopOfQueue          *bool                                                     `json:"add_to_top_of_queue,omitempty"`
+		Category                 *string                                                   `json:"category,omitempty"`
+		ContentLayout            *GetRSSRules200JSONResponseBodyTorrentParamsContentLayout `json:"content_layout,omitempty"`
+		DownloadLimit            *int64                                                    `json:"download_limit,omitempty"`
+		DownloadPath             *string                                                   `json:"download_path,omitempty"`
+		InactiveSeedingTimeLimit *int32                                                    `json:"inactive_seeding_time_limit,omitempty"`
+		OperatingMode            *GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode `json:"operating_mode,omitempty"`
+		RatioLimit               *float64                                                  `json:"ratio_limit,omitempty"`
+		SavePath                 *string                                                   `json:"save_path,omitempty"`
+		SeedMode                 *bool                                                     `json:"seed_mode,omitempty"`
+		SeedingTimeLimit         *int32                                                    `json:"seeding_time_limit,omitempty"`
+		ShareLimitAction         *string                                                   `json:"share_limit_action,omitempty"`
+		ShareLimitsMode          *string                                                   `json:"share_limits_mode,omitempty"`
+		StopCondition            *string                                                   `json:"stop_condition,omitempty"`
+		Stopped                  *bool                                                     `json:"stopped,omitempty"`
+		Tags                     *[]string                                                 `json:"tags,omitempty"`
+		UploadLimit              *int64                                                    `json:"upload_limit,omitempty"`
+		UseAutoTmm               *bool                                                     `json:"use_auto_tmm,omitempty"`
+		UseDownloadPath          *bool                                                     `json:"use_download_path,omitempty"`
+	} `json:"torrentParams"`
+	UseRegex bool `json:"useRegex"`
+} {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r GetRSSRulesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetRSSRulesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetRSSRulesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetRSSRulesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type SetRSSRuleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r SetRSSRuleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SetRSSRuleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetRSSRuleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SetRSSRuleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetCategoriesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -1871,6 +4397,71 @@ func (c *ClientWithResponses) StoreClientDataWithFormdataBodyWithResponse(ctx co
 	return ParseStoreClientDataResponse(rsp)
 }
 
+// RemoveRSSRuleWithBodyWithResponse Remove an RSS auto-download rule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *ClientWithResponses) RemoveRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error) {
+	rsp, err := c.RemoveRSSRuleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveRSSRuleResponse(rsp)
+}
+
+// RemoveRSSRuleWithFormdataBodyWithResponse Remove an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/removeRule (the `RemoveRSSRule` operationId).
+func (c *ClientWithResponses) RemoveRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body RemoveRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*RemoveRSSRuleResponse, error) {
+	rsp, err := c.RemoveRSSRuleWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveRSSRuleResponse(rsp)
+}
+
+// GetRSSRulesWithResponse Read RSS auto-download rules
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /rss/rules (the `GetRSSRules` operationId).
+func (c *ClientWithResponses) GetRSSRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRSSRulesResponse, error) {
+	rsp, err := c.GetRSSRules(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetRSSRulesResponse(rsp)
+}
+
+// SetRSSRuleWithBodyWithResponse Create or update an RSS auto-download rule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *ClientWithResponses) SetRSSRuleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error) {
+	rsp, err := c.SetRSSRuleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetRSSRuleResponse(rsp)
+}
+
+// SetRSSRuleWithFormdataBodyWithResponse Create or update an RSS auto-download rule
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /rss/setRule (the `SetRSSRule` operationId).
+func (c *ClientWithResponses) SetRSSRuleWithFormdataBodyWithResponse(ctx context.Context, body SetRSSRuleFormdataRequestBody, reqEditors ...RequestEditorFn) (*SetRSSRuleResponse, error) {
+	rsp, err := c.SetRSSRuleWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetRSSRuleResponse(rsp)
+}
+
 // GetCategoriesWithResponse Read categories keyed by name
 //
 // Returns a wrapper object for the known response body format(s).
@@ -2099,6 +4690,107 @@ func ParseStoreClientDataResponse(rsp *http.Response) (*StoreClientDataResponse,
 	}
 
 	response := &StoreClientDataResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseRemoveRSSRuleResponse parses an HTTP response from a RemoveRSSRuleWithResponse call
+func ParseRemoveRSSRuleResponse(rsp *http.Response) (*RemoveRSSRuleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RemoveRSSRuleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetRSSRulesResponse parses an HTTP response from a GetRSSRulesWithResponse call
+func ParseGetRSSRulesResponse(rsp *http.Response) (*GetRSSRulesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRSSRulesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest map[string]struct {
+			AddPaused        *bool    `json:"addPaused"`
+			AffectedFeeds    []string `json:"affectedFeeds"`
+			AssignedCategory string   `json:"assignedCategory"`
+			Enabled          bool     `json:"enabled"`
+			EpisodeFilter    string   `json:"episodeFilter"`
+			IgnoreDays       int32    `json:"ignoreDays"`
+
+			// LastMatch Runtime history; preserve when replacing a rule.
+			LastMatch      string `json:"lastMatch"`
+			MustContain    string `json:"mustContain"`
+			MustNotContain string `json:"mustNotContain"`
+
+			// PreviouslyMatchedEpisodes Runtime history; preserve when replacing a rule.
+			PreviouslyMatchedEpisodes []string                                            `json:"previouslyMatchedEpisodes"`
+			Priority                  int32                                               `json:"priority"`
+			SavePath                  string                                              `json:"savePath"`
+			SmartFilter               bool                                                `json:"smartFilter"`
+			TorrentContentLayout      *GetRSSRules200JSONResponseBodyTorrentContentLayout `json:"torrentContentLayout"`
+
+			// TorrentParams Public AddTorrentParams values supported inside an RSS rule. Private TLS material and file-selection internals are excluded.
+			TorrentParams struct {
+				AddToTopOfQueue          *bool                                                     `json:"add_to_top_of_queue,omitempty"`
+				Category                 *string                                                   `json:"category,omitempty"`
+				ContentLayout            *GetRSSRules200JSONResponseBodyTorrentParamsContentLayout `json:"content_layout,omitempty"`
+				DownloadLimit            *int64                                                    `json:"download_limit,omitempty"`
+				DownloadPath             *string                                                   `json:"download_path,omitempty"`
+				InactiveSeedingTimeLimit *int32                                                    `json:"inactive_seeding_time_limit,omitempty"`
+				OperatingMode            *GetRSSRules200JSONResponseBodyTorrentParamsOperatingMode `json:"operating_mode,omitempty"`
+				RatioLimit               *float64                                                  `json:"ratio_limit,omitempty"`
+				SavePath                 *string                                                   `json:"save_path,omitempty"`
+				SeedMode                 *bool                                                     `json:"seed_mode,omitempty"`
+				SeedingTimeLimit         *int32                                                    `json:"seeding_time_limit,omitempty"`
+				ShareLimitAction         *string                                                   `json:"share_limit_action,omitempty"`
+				ShareLimitsMode          *string                                                   `json:"share_limits_mode,omitempty"`
+				StopCondition            *string                                                   `json:"stop_condition,omitempty"`
+				Stopped                  *bool                                                     `json:"stopped,omitempty"`
+				Tags                     *[]string                                                 `json:"tags,omitempty"`
+				UploadLimit              *int64                                                    `json:"upload_limit,omitempty"`
+				UseAutoTmm               *bool                                                     `json:"use_auto_tmm,omitempty"`
+				UseDownloadPath          *bool                                                     `json:"use_download_path,omitempty"`
+			} `json:"torrentParams"`
+			UseRegex bool `json:"useRegex"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetRSSRuleResponse parses an HTTP response from a SetRSSRuleWithResponse call
+func ParseSetRSSRuleResponse(rsp *http.Response) (*SetRSSRuleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetRSSRuleResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
