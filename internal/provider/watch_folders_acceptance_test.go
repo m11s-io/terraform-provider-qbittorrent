@@ -34,7 +34,10 @@ func TestAccWatchFoldersSafeLifecycle(t *testing.T) {
 	watchPath := "/config/qbt-watch-" + hex.EncodeToString(suffix[:])
 	marker := watchPath + "/preserve-me"
 	dockerExec := func(args ...string) error {
-		cmd := exec.Command("docker", append([]string{"exec", container}, args...)...)
+		// Match the runner's PUID/PGID so Linux can remove the bind-mounted
+		// directory after the container stops, including its mode-0700 entries.
+		user := fmt.Sprintf("%d:%d", os.Getuid(), os.Getgid())
+		cmd := exec.Command("docker", append([]string{"exec", "--user", user, container}, args...)...)
 		if output, err := cmd.CombinedOutput(); err != nil {
 			return fmt.Errorf("disposable watched-folder setup failed (%s)", strings.TrimSpace(string(output)))
 		}
