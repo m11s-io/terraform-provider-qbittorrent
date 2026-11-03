@@ -97,4 +97,4 @@ See [development and testing](docs/development.md),
 
 ## License
 
-[Mozilla Public License 2.0](LICENSE).
+[Apache License 2.0](LICENSE).
